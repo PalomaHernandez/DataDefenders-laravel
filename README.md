@@ -1,85 +1,111 @@
-## Pasos
+# Data Defenders
 
-- clonar el repo https://github.com/iaw-2023/laravel-template y mantener como owner la organización de la materia.
-## parados en el directorio del repositorio recientemente clonado, ejecutar:
+## Descripción general
 
-- `composer install`
-- `cp .env.example .env`
-- `php artisan key:generate`
-- `php artisan serve`
+El proyecto consiste en una aplicación web que permita la gestión e inscripción a puestos laborales, becas, pasantías e
+intercambios que se ofrecen en una universidad.
 
-Con el último comando, pueden acceder a http://127.0.0.1:8000/ y ver la cáscara de la aplicación Laravel
+Los interesados deberán registrarse en el sistema para inscribirse. Existirán usuarios administrativos que podrán
+gestionar las ofertas, inscripciones y generar reportes.
 
-### Requisitos
+Las ofertas tendrán requisitos distintos para la inscripción, tales como un CV o certificado analítico de materias, que
+no son comunes entre todas.
 
-- tener [composer](https://getcomposer.org/) instalado
-- tener [php](https://www.php.net/) instalado
+---
 
+## Diagrama de Entidad-Relación
 
+Se puede ver el diagrama [aquí](storage/app/ERD.pdf).
 
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+---
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Laravel
 
-## About Laravel
+### Entidades actualizables
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- User
+- Request
+- Job Offer
+- Internship Offer
+- Exchange Offer
+- Scholarship Offer
+- Major
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Reportes generables o visualizables
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Inscriptos a una oferta (con o sin adjuntos).
+- Comprobante de inscripción a una oferta.
+- Ofertas (becas o intercambio) según la carrera.
+- Ofertas (laboral, beca o intercambio) según el departamento.
+- Ofertas (pasantía) según la empresa.
+- Ofertas (intercambio) según la universidad externa.
+- Promedios de aceptación de solicitudes de ciertas ofertas.
 
-## Learning Laravel
+### Entidades obtenibles por API
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Todas las entidades.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Crearemos una API completa y se utilizará una aplicación escrita en Vue con Vue Router para la
+interfaz de usuario.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Se cargará la aplicación Vue a través de Blade y el enrutador de Laravel durante la visita inicial o recargas. Todo lo
+restante se gestionará mediante la API con Laravel Sanctum y peticiones HTTP mediante Axios.
 
-## Laravel Sponsors
+### Entidades modificables por API
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+- User
+- Request
+- Internship Offer
+- Job Offer
+- Scholarship Offer
+- Exchange Offer
+- Major
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+## Vue
 
-## Contributing
+### Información visible por el usuario
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- **Todos los roles**
+    - La información de la cuenta propia.
+- **Rol Administrador**
+    - Toda la información contenida en el sistema.
+- **Rol Administrador Ejecutivo**
+    - Las inscripciones con sus adjuntos.
+    - La información de los usuarios.
+- **Rol Administrador de Ofertas**
+    - Las ofertas.
+    - Las empresas.
+    - Los departamentos.
+    - Las carreras.
+    - Las universidades.
+    - Las inscripciones a las ofertas sin sus adjuntos.
+- **Rol Usuario General**
+    - Las inscripciones propias a cualquier oferta.
+    - Las ofertas disponibles.
 
-## Code of Conduct
+### Acciones realizables por el usuario
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- **Todos los roles**
+    - Cerrar sesión.
+    - Actualizar la información de su cuenta.
+- **Rol Administrador**
+    - Actualizar todas las entidades actualizables.
+- **Rol Administrador Ejecutivo**
+    - Aceptar una inscripción.
+    - Rechazar una inscripción.
+- **Rol Administrador de Ofertas**
+    - Crear ofertas.
+    - Actualizar oferta.
+    - Crear empresas.
+    - Crear departamentos.
+    - Crear carreras.
+    - Actualizar carreras.
+    - Crear universidades.
+- **Rol Usuario General**
+    - Inscribirse a las ofertas disponibles.
+    - Cancelar una inscripción propia.
+- **Visitante (sin cuenta)**
+    - Iniciar sesión.
+    - Registrar una cuenta.
