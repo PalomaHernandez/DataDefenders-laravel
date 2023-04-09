@@ -12,9 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('exchange_offer_major', function (Blueprint $table) {
-            $table->foreignUuid('exchange_offer_id')->references('id')->on('exchange_offers');
-            $table->foreignUuid('major_id')->references('id')->on('majors');
-            $table->timestamps();
+            $table->foreignId('exchange_offer_id')->references('id')->on('exchange_offers');
+            $table->foreignId('major_id')->references('id')->on('majors');
         });
     }
 

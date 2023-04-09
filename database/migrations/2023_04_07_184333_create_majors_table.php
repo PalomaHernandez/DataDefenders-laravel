@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('majors', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->id();
             $table->string('name')->unique();
-            $table->foreignUuid('department_id')->references('id')->on('departments');
+            $table->foreignId('department_id')->references('id')->on('departments');
             $table->timestamps();
         });
     }

@@ -12,12 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('job_offers', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->id();
             $table->string('title');
             $table->text('description');
             $table->text('requirements');
             $table->timestamp('interview_at');
-            $table->foreignUuid('departament_id')->references('id')->on('departments');
+            $table->foreignId('departament_id')->references('id')->on('departments');
             $table->text('benefits');
             $table->timestamp('starts_at');
             $table->timestamp('ends_at');

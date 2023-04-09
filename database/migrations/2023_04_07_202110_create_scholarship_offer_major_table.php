@@ -12,9 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('scholarship_offer_major', function (Blueprint $table) {
-            $table->foreignUuid('scholarship_offer_id')->references('id')->on('scholarship_offers');
-            $table->foreignUuid('major_id')->references('id')->on('majors');
-            $table->timestamps();
+            $table->foreignId('scholarship_offer_id')->references('id')->on('scholarship_offers');
+            $table->foreignId('major_id')->references('id')->on('majors');
         });
     }
 

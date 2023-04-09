@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('internship_offers', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->id();
             $table->string('title');
             $table->text('description');
             $table->text('requirements');
-            $table->foreignUuid('company_id')->references('id')->on('companies');
+            $table->foreignId('company_id')->references('id')->on('companies');
             $table->timestamp('starts_at');
             $table->timestamp('ends_at');
             $table->tinyInteger('visible');

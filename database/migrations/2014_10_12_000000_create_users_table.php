@@ -12,8 +12,7 @@ return new class extends Migration {
 	 */
 	public function up():void{
 		Schema::create('users', function (Blueprint $table){
-			$table->uuid()->unique();
-			$table->bigIncrements('id')->unique();
+			$table->id();
 			$table->string('first_name');
 			$table->string('middle_name')->nullable();
 			$table->string('last_name');
@@ -30,9 +29,6 @@ return new class extends Migration {
 			$table->string('postal_code', 10);
 			$table->string('id_card', 20);
 			$table->timestamps();
-		});
-		Schema::table('users', function (Blueprint $table){
-			DB::statement('ALTER TABLE `'.DB::getDatabaseName().'`.`'.$table->getTable().'` DROP PRIMARY KEY, ADD PRIMARY KEY (`uuid`);');
 		});
 	}
 
