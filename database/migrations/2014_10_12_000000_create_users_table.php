@@ -22,7 +22,7 @@ return new class extends Migration {
 			$table->rememberToken();
 			$table->string('phone', 20);
 			$table->string('address_line_1');
-			$table->string('address_line_2');
+			$table->string('address_line_2')->nullable();
 			$table->string('city');
 			$table->string('region');
 			$table->string('country');

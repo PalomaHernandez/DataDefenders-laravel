@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('offer_id');
             $table->string('offer_type');
-            $table->string('status');
+            $table->enum('status',['pending','documentation','accepted','rejected']);
             $table->timestamps();
         });
     }
