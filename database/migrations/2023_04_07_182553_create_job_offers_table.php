@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('description');
             $table->text('requirements');
             $table->timestamp('interview_at');
-            $table->foreignId('department_id')->references('id')->on('departments');
+            $table->foreignId('department_id')->references('id')->on('departments')->restrictOnDelete()->cascadeOnUpdate();
             $table->text('benefits');
             $table->timestamp('starts_at');
             $table->timestamp('ends_at');

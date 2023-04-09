@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('exchange_offer_major', function (Blueprint $table) {
-            $table->foreignId('exchange_offer_id')->references('id')->on('exchange_offers');
-            $table->foreignId('major_id')->references('id')->on('majors');
+            $table->foreignId('exchange_offer_id')->references('id')->on('exchange_offers')->restrictOnDelete()->cascadeOnUpdate();
+            $table->foreignId('major_id')->references('id')->on('majors')->restrictOnDelete()->cascadeOnUpdate();
         });
     }
 

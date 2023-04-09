@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
             $table->text('requirements');
-            $table->foreignId('company_id')->references('id')->on('companies');
+            $table->foreignId('company_id')->references('id')->on('companies')->restrictOnDelete()->cascadeOnUpdate();
             $table->timestamp('starts_at');
             $table->timestamp('ends_at');
             $table->tinyInteger('visible');

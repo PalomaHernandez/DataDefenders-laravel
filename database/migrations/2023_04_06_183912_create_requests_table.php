@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('requests', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('number')->unique();
-            $table->foreignId('user_id')->references('id')->on('users');
+            $table->foreignId('user_id')->references('id')->on('users')->restrictOnDelete()->cascadeOnUpdate();
             $table->unsignedBigInteger('offer_id');
             $table->string('offer_type');
             $table->enum('status',['pending','documentation','accepted','rejected']);
