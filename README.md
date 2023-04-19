@@ -2,14 +2,13 @@
 
 ## Descripción general
 
-El proyecto consiste en una aplicación web que permita la gestión e inscripción a puestos laborales, becas, pasantías e
-intercambios que se ofrecen en una universidad.
+El proyecto consiste en una aplicación web que permita la gestión e inscripción a puestos laborales y becas que se ofrecen en una universidad.
 
 Los interesados deberán registrarse en el sistema para inscribirse. Existirán usuarios administrativos que podrán
 gestionar las ofertas, inscripciones y generar reportes.
 
 Las ofertas tendrán requisitos distintos para la inscripción, tales como un CV o certificado analítico de materias, que
-no son comunes entre todas.
+no son comunes entre las mismas.
 
 ---
 
@@ -26,8 +25,6 @@ Se puede ver el diagrama [aquí](storage/app/ERD.pdf).
 - User
 - Request
 - Job Offer
-- Internship Offer
-- Exchange Offer
 - Scholarship Offer
 - Major
 
@@ -35,10 +32,8 @@ Se puede ver el diagrama [aquí](storage/app/ERD.pdf).
 
 - Inscriptos a una oferta (con o sin adjuntos).
 - Comprobante de inscripción a una oferta.
-- Ofertas (becas o intercambio) según la carrera.
-- Ofertas (laboral, beca o intercambio) según el departamento.
-- Ofertas (pasantía) según la empresa.
-- Ofertas (intercambio) según la universidad externa.
+- Ofertas (becas) según la carrera.
+- Ofertas (laboral o beca) según el departamento.
 - Promedios de aceptación de solicitudes de ciertas ofertas.
 
 ### Entidades obtenibles por API
@@ -55,10 +50,8 @@ restante se gestionará mediante la API con Laravel Sanctum y peticiones HTTP me
 
 - User
 - Request
-- Internship Offer
 - Job Offer
 - Scholarship Offer
-- Exchange Offer
 - Major
 
 ---
@@ -76,10 +69,8 @@ restante se gestionará mediante la API con Laravel Sanctum y peticiones HTTP me
     - La información de los usuarios.
 - **Rol Administrador de Ofertas**
     - Las ofertas.
-    - Las empresas.
     - Los departamentos.
     - Las carreras.
-    - Las universidades.
     - Las inscripciones a las ofertas sin sus adjuntos.
 - **Rol Usuario General**
     - Las inscripciones propias a cualquier oferta.
@@ -98,11 +89,9 @@ restante se gestionará mediante la API con Laravel Sanctum y peticiones HTTP me
 - **Rol Administrador de Ofertas**
     - Crear ofertas.
     - Actualizar oferta.
-    - Crear empresas.
     - Crear departamentos.
     - Crear carreras.
     - Actualizar carreras.
-    - Crear universidades.
 - **Rol Usuario General**
     - Inscribirse a las ofertas disponibles.
     - Cancelar una inscripción propia.
