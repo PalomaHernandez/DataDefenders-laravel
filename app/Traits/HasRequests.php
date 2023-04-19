@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Models\Request;
+use App\Patterns\State\Request\RequestStatus;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 trait HasRequests {
@@ -12,15 +13,19 @@ trait HasRequests {
 	}
 
 	public function acceptedRequests():MorphMany{
-		return $this->morphMany(Request::class, 'offer')->where('status', '=', 'accepted'); // TODO: implement status
+		return $this->morphMany(Request::class, 'offer')->where('status', '=', RequestStatus::Accepted); // TODO: implement status
 	}
 
 	public function rejectedRequests():MorphMany{
-		return $this->morphMany(Request::class, 'offer')->where('status', '=', 'rejected'); // TODO: implement status
+		return $this->morphMany(Request::class, 'offer')->where('status', '=', RequestStatus::Rejected); // TODO: implement status
 	}
 
 	public function pendingRequests():MorphMany{
-		return $this->morphMany(Request::class, 'offer')->where('status', '=', 'pending'); // TODO: implement status
+		return $this->morphMany(Request::class, 'offer')->where('status', '=', RequestStatus::Pending); // TODO: implement status
+	}
+
+	public function documentationRequests():MorphMany{
+		return $this->morphMany(Request::class, 'offer')->where('status', '=', RequestStatus::Documentation); // TODO: implement status
 	}
 
 }

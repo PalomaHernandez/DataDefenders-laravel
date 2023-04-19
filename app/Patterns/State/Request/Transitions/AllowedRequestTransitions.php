@@ -21,7 +21,7 @@ class AllowedRequestTransitions {
 		],
 		[
 			'current' => RequestStatus::Pending,
-			'next' => RequestStatus::Approved,
+			'next' => RequestStatus::Accepted,
 			'transition' => PendingToApproved::class,
 		],
 		[

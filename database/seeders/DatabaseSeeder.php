@@ -3,16 +3,12 @@
 namespace Database\Seeders;
 
 use App\Models\Comment;
-use App\Models\Company;
 use App\Models\Department;
 use App\Models\DocumentationFile;
-use App\Models\ExchangeOffer;
-use App\Models\InternshipOffer;
 use App\Models\JobOffer;
 use App\Models\Major;
 use App\Models\Request;
 use App\Models\ScholarshipOffer;
-use App\Models\University;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -23,14 +19,10 @@ class DatabaseSeeder extends Seeder {
 	 */
 	public function run():void{
 		User::factory(45)->create();
-		Company::factory(20)->create();
-		InternshipOffer::factory(5)->create();
 		Department::factory(5)->create();
 		JobOffer::factory(5)->create();
 		Major::factory(15)->create();
 		ScholarshipOffer::factory(5)->create();
-		University::factory(20)->create();
-		ExchangeOffer::factory(5)->create();
 		$requests = Request::factory(35)->create();
 		foreach($requests as $request){
 			$fileCount = rand(1, 5);
@@ -45,7 +37,7 @@ class DatabaseSeeder extends Seeder {
 				]);
 			}
 			$majorCount = rand(1, 3);
-			if($request->offer_type == ScholarshipOffer::class || $request->offer_type == ExchangeOffer::class){
+			if($request->offer_type == ScholarshipOffer::class){
 				for($i = 0; $i < $majorCount; $i++){
 					$request->offer->majors()->attach(Major::inRandomOrder()->first('id')->id);
 				}

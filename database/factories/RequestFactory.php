@@ -16,21 +16,17 @@ class RequestFactory extends Factory {
 	protected $model = Request::class;
 
 	public function definition():array{
-		$rand = rand(0, 3);
+		$rand = rand(0, 1);
 		return [
 			'number' => fake()->numberBetween(),
 			'user_id' => User::inRandomOrder()->first('id')->id,
 			'offer_id' => match($rand){
-				0 => InternshipOffer::inRandomOrder()->first('id')->id,
-				1 => JobOffer::inRandomOrder()->first('id')->id,
-				2 => ScholarshipOffer::inRandomOrder()->first('id')->id,
-				3 => ExchangeOffer::inRandomOrder()->first('id')->id,
+				0 => JobOffer::inRandomOrder()->first('id')->id,
+				1 => ScholarshipOffer::inRandomOrder()->first('id')->id,
 			},
 			'offer_type' => match($rand){
-				0 => InternshipOffer::class,
-				1 => JobOffer::class,
-				2 => ScholarshipOffer::class,
-				3 => ExchangeOffer::class,
+				0 => JobOffer::class,
+				1 => ScholarshipOffer::class,
 			},
 			'status' => RequestStatus::Pending,
 		];

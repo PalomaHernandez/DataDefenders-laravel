@@ -8,14 +8,14 @@ enum RequestStatus:string {
 
 	case Documentation = 'documentation';
 
-	case Approved = 'approved';
+	case Accepted = 'accepted';
 
 	case Rejected = 'rejected';
 
 	public function canUpdate():bool{
 		return match ($this) {
 			self::Pending, self::Documentation => true,
-			self::Approved, self::Rejected => false,
+			self::Accepted, self::Rejected => false,
 		};
 	}
 

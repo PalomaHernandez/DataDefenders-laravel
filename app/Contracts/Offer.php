@@ -14,4 +14,6 @@ interface Offer {
 
 	public function pendingRequests():MorphMany;
 
+	public function documentationRequests():MorphMany;
+
 }

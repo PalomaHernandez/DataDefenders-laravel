@@ -15,7 +15,7 @@ class PendingToApproved implements RequestTransition {
 		}
 
 		$request->update([
-			'status' => RequestStatus::Approved
+			'status' => RequestStatus::Accepted
 		]);
 
 		return $request;
