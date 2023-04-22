@@ -14,10 +14,14 @@
 				<nav class="flex flex-col">
 					<a href="/" class="nav-item">Home</a>
 					<a href="{{ route('departments.index') }}" class="nav-item">Departments</a>
+					<a href="{{ route('majors.index') }}" class="nav-item">Majors</a>
+					<a href="{{ route('scholarshipoffers.index') }}" class="nav-item">Scholarship Offers</a>
 				</nav>
 			</aside>
-			<div class="flex-grow h-screen p-6 lg:p-8">
-				@yield('content')
+			<div class="flex-grow h-screen overflow-y-auto">
+				<div class="flex-grow flex flex-col gap-6 p-6 lg:p-8">
+					@yield('content')
+				</div>
 			</div>
 		</div>
 	</body>

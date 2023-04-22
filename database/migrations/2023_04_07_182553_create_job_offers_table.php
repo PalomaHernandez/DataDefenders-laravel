@@ -21,7 +21,7 @@ return new class extends Migration
             $table->text('benefits');
             $table->timestamp('starts_at');
             $table->timestamp('ends_at');
-            $table->tinyInteger('visible');
+            $table->tinyInteger('visible')->default(0);
             $table->timestamps();
         });
     }

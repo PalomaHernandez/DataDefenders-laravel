@@ -9,3 +9,13 @@
 .nav-item {
 	@apply hover:bg-sky-800 rounded px-2 py-1 text-sky-100
 }
+
+.container {
+	display: flex;
+	flex: 1;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-items: baseline;
+	align-content: flex-start;
+  }
+
