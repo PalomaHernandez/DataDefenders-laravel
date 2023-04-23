@@ -1,25 +1,45 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 
 @section('title')
 	Edit Major: {{ $major->name }}
 @endsection
 
 @section('content')
-	<div class="flex flex-col gap-6">
-		<p class="my-super-title">Edit Major: {{ $major->name }}</p>
-		@if(session('error'))
-			<div class="px-3 py-2 bg-red-700 text-white rounded">{{ session('error') }}</div>
-		@endif
-		<form action="{{ route('majors.update',$major) }}" method="post" class="flex flex-col items-start gap-3">
-			@csrf
-			@method('PATCH')
-			<label for="name">Name</label>
-			<input type="text" id="name" name="name" class="px-2 py-1 rounded border border-sky-400 w-full" value="{{ old('name') ? old('name') : $major->name }}">
-			<div class="flex gap-4">
-				<a href="{{ back()->getTargetUrl() }}" class="text-red-700 rounded px-3 py-2">Back</a>
-				<button type="submit" class="bg-green-700 rounded px-3 py-2 text-white">Update</button>
-                <a href="{{ route('majors.index',['delete' => $major->id]) }}" class="bg-red-700 rounded px-3 py-2 text-white">Delete</a>
+	<form action="{{ route('majors.update',$major) }}" method="post" class="h-screen flex flex-col">
+		@csrf
+		@method('PATCH')
+		<x-header>
+			<x-slot:title>
+				<a class="text-lg text-gray-400" href="{{ back()->getTargetUrl() }}">
+					<i class="fa-solid fa-chevron-left"></i> </a> Edit "{{ $major->name }}"
+			</x-slot:title>
+			<x-slot:description>
+				<span class="icon-text">
+					<i class="fa-solid fa-scroll"></i>
+					Major
+				</span> <span class="icon-text">
+					<i class="fa-solid fa-university"></i>
+					{{ $major->department->name }}
+				</span>
+			</x-slot:description>
+			<x-slot:buttons>
+				<div class="flex items-center gap-3">
+					<a href="{{ route('majors.delete_confirm', $major) }}" class="btn-outline border-gray-300 text-gray-600 hover:bg-red-50 hover:border-red-200 hover:text-red-400">
+						<i class="fa-solid fa-trash"></i> Delete </a>
+					<button type="submit" class="btn bg-sky-700 text-white">
+						<i class="fa-solid fa-check"></i> Save changes
+					</button>
+				</div>
+			</x-slot:buttons>
+		</x-header>
+		<div class="flex-grow overflow-y-auto flex flex-col gap-6 p-6 lg:p-8">
+			@if(session('error'))
+				<div class="px-3 py-2 bg-red-700 text-white rounded">{{ session('error') }}</div>
+			@endif
+			<div class="labeled-input">
+				<label for="name">Name</label>
+				<input type="text" id="name" name="name" value="{{ old('name') ? old('name') : $major->name }}">
 			</div>
-		</form>
-	</div>
+		</div>
+	</form>
 @endsection

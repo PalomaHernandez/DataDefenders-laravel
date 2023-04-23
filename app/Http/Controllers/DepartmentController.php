@@ -19,7 +19,7 @@ class DepartmentController extends Controller {
 	public function store(){
 		try {
 			Department::create(request()->validate([
-				'name' => ['string', 'max:255', 'unique:departments,name']
+				'name' => ['string', 'max:255', 'unique:departments,name', 'required']
 			]));
 			return redirect()->route('departments.index')->with([
 				'success' => 'The department was created successfully.'
@@ -38,7 +38,7 @@ class DepartmentController extends Controller {
 	public function update(Department $department){
 		try {
 			$department->update(request()->validate([
-				'name' => ['string', 'max:255', 'unique:departments,name']
+				'name' => ['string', 'max:255', 'unique:departments,name', 'required']
 			]));
 			return redirect()->route('departments.index')->with([
 				'success' => 'The department was updated successfully.'
@@ -48,6 +48,10 @@ class DepartmentController extends Controller {
 				'error' => $throwable->getMessage()
 			]);
 		}
+	}
+
+	public function delete_confirm(Department $department){
+		return view('admin.departments.delete', compact('department'));
 	}
 
 	public function delete(Department $department){

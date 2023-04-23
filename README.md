@@ -1,5 +1,9 @@
 # Data Defenders
 
+![UniManager Logo](storage/app/public/logos/unimanager.svg "UniManager Logo")
+
+**UniManager** is the ultimate app to manage your University's job and scholarship offers!
+
 ## Descripción general
 
 El proyecto consiste en una aplicación web que permita la gestión e inscripción a puestos laborales y becas que se ofrecen en una universidad.

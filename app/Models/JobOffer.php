@@ -24,6 +24,12 @@ class JobOffer extends Model implements Offer {
 		'visible',
 	];
 
+	protected $casts = [
+		'interview_at' => 'datetime',
+		'starts_at' => 'datetime',
+		'ends_at' => 'datetime',
+	];
+
 	public function department():BelongsTo{
 		return $this->belongsTo(Department::class);
 	}

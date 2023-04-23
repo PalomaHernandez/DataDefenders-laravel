@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Exceptions\MajorHasAtLeastOneOfferException;
 use App\Models\Department;
 use App\Models\Major;
-use Illuminate\Http\Request;
 use Throwable;
 
 class MajorController extends Controller
@@ -77,4 +76,5 @@ class MajorController extends Controller
             ]);
         }
     }
+
 }

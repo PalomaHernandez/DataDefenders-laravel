@@ -2,33 +2,32 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\OfferHasAtLeastOneRequestException;
 use App\Models\ScholarshipOffer;
-use Illuminate\Http\Request;
-use Symfony\Contracts\Service\Attribute\Required;
 use Throwable;
 
-class ScholarshipOfferController extends Controller
-{
-    public function index(){
-		$scholarshipoffers = ScholarshipOffer::all();
-		return view('admin.scholarshipoffers.index', compact('scholarshipoffers'));
+class ScholarshipOfferController extends Controller {
+
+	public function index(){
+		$offers = ScholarshipOffer::all();
+		return view('admin.offers.scholarship.index', compact('offers'));
 	}
 
-    public function create(){
-		return view('admin.scholarshipoffers.create');
+	public function create(){
+		return view('admin.offers.scholarship.create');
 	}
 
-    public function store(){
+	public function store(){
 		try {
 			ScholarshipOffer::create(request()->validate([
-				'title' => ['string', 'max:255', 'required'],
-                'description' => ['string'],
-                'requirements' => ['string'],
-                'starts_at'=>['date','required','after_or_equal:today'],
-                'ends_at'=>['date','required','after_or_equal:starts_at'],
-                'visible'=>['boolean','nullable']
+				'title'        => ['string', 'max:255', 'required'],
+				'description'  => ['string', 'required'],
+				'requirements' => ['string', 'required'],
+				'starts_at'    => ['date', 'required', 'after_or_equal:today'],
+				'ends_at'      => ['date', 'required', 'after_or_equal:starts_at'],
+				'visible'      => ['boolean', 'nullable'],
 			]));
-			return redirect()->route('scholarshipoffers.index')->with([
+			return redirect()->route('scholarship.index')->with([
 				'success' => 'The scholarship offer was created successfully.'
 			]);
 		} catch(Throwable $throwable){
@@ -38,16 +37,28 @@ class ScholarshipOfferController extends Controller
 		}
 	}
 
-    public function edit(ScholarshipOffer $scholarshipoffer){
-		return view('admin.scholarshipoffers.edit', compact('scholarshipoffer'));
+	public function edit(ScholarshipOffer $offer){
+		return view('admin.offers.scholarship.edit', compact('offer'));
 	}
 
-	public function update(ScholarshipOffer $scholarshipoffer){
+	public function toggle(ScholarshipOffer $offer){
+		$offer->update([
+			'visible' => !$offer->visible
+		]);
+		return back();
+	}
+
+	public function update(ScholarshipOffer $offer){
 		try {
-			$scholarshipoffer->update(request()->validate([
-				'title' => ['string', 'max:255']
+			$offer->update(request()->validate([
+				'title'        => ['string', 'max:255'],
+				'description'  => ['string', 'required'],
+				'requirements' => ['string', 'required'],
+				'starts_at'    => ['date', 'required', 'after_or_equal:today'],
+				'ends_at'      => ['date', 'required', 'after_or_equal:starts_at'],
+				'visible'      => ['boolean', 'nullable'],
 			]));
-			return redirect()->route('scholarshipoffers.index')->with([
+			return redirect()->route('scholarship.index')->with([
 				'success' => 'The scholarship offer was updated successfully.'
 			]);
 		} catch(Throwable $throwable){
@@ -57,11 +68,29 @@ class ScholarshipOfferController extends Controller
 		}
 	}
 
-	public function delete(ScholarshipOffer $scholarshipoffer){
-		$scholarshipoffer->delete();
-		return redirect()->route('scholarshipoffers.index')->with([
-			'success' => 'The scholarship offer was deleted successfully.'
-		]);
+	public function delete_confirm(ScholarshipOffer $offer){
+		try {
+			if($offer->requests()->exists()){
+				throw new OfferHasAtLeastOneRequestException();
+			}
+			return view('admin.offers.scholarship.delete', compact('offer'));
+		} catch(OfferHasAtLeastOneRequestException $exception){
+			abort(403, $exception->getMessage());
+		}
+	}
+
+	public function delete(ScholarshipOffer $offer){
+		try {
+			if($offer->requests()->exists()){
+				throw new OfferHasAtLeastOneRequestException();
+			}
+			$offer->delete();
+			return redirect()->route('scholarship.index')->with([
+				'success' => 'The scholarship offer was deleted successfully.'
+			]);
+		} catch(OfferHasAtLeastOneRequestException $exception){
+			abort(403, $exception->getMessage());
+		}
 	}
 
 }

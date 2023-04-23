@@ -1,9 +1,13 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 
 @section('title')
-    Home
+	Home
 @endsection
 
 @section('content')
-    <p class="my-super-title">Home.</p>
+	<x-header>
+		<x-slot:title>Home</x-slot:title>
+		<x-slot:description>Find quick links and overall information.</x-slot:description>
+		<x-slot:buttons></x-slot:buttons>
+	</x-header>
 @endsection

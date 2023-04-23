@@ -21,6 +21,11 @@ class ScholarshipOffer extends Model implements Offer {
 		'visible',
 	];
 
+	protected $casts = [
+		'starts_at' => 'datetime',
+		'ends_at' => 'datetime',
+	];
+
 	public function majors():BelongsToMany{
 		return $this->belongsToMany(Major::class, 'scholarship_offer_major');
 	}
