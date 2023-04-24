@@ -19,12 +19,14 @@
 	@if(session('error'))
 		<div class="alert bg-red-700 text-white">{{ session('error') }}</div>
 	@endif
-	<div class="items">
-		@foreach($departments as $department)
-			<a class="item flex items-center gap-2" href="{{ route('departments.edit', $department) }}">
-				<i class="fa-solid fa-university text-gray-400"></i>
-				<p class="flex-grow">{{ $department->name }}</p>
-				<i class="fa-solid fa-chevron-right text-gray-400"></i> </a>
-		@endforeach
+	<div class="flex-grow overflow-y-auto flex flex-col">
+		<div class="items">
+			@foreach($departments as $department)
+				<a class="item flex items-center gap-2" href="{{ route('departments.edit', $department) }}">
+					<i class="fa-solid fa-university text-gray-400"></i>
+					<p class="flex-grow">{{ $department->name }}</p>
+					<i class="fa-solid fa-chevron-right text-gray-400"></i> </a>
+			@endforeach
+		</div>
 	</div>
 @endsection

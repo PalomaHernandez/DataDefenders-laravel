@@ -37,6 +37,19 @@
 							<i class="fa-solid fa-graduation-cap"></i>
 							Scholarships
 						</a>
+						<p class="nav-p">Applications</p>
+						<a href="{{ route('requests.index') }}" class="nav-item @if(Route::currentRouteNamed('requests.index')) nav-item-active @endif">
+							<i class="fa-solid fa-file-circle-question"></i>
+							All
+						</a>
+						<a href="{{ route('requests.job.index') }}" class="nav-item @if(Route::currentRouteNamed('requests.job.*')) nav-item-active @endif">
+							<i class="fa-solid fa-file-contract"></i>
+							Job Applications
+						</a>
+						<a href="{{ route('requests.scholarship.index') }}" class="nav-item @if(Route::currentRouteNamed('requests.scholarship.*')) nav-item-active @endif">
+							<i class="fa-solid fa-file-signature"></i>
+							Scholarship Applications
+						</a>
 					{{--@else
 						<a href="{{ route('login') }}" class="nav-item @if(Route::currentRouteNamed('login')) nav-item-active @endif">
 							<i class="fa-solid fa-key"></i>

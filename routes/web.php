@@ -3,6 +3,7 @@
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\JobOfferController;
 use App\Http\Controllers\MajorController;
+use App\Http\Controllers\RequestController;
 use App\Http\Controllers\ScholarshipOfferController;
 use Illuminate\Support\Facades\Route;
 
@@ -61,6 +62,19 @@ Route::prefix('admin')/*->middleware('auth')*/->group(function (){
 		Route::patch('{major}/update', [MajorController::class, 'update'])->name('majors.update');
 		Route::get('{major}/delete', [MajorController::class, 'delete_confirm'])->name('majors.delete_confirm');
 		Route::delete('{major}/delete', [MajorController::class, 'delete'])->name('majors.delete');
+	});
+
+	Route::prefix('requests')->group(function (){
+		Route::get('', [RequestController::class, 'index'])->name('requests.index');
+		Route::get('job', [RequestController::class, 'job'])->name('requests.job.index');
+		Route::get('scholarship', [RequestController::class, 'scholarship'])->name('requests.scholarship.index');
+		Route::get('{request}/edit', [RequestController::class, 'edit'])->name('requests.edit');
+		Route::get('{request}/document', [RequestController::class, 'document_confirm'])->name('requests.document_confirm');
+		Route::patch('{request}/document', [RequestController::class, 'document'])->name('requests.document');
+		Route::get('{request}/accept', [RequestController::class, 'accept_confirm'])->name('requests.accept_confirm');
+		Route::patch('{request}/accept', [RequestController::class, 'accept'])->name('requests.accept');
+		Route::get('{request}/reject', [RequestController::class, 'reject_confirm'])->name('requests.reject_confirm');
+		Route::patch('{request}/reject', [RequestController::class, 'reject'])->name('requests.reject');
 	});
 
 	Route::prefix('offers')->group(function (){
