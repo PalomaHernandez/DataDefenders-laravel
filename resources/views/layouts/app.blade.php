@@ -19,7 +19,7 @@
 						<i class="fa-solid fa-home"></i>
 						Home
 					</a>
-					{{--@auth--}}
+					@auth
 						<a href="{{ route('departments.index') }}" class="nav-item @if(Route::currentRouteNamed('departments.*')) nav-item-active @endif">
 							<i class="fa-solid fa-university"></i>
 							Departments
@@ -50,12 +50,12 @@
 							<i class="fa-solid fa-file-signature"></i>
 							Scholarship Applications
 						</a>
-					{{--@else
+					@else
 						<a href="{{ route('login') }}" class="nav-item @if(Route::currentRouteNamed('login')) nav-item-active @endif">
 							<i class="fa-solid fa-key"></i>
 							Login
 						</a>
-					@endauth--}}
+					@endauth
 				</nav>
 			</aside>
 			<div class="flex-grow h-screen flex flex-col">

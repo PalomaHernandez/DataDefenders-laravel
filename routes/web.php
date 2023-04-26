@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\PasswordResetController;
+use App\Http\Controllers\Auth\PasswordChangeController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\JobOfferController;
 use App\Http\Controllers\MajorController;
@@ -22,26 +25,17 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::get('/login', function () {
-	// TODO: Paloma -> show login form
-	return view('auth.login');
-})->name('login');
+Route::get('/login', [LoginController::class, 'index'])->name('login');
+Route::post('/login', [LoginController::class, 'checkLogin'])->name('login.attempt');
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
-Route::post('/login', function () {
-	// TODO: Paloma -> fully implement login
-	if(auth()->attempt(request()->only(['email', 'password']))){
-		return redirect()->intended();
-	}
-	return back()->withInput()->with(['error' => 'Failed']);
-})->name('login');
+Route::get('/account-recovery', [PasswordResetController::class, 'index'])->name('accountrecovery');
+Route::post('/account-recovery', [PasswordResetController::class, 'sendResetLink'])->name('reset.link.send');
 
-Route::get('/logout', function () {
-	// TODO: Paloma -> fully implement logout
-	auth()->logout();
-	return redirect()->route('home');
-})->name('login');
+Route::get('/reset-password', [PasswordChangeController::class, 'index'])->name('reset.password');
+Route::post('/reset-password', [PasswordChangeController::class, 'changePassword'])->name('change.password');
 
-Route::prefix('admin')/*->middleware('auth')*/->group(function (){
+Route::prefix('admin')->middleware('auth')->group(function (){
 
 	Route::prefix('departments')->group(function (){
 		Route::get('', [DepartmentController::class, 'index'])->name('departments.index');

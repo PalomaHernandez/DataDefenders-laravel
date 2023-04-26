@@ -11,6 +11,7 @@ use App\Models\Request;
 use App\Models\ScholarshipOffer;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder {
 
@@ -19,6 +20,23 @@ class DatabaseSeeder extends Seeder {
 	 */
 	public function run():void{
 		User::factory(45)->create();
+		User::create(array(
+            'first_name'        => 'Paloma',
+			'middle_name'       => 'admin',
+			'last_name'         => 'admin',
+			'email'             => 'palohernandez01@gmail.com',
+			'email_verified_at' => now(),
+			'password'          => Hash::make('admin'),
+			'remember_token'    => '1234567890',
+			'phone'             => fake()->phoneNumber(),
+			'address_line_1'    => fake()->streetAddress(),
+			'address_line_2'    => null,
+			'city'              => 'Charlotte',
+			'region'            => 'North Carolina',
+			'country'           => 'United States of America',
+			'postal_code'       => '28201',
+			'id_card'           => fake()->numerify('########'),
+        ));
 		Department::factory(5)->create();
 		JobOffer::factory(5)->create();
 		Major::factory(15)->create();

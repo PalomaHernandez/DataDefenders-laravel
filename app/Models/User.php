@@ -28,6 +28,8 @@ class User extends Authenticatable {
 		'country',
 		'postal_code',
 		'id_card',
+		'password_recovery_token',
+		'password_recovery_expires_at',
 	];
 
 	protected $hidden = [
