@@ -50,11 +50,6 @@
 							<i class="fa-solid fa-file-signature"></i>
 							Scholarship Applications
 						</a>
-					@else
-						<a href="{{ route('login') }}" class="nav-item @if(Route::currentRouteNamed('login')) nav-item-active @endif">
-							<i class="fa-solid fa-key"></i>
-							Login
-						</a>
 					@endauth
 				</nav>
 			</aside>

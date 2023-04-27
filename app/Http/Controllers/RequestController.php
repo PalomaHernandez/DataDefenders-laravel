@@ -3,30 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Actions\ChangeRequestStatus;
+use App\Contracts\RequestRepository;
+use App\Exceptions\TransitionNotAllowedException;
 use App\Models\JobOffer;
 use App\Models\Request;
 use App\Models\ScholarshipOffer;
 use App\Patterns\State\Request\RequestStatus;
-use App\Repositories\RequestRepository;
-use Throwable;
+use InvalidArgumentException;
 
 class RequestController extends Controller {
 
 	public function __construct(private readonly RequestRepository $repository){}
 
 	public function index(){
-		$requests = $this->repository->getByStatus(RequestStatus::Pending, true);
+		$requests = $this->repository->getAllPendingPaginated();
 		return view('admin.requests.index', compact('requests'));
-	}
-
-	public function job(){
-		$requests = $this->repository->getByOfferType(JobOffer::class, RequestStatus::Pending, true);
-		return view('admin.requests.job.index', compact('requests'));
-	}
-
-	public function scholarship(){
-		$requests = $this->repository->getByOfferType(ScholarshipOffer::class, RequestStatus::Pending, true);
-		return view('admin.requests.scholarship.index', compact('requests'));
 	}
 
 	public function edit(Request $request){
@@ -39,12 +30,9 @@ class RequestController extends Controller {
 
 	public function document(Request $request){
 		try {
-			ChangeRequestStatus::execute($request, RequestStatus::Documentation);
-			$request->comments()->create(request()->validate([
-				'comment' => ['string', 'required']
-			]));
-			return $this->determineRedirection($request);
-		} catch(Throwable $exception){
+			$this->commentAndTransition($request, RequestStatus::Documentation);
+			return $this->returnToIndex($request);
+		} catch(InvalidArgumentException|TransitionNotAllowedException $exception){
 			return back()->withErrors($exception->getMessage());
 		}
 	}
@@ -55,9 +43,9 @@ class RequestController extends Controller {
 
 	public function accept(Request $request){
 		try {
-			$this->commentNullableAndTransition($request, RequestStatus::Accepted);
-			return $this->determineRedirection($request);
-		} catch(Throwable $exception){
+			$this->commentAndTransition($request, RequestStatus::Accepted);
+			return $this->returnToIndex($request);
+		} catch(InvalidArgumentException|TransitionNotAllowedException $exception){
 			return back()->withErrors($exception->getMessage());
 		}
 	}
@@ -68,26 +56,26 @@ class RequestController extends Controller {
 
 	public function reject(Request $request){
 		try {
-			$this->commentNullableAndTransition($request, RequestStatus::Rejected);
-			return $this->determineRedirection($request);
-		} catch(Throwable $exception){
+			$this->commentAndTransition($request, RequestStatus::Rejected);
+			return $this->returnToIndex($request);
+		} catch(InvalidArgumentException|TransitionNotAllowedException $exception){
 			return back()->withErrors($exception->getMessage());
 		}
 	}
 
 	/**
-	 * @throws Throwable
+	 * @throws InvalidArgumentException|TransitionNotAllowedException
 	 */
-	private function commentNullableAndTransition(Request $request, RequestStatus $status){
+	private function commentAndTransition(Request $request, RequestStatus $status){
 		ChangeRequestStatus::execute($request, $status);
-		if(request()->has('comment')){
+		if(request()->has('comments') && !is_null(request('comments'))){
 			$request->comments()->create(request()->validate([
-				'comment' => ['string', 'nullable']
+				'comments' => ['string', 'required']
 			]));
 		}
 	}
 
-	private function determineRedirection(Request $request){
+	private function returnToIndex(Request $request){
 		if($request->offer_type == JobOffer::class){
 			return redirect()->route('requests.job.index');
 		}

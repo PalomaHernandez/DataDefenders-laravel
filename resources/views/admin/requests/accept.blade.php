@@ -23,8 +23,14 @@
 				</button>
 			</x-slot:buttons>
 		</x-header>
-		<div class="flex-grow overflow-y-auto flex flex-col items-start gap-3 p-6">
-			<p class="font-bold">Are you sure? This will accept the application.</p>
-		</div>
+		<x-body>
+			<x-slot:content>
+				<p class="font-bold">Are you sure? This will accept the application.</p>
+				<div class="labeled-input">
+					<label for="comments">Add your comments, if any.</label>
+					<textarea id="comments" name="comments"></textarea>
+				</div>
+			</x-slot:content>
+		</x-body>
 	</form>
 @endsection

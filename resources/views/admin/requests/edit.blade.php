@@ -31,12 +31,9 @@
 			</div>
 		</x-slot:buttons>
 	</x-header>
-	<div class="flex-grow overflow-y-auto flex flex-col gap-6 p-6">
-		@if(session('error'))
-			<div class="alert bg-red-700 text-white">
-				<i class="fa-solid fa-triangle-exclamation"></i>
-				{{ session('error') }}
-			</div>
-		@endif
-	</div>
+	<x-body>
+		<x-slot:content>
+
+		</x-slot:content>
+	</x-body>
 @endsection

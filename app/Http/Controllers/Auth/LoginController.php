@@ -4,68 +4,57 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 
+class LoginController extends Controller {
 
+	public function index(){
+		return view('auth.login');
+	}
 
-class LoginController extends Controller{
-    
-    function index(){
-        return view('auth.login');
-    }
-    
-    function checklogin(){
-        
-        $this->validateLogin();
-       
-        if($this->attemptLogin()){
-            return $this->sendLoginResponse();
-        } 
+	public function attempt(){
+		$this->validateLogin();
 
-        return back()->with('error','Wrong login details'); 
-    }
+		if($this->attemptLogin()){
+			return $this->sendLoginResponse();
+		}
 
-    protected function validateLogin(){
-        request()->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
-    }
+		return back()->withErrors([
+			'email' => 'Wrong login details.',
+			'password' => 'Wrong login details.'
+		], 'login');
+	}
 
-    protected function attemptLogin(){
-        return auth()->attempt(
-            $this->credentials()
-        );
-    }
+	protected function validateLogin(){
+		request()->validate([
+			'email'    => 'required|email',
+			'password' => 'required',
+		]);
+	}
 
-    protected function credentials(){
-        return request()->only('email','password');
-    }
+	protected function attemptLogin(){
+		return auth()->attempt($this->credentials());
+	}
 
-    protected function sendLoginResponse(){
-        request()->session()->regenerate();
+	protected function credentials(){
+		return request()->only('email', 'password');
+	}
 
-        if ($response = $this->authenticated()) {
-            return $response;
-        }
-    }
+	protected function sendLoginResponse(){
+		request()->session()->regenerate();
+		return redirect()->route('home');
+	}
 
-    protected function authenticated(){
-        return redirect()->route('home');
-    }
+	public function logout(){
+		auth()->logout();
+		request()->session()->invalidate();
+		request()->session()->regenerateToken();
+		if($response = $this->loggedOut()){
+			return $response;
+		}
+		abort(500);
+	}
 
-    public function logout(){
-        auth()->logout();
-
-        request()->session()->invalidate();
-
-        request()->session()->regenerateToken();
-
-        if ($response = $this->loggedOut()) {
-            return $response;
-        }
-    }
-
-    protected function loggedOut(){
-        return redirect()->route('home');
-    }
+	protected function loggedOut(){
+		return redirect()->route('home');
+	}
 
 }

@@ -5,7 +5,7 @@ import {homedir} from 'os'
 import {resolve} from 'path'
 import fs from 'fs'
 
-const host = 'iaw.test'
+const host = 'unimanager.test'
 
 export default defineConfig({
     plugins: [

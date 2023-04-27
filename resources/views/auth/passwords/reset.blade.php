@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-<form action="{{ route('change.password') }}" method="post" class="h-screen flex flex-col">
+	<form action="{{ route('password.change') }}" method="post" class="h-screen flex flex-col">
 		@csrf
 		<x-header>
 		<x-slot:title>
@@ -14,21 +14,25 @@
 			<x-slot:description></x-slot:description>
 			<x-slot:buttons></x-slot:buttons>
 		</x-header>
-		<div class="flex-grow overflow-y-auto flex flex-col gap-6 p-6">
-			@if(session('error'))
-				<div class="px-3 py-2 bg-red-700 text-white rounded">{{ session('error') }}</div>
-			@endif
-			<div class="labeled-input">
-				<label for="email">Email</label>
-				<input type="email" id="email" name="email" value="{{ request('email') }}">
-                <label for="password">New Password</label>
-				<input type="password" id="password" name="password">
-                <label for="password_confirmation">Confirm password</label>
-				<input type="password" id="password_confirmation" name="password_confirmation">
-			</div>
-			<button type="submit" class="btn bg-sky-700 text-white w-max">
+		<x-form-body>
+			<x-slot:content>
+				<input type="hidden" id="email" name="email" value="{{ request('email') }}">
+				<div class="labeled-input">
+					<label>Email</label>
+					<p class="fake-disabled">{{ request('email') }}</p>
+				</div>
+				<div class="labeled-input">
+					<label for="password">New Password</label>
+					<input type="password" id="password" name="password">
+				</div>
+				<div class="labeled-input">
+					<label for="password_confirmation">Confirm password</label>
+					<input type="password" id="password_confirmation" name="password_confirmation">
+				</div>
+				<button type="submit" class="btn btn-primary">
 					Reset password
-			</button>
-		</div>
+				</button>
+			</x-slot:content>
+		</x-form-body>
 	</form>
 @endsection

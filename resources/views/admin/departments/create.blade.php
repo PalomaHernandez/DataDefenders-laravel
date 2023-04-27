@@ -21,20 +21,19 @@
 				</span>
 			</x-slot:description>
 			<x-slot:buttons>
-				<button type="submit" class="btn bg-sky-700 text-white">
+				<button type="submit" class="btn btn-primary">
 					<i class="fa-solid fa-plus"></i>
 					Add new
 				</button>
 			</x-slot:buttons>
 		</x-header>
-		<div class="flex-grow overflow-y-auto flex flex-col gap-6 p-6">
-			@if(session('error'))
-				<div class="px-3 py-2 bg-red-700 text-white rounded">{{ session('error') }}</div>
-			@endif
-			<div class="labeled-input">
-				<label for="name">Name</label>
-				<input type="text" id="name" name="name" value="{{ old('name') }}">
-			</div>
-		</div>
+		<x-form-body>
+			<x-slot:content>
+				<div class="labeled-input">
+					<label for="name">Name</label>
+					<input type="text" id="name" name="name" value="{{ old('name') }}">
+				</div>
+			</x-slot:content>
+		</x-form-body>
 	</form>
 @endsection

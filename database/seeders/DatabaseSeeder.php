@@ -21,12 +21,12 @@ class DatabaseSeeder extends Seeder {
 	public function run():void{
 		User::factory(45)->create();
 		User::create(array(
-            'first_name'        => 'Paloma',
-			'middle_name'       => 'admin',
-			'last_name'         => 'admin',
-			'email'             => 'palohernandez01@gmail.com',
+            'first_name'        => config('seeder.name'),
+			'middle_name'       => fake()->firstName(),
+			'last_name'         => fake()->lastName(),
+			'email'             => config('seeder.email'),
 			'email_verified_at' => now(),
-			'password'          => Hash::make('admin'),
+			'password'          => Hash::make(config('seeder.password')),
 			'remember_token'    => '1234567890',
 			'phone'             => fake()->phoneNumber(),
 			'address_line_1'    => fake()->streetAddress(),

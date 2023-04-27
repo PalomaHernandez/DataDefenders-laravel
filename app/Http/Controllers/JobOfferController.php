@@ -20,26 +20,20 @@ class JobOfferController extends Controller {
 	}
 
 	public function store(){
-		try {
-			JobOffer::create(request()->validate([
-				'title' => ['string', 'max:255', 'required'],
-				'description' => ['string', 'required'],
-				'requirements' => ['string', 'required'],
-				'starts_at' => ['date', 'required', 'after_or_equal:today'],
-				'ends_at' => ['date', 'required', 'after_or_equal:starts_at'],
-				'visible' => ['boolean', 'nullable'],
-				'benefits' => ['string', 'required'],
-				'interview_at' => ['date', 'required'],
-				'department_id' => ['numeric', 'exists:departments,id', 'required'],
-			]));
-			return redirect()->route('departments.index')->with([
-				'success' => 'The job offer was created successfully.'
-			]);
-		} catch(Throwable $throwable){
-			return back()->withInput()->with([
-				'error' => $throwable->getMessage()
-			]);
-		}
+		JobOffer::create(request()->validate([
+			'title' => ['string', 'max:255', 'required'],
+			'description' => ['string', 'required'],
+			'requirements' => ['string', 'required'],
+			'starts_at' => ['date', 'required', 'after_or_equal:today'],
+			'ends_at' => ['date', 'required', 'after_or_equal:starts_at'],
+			'visible' => ['boolean', 'nullable'],
+			'benefits' => ['string', 'required'],
+			'interview_at' => ['date', 'required'],
+			'department_id' => ['numeric', 'exists:departments,id', 'required'],
+		]));
+		return redirect()->route('departments.index')->with([
+			'success' => 'The job offer was created successfully.'
+		]);
 	}
 
 	public function show(JobOffer $offer){
@@ -52,33 +46,20 @@ class JobOfferController extends Controller {
 	}
 
 	public function update(JobOffer $offer){
-		try {
-			$offer->update(request()->validate([
-				'title' => ['string', 'max:255', 'required'],
-				'description' => ['string', 'required'],
-				'requirements' => ['string', 'required'],
-				'starts_at' => ['date', 'required', 'after_or_equal:today'],
-				'ends_at' => ['date', 'required', 'after_or_equal:starts_at'],
-				'visible' => ['boolean', 'nullable'],
-				'benefits' => ['string', 'required'],
-				'interview_at' => ['date', 'required'],
-				'department_id' => ['numeric', 'exists:departments,id', 'required'],
-			]));
-			return redirect()->route('departments.index')->with([
-				'success' => 'The job offer was updated successfully.'
-			]);
-		} catch(Throwable $throwable){
-			return back()->withInput()->with([
-				'error' => $throwable->getMessage()
-			]);
-		}
-	}
-
-	public function toggle(JobOffer $offer){
-		$offer->update([
-			'visible' => !$offer->visible
+		$offer->update(request()->validate([
+			'title' => ['string', 'max:255', 'required'],
+			'description' => ['string', 'required'],
+			'requirements' => ['string', 'required'],
+			'starts_at' => ['date', 'required', 'after_or_equal:today'],
+			'ends_at' => ['date', 'required', 'after_or_equal:starts_at'],
+			'visible' => ['boolean', 'nullable'],
+			'benefits' => ['string', 'required'],
+			'interview_at' => ['date', 'required'],
+			'department_id' => ['numeric', 'exists:departments,id', 'required'],
+		]));
+		return redirect()->route('departments.index')->with([
+			'success' => 'The job offer was updated successfully.'
 		]);
-		return back();
 	}
 
 	public function delete_confirm(JobOffer $offer){
@@ -100,9 +81,7 @@ class JobOfferController extends Controller {
 			$offer->delete();
 			return redirect()->route('admin.offers.job.index');
 		} catch(OfferHasAtLeastOneRequestException $exception){
-			return back()->with([
-				'error' => $exception->getMessage()
-			]);
+			abort(403, $exception->getMessage());
 		}
 	}
 

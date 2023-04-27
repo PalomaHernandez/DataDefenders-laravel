@@ -26,20 +26,19 @@
 				<div class="flex items-center gap-3">
 					<a href="{{ route('majors.delete_confirm', $major) }}" class="btn-outline border-gray-300 text-gray-600 hover:bg-red-50 hover:border-red-200 hover:text-red-400">
 						<i class="fa-solid fa-trash"></i> Delete </a>
-					<button type="submit" class="btn bg-sky-700 text-white">
+					<button type="submit" class="btn btn-primary">
 						<i class="fa-solid fa-check"></i> Save changes
 					</button>
 				</div>
 			</x-slot:buttons>
 		</x-header>
-		<div class="flex-grow overflow-y-auto flex flex-col gap-6 p-6 lg:p-8">
-			@if(session('error'))
-				<div class="px-3 py-2 bg-red-700 text-white rounded">{{ session('error') }}</div>
-			@endif
-			<div class="labeled-input">
-				<label for="name">Name</label>
-				<input type="text" id="name" name="name" value="{{ old('name') ? old('name') : $major->name }}">
-			</div>
-		</div>
+		<x-form-body>
+			<x-slot:content>
+				<div class="labeled-input">
+					<label for="name">Name</label>
+					<input type="text" id="name" name="name" value="{{ old('name') ? old('name') : $major->name }}">
+				</div>
+			</x-slot:content>
+		</x-form-body>
 	</form>
 @endsection

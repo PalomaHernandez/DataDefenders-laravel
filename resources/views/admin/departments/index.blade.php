@@ -9,17 +9,12 @@
 		<x-slot:title>Departments</x-slot:title>
 		<x-slot:description>Manage the departments that may offer jobs.</x-slot:description>
 		<x-slot:buttons>
-			<a href="{{ route('departments.create') }}" class="btn bg-sky-700 text-white">
+			<a href="{{ route('departments.create') }}" class="btn btn-primary">
 				<i class="fa-solid fa-plus"></i> Add new </a>
 		</x-slot:buttons>
 	</x-header>
-	@if(session('success'))
-		<div class="alert bg-green-700 text-white">{{ session('success') }}</div>
-	@endif
-	@if(session('error'))
-		<div class="alert bg-red-700 text-white">{{ session('error') }}</div>
-	@endif
-	<div class="flex-grow overflow-y-auto flex flex-col">
+	@include('layouts.messages')
+	<div class="flex-grow overflow-y-auto flex flex-col gap-6">
 		<div class="items">
 			@foreach($departments as $department)
 				<a class="item flex items-center gap-2" href="{{ route('departments.edit', $department) }}">

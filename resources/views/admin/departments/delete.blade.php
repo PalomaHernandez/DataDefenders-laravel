@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-		<x-header>
+	<x-header>
 		<x-slot:title>
 			<a class="text-lg text-gray-400" href="{{ route('departments.edit', $department) }}">
 				<i class="fa-solid fa-chevron-left"></i>
@@ -24,7 +24,9 @@
 			</form>
 		</x-slot:buttons>
 	</x-header>
-	<div class="flex flex-col items-start gap-3 p-6">
-		<p class="font-bold">Are you sure? This will delete "{{ $department->name }}" permanently.</p>
-	</div>
+	<x-body>
+		<x-slot:content>
+			<p class="font-bold">Are you sure? This will delete "{{ $department->name }}" permanently.</p>
+		</x-slot:content>
+	</x-body>
 @endsection

@@ -27,24 +27,20 @@
 						<i class="fa-solid fa-trash"></i>
 						Delete
 					</a>
-					<button type="submit" class="btn bg-sky-700 text-white">
+					<button type="submit" class="btn btn-primary">
 						<i class="fa-solid fa-check"></i>
 						Save changes
 					</button>
 				</div>
 			</x-slot:buttons>
 		</x-header>
-		<div class="flex-grow overflow-y-auto flex flex-col gap-6 p-6">
-			@if(session('error'))
-				<div class="alert bg-red-700 text-white">
-					<i class="fa-solid fa-triangle-exclamation"></i>
-					{{ session('error') }}
+		<x-form-body>
+			<x-slot:content>
+				<div class="labeled-input">
+					<label for="name">Name</label>
+					<input type="text" id="name" name="name" value="{{ old('name') ? old('name') : $department->name }}">
 				</div>
-			@endif
-			<div class="labeled-input">
-				<label for="name">Name</label>
-				<input type="text" id="name" name="name" value="{{ old('name') ? old('name') : $department->name }}">
-			</div>
-		</div>
+			</x-slot:content>
+		</x-form-body>
 	</form>
 @endsection

@@ -8,7 +8,7 @@ use Throwable;
 class DepartmentController extends Controller {
 
 	public function index(){
-		$departments = Department::all();
+		$departments = Department::paginate();
 		return view('admin.departments.index', compact('departments'));
 	}
 
@@ -17,18 +17,12 @@ class DepartmentController extends Controller {
 	}
 
 	public function store(){
-		try {
-			Department::create(request()->validate([
-				'name' => ['string', 'max:255', 'unique:departments,name', 'required']
-			]));
-			return redirect()->route('departments.index')->with([
-				'success' => 'The department was created successfully.'
-			]);
-		} catch(Throwable $throwable){
-			return back()->withInput()->with([
-				'error' => $throwable->getMessage()
-			]);
-		}
+		Department::create(request()->validate([
+			'name' => ['string', 'max:255', 'unique:departments,name', 'required']
+		]));
+		return redirect()->route('departments.index')->with([
+			'success' => 'The department was created successfully.'
+		]);
 	}
 
 	public function edit(Department $department){
@@ -36,18 +30,12 @@ class DepartmentController extends Controller {
 	}
 
 	public function update(Department $department){
-		try {
-			$department->update(request()->validate([
-				'name' => ['string', 'max:255', 'unique:departments,name', 'required']
-			]));
-			return redirect()->route('departments.index')->with([
-				'success' => 'The department was updated successfully.'
-			]);
-		} catch(Throwable $throwable){
-			return back()->withInput()->with([
-				'error' => $throwable->getMessage()
-			]);
-		}
+		$department->update(request()->validate([
+			'name' => ['string', 'max:255', 'unique:departments,name', 'required']
+		]));
+		return redirect()->route('departments.index')->with([
+			'success' => 'The department was updated successfully.'
+		]);
 	}
 
 	public function delete_confirm(Department $department){
