@@ -5,13 +5,24 @@ namespace App\Http\Controllers;
 use App\Exceptions\OfferHasAtLeastOneRequestException;
 use App\Models\Department;
 use App\Models\JobOffer;
-use Throwable;
 
 class JobOfferController extends Controller {
 
 	public function index(){
 		$offers = JobOffer::paginate();
 		return view('admin.offers.job.index', compact('offers'));
+	}
+
+	public function all(){
+		return response()->json(JobOffer::all());
+	}
+
+	public function allPaginated(){
+		return response()->json(JobOffer::paginate());
+	}
+
+	public function find(int $offerId){
+		return response()->json(JobOffer::findOrFail($offerId));
 	}
 
 	public function create(){
@@ -34,10 +45,6 @@ class JobOfferController extends Controller {
 		return redirect()->route('departments.index')->with([
 			'success' => 'The job offer was created successfully.'
 		]);
-	}
-
-	public function show(JobOffer $offer){
-		return view('offers.job.show', compact('offer'));
 	}
 
 	public function edit(JobOffer $offer){

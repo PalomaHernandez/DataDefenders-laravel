@@ -10,6 +10,8 @@ interface RequestRepository {
 
 	public function findById(int $id):Request;
 
+	public function getAll():Collection|array;
+
 	public function getAllPending():Collection|array;
 
 	public function getAllDocumentation():Collection|array;
@@ -17,6 +19,8 @@ interface RequestRepository {
 	public function getAllAccepted():Collection|array;
 
 	public function getAllRejected():Collection|array;
+
+	public function getAllPaginated():Collection|array|LengthAwarePaginator;
 
 	public function getAllPendingPaginated():Collection|array|LengthAwarePaginator;
 

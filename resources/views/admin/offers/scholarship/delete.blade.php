@@ -21,7 +21,7 @@
 	</x-header>
 	<x-body>
 		<x-slot:content>
-			<p class="font-bold">Are you sure? This will delete "{{ $offer->name }}" permanently.</p>
+			<p class="font-bold">Are you sure? This will delete "{{ $offer->title }}" permanently.</p>
 		</x-slot:content>
 	</x-body>
 @endsection

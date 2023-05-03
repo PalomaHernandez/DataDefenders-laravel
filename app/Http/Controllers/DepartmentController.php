@@ -25,6 +25,10 @@ class DepartmentController extends Controller {
 		]);
 	}
 
+	public function find(int $departmentId){
+		return response()->json(Department::findOrFail($departmentId));
+	}
+
 	public function edit(Department $department){
 		return view('admin.departments.edit', compact('department'));
 	}

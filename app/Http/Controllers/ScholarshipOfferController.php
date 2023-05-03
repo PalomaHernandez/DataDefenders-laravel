@@ -4,13 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\OfferHasAtLeastOneRequestException;
 use App\Models\ScholarshipOffer;
-use Throwable;
 
 class ScholarshipOfferController extends Controller {
 
 	public function index(){
 		$offers = ScholarshipOffer::paginate();
 		return view('admin.offers.scholarship.index', compact('offers'));
+	}
+
+	public function all(){
+		return response()->json(ScholarshipOffer::all());
+	}
+
+	public function allPaginated(){
+		return response()->json(ScholarshipOffer::paginate());
+	}
+
+	public function find(int $offerId){
+		return response()->json(ScholarshipOffer::findOrFail($offerId));
 	}
 
 	public function create(){

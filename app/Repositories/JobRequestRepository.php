@@ -15,6 +15,10 @@ class JobRequestRepository implements RequestRepository {
 		return Request::whereOfferType(JobOffer::class)->whereId($id)->firstOrFail();
 	}
 
+	public function getAll():array|Collection{
+		return Request::whereOfferType(JobOffer::class)->get();
+	}
+
 	public function getAllPending():array|Collection{
 		return Request::whereOfferType(JobOffer::class)->whereStatus(RequestStatus::Pending)->get();
 	}
@@ -29,6 +33,10 @@ class JobRequestRepository implements RequestRepository {
 
 	public function getAllRejected():array|Collection{
 		return Request::whereOfferType(JobOffer::class)->whereStatus(RequestStatus::Rejected)->get();
+	}
+
+	public function getAllPaginated():array|Collection{
+		return Request::whereOfferType(JobOffer::class)->paginate();
 	}
 
 	public function getAllPendingPaginated():array|LengthAwarePaginator|Collection{

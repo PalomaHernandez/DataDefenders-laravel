@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Comment;
 use App\Models\Request;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CommentFactory extends Factory {
@@ -14,6 +15,7 @@ class CommentFactory extends Factory {
 		return [
 			'text' => fake()->text(10000),
 			'request_id' => Request::inRandomOrder()->first('id')->id,
+			'user_id' => User::inRandomOrder()->first('id')->id,
 		];
 	}
 
