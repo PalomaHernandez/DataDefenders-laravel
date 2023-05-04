@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 use App\Exceptions\OfferHasAtLeastOneRequestException;
 use App\Models\Department;
 use App\Models\JobOffer;
+use Illuminate\Validation\ValidationException;
 
 class JobOfferController extends Controller {
 
 	public function index(){
-		$offers = JobOffer::paginate();
+		$offers = JobOffer::withCount('requests')->paginate();
 		return view('admin.offers.job.index', compact('offers'));
 	}
 
@@ -32,17 +33,17 @@ class JobOfferController extends Controller {
 
 	public function store(){
 		JobOffer::create(request()->validate([
-			'title' => ['string', 'max:255', 'required'],
-			'description' => ['string', 'required'],
-			'requirements' => ['string', 'required'],
-			'starts_at' => ['date', 'required', 'after_or_equal:today'],
-			'ends_at' => ['date', 'required', 'after_or_equal:starts_at'],
-			'visible' => ['boolean', 'nullable'],
-			'benefits' => ['string', 'required'],
-			'interview_at' => ['date', 'required'],
+			'title'         => ['string', 'max:255', 'required'],
+			'description'   => ['string', 'required'],
+			'requirements'  => ['string', 'required'],
+			'starts_at'     => ['date', 'required', 'after_or_equal:today'],
+			'ends_at'       => ['date', 'required', 'after_or_equal:starts_at'],
+			'public'        => ['boolean'],
+			'benefits'      => ['string', 'required'],
+			'interview_at'  => ['date', 'required', 'after_or_equal:ends_at'],
 			'department_id' => ['numeric', 'exists:departments,id', 'required'],
 		]));
-		return redirect()->route('departments.index')->with([
+		return redirect()->route('offers.job.index')->with([
 			'success' => 'The job offer was created successfully.'
 		]);
 	}
@@ -54,17 +55,17 @@ class JobOfferController extends Controller {
 
 	public function update(JobOffer $offer){
 		$offer->update(request()->validate([
-			'title' => ['string', 'max:255', 'required'],
-			'description' => ['string', 'required'],
-			'requirements' => ['string', 'required'],
-			'starts_at' => ['date', 'required', 'after_or_equal:today'],
-			'ends_at' => ['date', 'required', 'after_or_equal:starts_at'],
-			'visible' => ['boolean', 'nullable'],
-			'benefits' => ['string', 'required'],
-			'interview_at' => ['date', 'required'],
+			'title'         => ['string', 'max:255', 'required'],
+			'description'   => ['string', 'required'],
+			'requirements'  => ['string', 'required'],
+			'starts_at'     => ['date', 'required'],
+			'ends_at'       => ['date', 'required', 'after_or_equal:starts_at'],
+			'public'        => ['boolean'],
+			'benefits'      => ['string', 'required'],
+			'interview_at'  => ['date', 'required', 'after_or_equal:ends_at'],
 			'department_id' => ['numeric', 'exists:departments,id', 'required'],
 		]));
-		return redirect()->route('departments.index')->with([
+		return back()->with([
 			'success' => 'The job offer was updated successfully.'
 		]);
 	}
@@ -76,7 +77,9 @@ class JobOfferController extends Controller {
 			}
 			return view('admin.offers.job.delete', compact('offer'));
 		} catch(OfferHasAtLeastOneRequestException $exception){
-			abort(403, $exception->getMessage());
+			throw ValidationException::withMessages([
+				$exception->getMessage()
+			]);
 		}
 	}
 
@@ -86,9 +89,11 @@ class JobOfferController extends Controller {
 				throw new OfferHasAtLeastOneRequestException();
 			}
 			$offer->delete();
-			return redirect()->route('admin.offers.job.index');
+			return redirect()->route('offers.job.index');
 		} catch(OfferHasAtLeastOneRequestException $exception){
-			abort(403, $exception->getMessage());
+			throw ValidationException::withMessages([
+				$exception->getMessage()
+			]);
 		}
 	}
 

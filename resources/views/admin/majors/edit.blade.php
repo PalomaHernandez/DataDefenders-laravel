@@ -10,7 +10,7 @@
 		@method('PATCH')
 		<x-header>
 			<x-slot:title>
-				<a class="text-lg text-gray-400" href="{{ back()->getTargetUrl() }}">
+				<a class="text-lg text-gray-400" href="{{ route('majors.index') }}">
 					<i class="fa-solid fa-chevron-left"></i>
 				</a>
 				Edit "{{ $major->name }}"

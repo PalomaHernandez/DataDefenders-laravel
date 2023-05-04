@@ -23,10 +23,11 @@
             </x-slot:description>
             <x-slot:buttons>
                 <div class="flex items-center gap-6">
-                    <div class="flex items-center gap-2">
-                        <input type="checkbox" id="visible" name="visible" value="1" class="leading-none"{{ $offer->visible ? ' checked' : '' }}>
-                        <label for="visible" class="select-none">Visible</label>
-                    </div>
+                    <label for="public">Visibility</label>
+                    <select id="public" name="public">
+                        <option value="1"{{ $offer->public ? ' selected' : '' }}>Public</option>
+                        <option value="0"{{ !$offer->public ? ' selected' : '' }}>Hidden</option>
+                    </select>
                     @can('delete.offers')
                         <a href="{{ route('offers.scholarship.delete_confirm', $offer) }}" class="btn-outline border-gray-300 text-gray-600 hover:bg-red-50 hover:border-red-200 hover:text-red-400">
                             <i class="fa-solid fa-trash"></i>

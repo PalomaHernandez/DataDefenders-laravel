@@ -1,0 +1,1 @@
+{{ $paginated->links('vendor.pagination.tailwind') }}

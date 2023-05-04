@@ -10,6 +10,11 @@ class Comment extends Model {
 
 	use HasFactory;
 
+	protected $fillable = [
+		'user_id',
+		'text'
+	];
+
 	public function request():BelongsTo{
 		return $this->belongsTo(Request::class);
 	}

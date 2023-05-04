@@ -14,7 +14,9 @@ class Request extends Model {
 
 	use HasFactory;
 
-	public RequestStatus $status;
+	protected $fillable = [
+		'status'
+	];
 
 	protected $casts = [
 		'status' => RequestStatus::class,
@@ -33,16 +35,46 @@ class Request extends Model {
 	}
 
 	public function comments():HasMany{
-		return $this->hasMany(Comment::class);
+		return $this->hasMany(Comment::class)->latest();
 	}
 
 	public function documentationFiles():HasMany{
-		return $this->hasMany(DocumentationFile::class);
+		return $this->hasMany(DocumentationFile::class)->latest();
 	}
 
 	public function canUpdate():Attribute{
 		return Attribute::make(function (){
 			return $this->status->canUpdate();
+		});
+	}
+
+	public function cannotUpdate():Attribute{
+		return Attribute::make(function (){
+			return !$this->status->canUpdate();
+		});
+	}
+
+	public function isPending():Attribute{
+		return Attribute::make(function (){
+			return $this->status === RequestStatus::Pending;
+		});
+	}
+
+	public function needsDocumentation():Attribute{
+		return Attribute::make(function (){
+			return $this->status === RequestStatus::Documentation;
+		});
+	}
+
+	public function isRejected():Attribute{
+		return Attribute::make(function (){
+			return $this->status === RequestStatus::Rejected;
+		});
+	}
+
+	public function isAccepted():Attribute{
+		return Attribute::make(function (){
+			return $this->status === RequestStatus::Accepted;
 		});
 	}
 

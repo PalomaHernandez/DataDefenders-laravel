@@ -4,12 +4,11 @@
 
 **UniManager** is the ultimate app to manage your University's job and scholarship offers!
 
-- No usar Vercel, deploy en servidor. Usar PostgreSQL de todos modos.
-- Podemos usar silber/bouncer para roles.
-- Implementar Swagger UI.
-- No olvidarse de explicar todo el proceso del sistema en readme y agregar cualquier comentario importante.
-- Deliberar si darle el acceso al servidor o no a Fernando.
-- Probarlo en distintos navegadores.
+## To-do list
+
+- Implement Swagger UI.
+- Explain everything about this system on this README, and add any important comments such as deployment information.
+- Test site on different browsers.
 
 ## Descripción general
 
@@ -20,6 +19,10 @@ gestionar las ofertas, inscripciones y generar reportes.
 
 Las ofertas tendrán requisitos distintos para la inscripción, tales como un CV o certificado analítico de materias, que
 no son comunes entre las mismas.
+
+## Descripción completa
+
+
 
 ---
 
@@ -82,7 +85,6 @@ restante se gestionará mediante la API con Laravel Sanctum y peticiones HTTP me
     - Las ofertas.
     - Los departamentos.
     - Las carreras.
-    - Las inscripciones a las ofertas sin sus adjuntos.
 - **Rol Usuario General**
     - Las inscripciones propias a cualquier oferta.
     - Las ofertas disponibles.
@@ -96,13 +98,18 @@ restante se gestionará mediante la API con Laravel Sanctum y peticiones HTTP me
     - Actualizar todas las entidades actualizables.
 - **Rol Administrador Ejecutivo**
     - Aceptar una inscripción.
+    - Solicitar documentación de una inscripción.
     - Rechazar una inscripción.
 - **Rol Administrador de Ofertas**
     - Crear ofertas.
     - Actualizar oferta.
+    - Borrar oferta.
     - Crear departamentos.
+    - Actualizar departamentos.
+    - Borrar departamentos.
     - Crear carreras.
     - Actualizar carreras.
+    - Borrar carreras.
 - **Rol Usuario General**
     - Inscribirse a las ofertas disponibles.
     - Cancelar una inscripción propia.

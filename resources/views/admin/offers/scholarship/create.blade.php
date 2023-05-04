@@ -22,10 +22,11 @@
 			</x-slot:description>
 			<x-slot:buttons>
 				<div class="flex items-center gap-6">
-					<div class="flex items-center gap-2">
-						<input type="checkbox" id="visible" name="visible" value="1" class="leading-none">
-						<label for="visible" class="select-none">Visible</label>
-					</div>
+					<label for="public">Visibility</label>
+					<select id="public" name="public">
+						<option value="1">Public</option>
+						<option value="0">Hidden</option>
+					</select>
 					@can('create.offers')
 						<button type="submit" class="btn btn-primary">
 							<i class="fa-solid fa-plus"></i>

@@ -30,7 +30,9 @@ class DatabaseSeeder extends Seeder {
 		}
 		User::factory(45)->create();
 		$admin = User::factory()->create([
-			'first_name' => config('seeder.name'),
+			'first_name' => config('seeder.first_name'),
+			'middle_name' => config('seeder.middle_name'),
+			'last_name' => config('seeder.last_name'),
 			'email'      => config('seeder.email'),
 			'password'   => Hash::make(config('seeder.password')),
 		]);

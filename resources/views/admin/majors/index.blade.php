@@ -12,6 +12,7 @@
 	</x-header>
 	@include('layouts.messages')
 	<div class="flex-grow overflow-y-auto flex flex-col">
+		@include('layouts.pagination', ['paginated' => $departments])
 		@foreach($departments as $department)
 			<div class="flex items-center gap-6 pl-8 pr-3 py-4 sticky top-0 bg-sky-100">
 				<p class="flex-grow flex items-center gap-2 font-bold text-lg text-sky-700">
@@ -35,5 +36,6 @@
 				@endforeach
 			</div>
 		@endforeach
+		@include('layouts.pagination', ['paginated' => $departments])
 	</div>
 @endsection

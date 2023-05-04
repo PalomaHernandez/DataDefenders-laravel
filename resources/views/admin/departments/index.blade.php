@@ -19,6 +19,7 @@
 	</x-header>
 	@include('layouts.messages')
 	<div class="flex-grow overflow-y-auto flex flex-col gap-6">
+		@include('layouts.pagination', ['paginated' => $departments])
 		<div class="items">
 			@foreach($departments as $department)
 				<a class="item flex items-center gap-2" href="{{ route('departments.edit', $department) }}">
@@ -28,5 +29,6 @@
 				</a>
 			@endforeach
 		</div>
+		@include('layouts.pagination', ['paginated' => $departments])
 	</div>
 @endsection

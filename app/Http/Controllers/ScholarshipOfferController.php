@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\OfferHasAtLeastOneRequestException;
 use App\Models\ScholarshipOffer;
+use Illuminate\Validation\ValidationException;
 
 class ScholarshipOfferController extends Controller {
 
 	public function index(){
-		$offers = ScholarshipOffer::paginate();
+		$offers = ScholarshipOffer::withCount('requests')->paginate();
 		return view('admin.offers.scholarship.index', compact('offers'));
 	}
 
@@ -35,9 +36,9 @@ class ScholarshipOfferController extends Controller {
 			'requirements' => ['string', 'required'],
 			'starts_at'    => ['date', 'required', 'after_or_equal:today'],
 			'ends_at'      => ['date', 'required', 'after_or_equal:starts_at'],
-			'visible'      => ['boolean', 'nullable'],
+			'public'       => ['boolean', 'nullable'],
 		]));
-		return redirect()->route('scholarship.index')->with([
+		return redirect()->route('offers.scholarship.index')->with([
 			'success' => 'The scholarship offer was created successfully.'
 		]);
 	}
@@ -51,11 +52,11 @@ class ScholarshipOfferController extends Controller {
 			'title'        => ['string', 'max:255'],
 			'description'  => ['string', 'required'],
 			'requirements' => ['string', 'required'],
-			'starts_at'    => ['date', 'required', 'after_or_equal:today'],
+			'starts_at'    => ['date', 'required'],
 			'ends_at'      => ['date', 'required', 'after_or_equal:starts_at'],
-			'visible'      => ['boolean', 'nullable'],
+			'public'       => ['boolean', 'nullable'],
 		]));
-		return redirect()->route('scholarship.index')->with([
+		return redirect()->route('offers.scholarship.index')->with([
 			'success' => 'The scholarship offer was updated successfully.'
 		]);
 	}
@@ -67,7 +68,9 @@ class ScholarshipOfferController extends Controller {
 			}
 			return view('admin.offers.scholarship.delete', compact('offer'));
 		} catch(OfferHasAtLeastOneRequestException $exception){
-			abort(403, $exception->getMessage());
+			throw ValidationException::withMessages([
+				$exception->getMessage()
+			]);
 		}
 	}
 
@@ -77,11 +80,13 @@ class ScholarshipOfferController extends Controller {
 				throw new OfferHasAtLeastOneRequestException();
 			}
 			$offer->delete();
-			return redirect()->route('scholarship.index')->with([
+			return redirect()->route('offers.scholarship.index')->with([
 				'success' => 'The scholarship offer was deleted successfully.'
 			]);
 		} catch(OfferHasAtLeastOneRequestException $exception){
-			abort(403, $exception->getMessage());
+			throw ValidationException::withMessages([
+				$exception->getMessage()
+			]);
 		}
 	}
 

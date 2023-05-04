@@ -19,17 +19,18 @@
 	</x-header>
 	@include('layouts.messages')
 	<div class="flex-grow overflow-y-auto flex flex-col">
+		@include('layouts.pagination', ['paginated' => $offers])
 		<div class="items">
 			@foreach($offers as $offer)
 				<a class="item flex items-center gap-2" href="{{ route('offers.scholarship.edit', $offer) }}">
 					<i class="fa-solid fa-graduation-cap text-gray-400"></i>
 					<p class="flex-grow">{{ $offer->title }}</p>
-					@if(!$offer->visible)
-						<p class="text-gray-400">Hidden</p>
-					@endif
+					@include('admin.offers.hidden')
+					@include('admin.offers.applicants')
 					<i class="fa-solid fa-chevron-right text-gray-400"></i>
 				</a>
 			@endforeach
 		</div>
+		@include('layouts.pagination', ['paginated' => $offers])
 	</div>
 @endsection
