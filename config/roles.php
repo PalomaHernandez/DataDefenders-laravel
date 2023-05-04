@@ -12,13 +12,13 @@ return [
 	'Offer Manager' => [
 		'list.offers',
 		'create.offers',
-		'update.offers',
+		'edit.offers',
 		'delete.offers',
 		'list.departments',
 		'create.departments',
 		'list.majors',
 		'create.majors',
-		'update.majors',
+		'edit.majors',
 		'delete.majors',
 	],
 	'Applicant' => [

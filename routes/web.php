@@ -69,7 +69,7 @@ Route::middleware('auth')->group(function (){
 
 		Route::prefix('requests')->group(function (){
 			Route::get('', [RequestController::class, 'index'])->name('requests.index')->can('list.requests');
-			Route::get('{request}/edit', [RequestController::class, 'edit'])->name('requests.edit')->can('edit.requests');
+			Route::get('{request}/edit', [RequestController::class, 'edit'])->name('requests.edit')->can('list.requests');
 			Route::get('{request}/document', [RequestController::class, 'document_confirm'])->name('requests.document_confirm')->can('require.request.documentation');
 			Route::patch('{request}/document', [RequestController::class, 'document'])->name('requests.document')->can('require.request.documentation');
 			Route::get('{request}/accept', [RequestController::class, 'accept_confirm'])->name('requests.accept_confirm')->can('accept.requests');
