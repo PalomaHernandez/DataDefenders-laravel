@@ -4,12 +4,12 @@
 
 **UniManager** is the ultimate app to manage your University's job and scholarship offers!
 
-- No usar Vercel, deploy en servidor. Usar PostgreSQL de todos modos.
-- Podemos usar silber/bouncer para roles.
-- Implementar Swagger UI.
-- No olvidarse de explicar todo el proceso del sistema en readme y agregar cualquier comentario importante.
-- Deliberar si darle el acceso al servidor o no a Fernando.
-- Probarlo en distintos navegadores.
+## To-do list
+
+- Implement Swagger UI.
+- Explain everything about this system on this README, and add any important comments such as deployment information.
+- Provide Fernando with access to the server's Control Panel so he can check the configuration there and the PostgreSQL installation.
+- Test site on different browsers.
 
 ## Descripción general
 
