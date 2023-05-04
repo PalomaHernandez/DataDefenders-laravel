@@ -20,7 +20,7 @@ class MajorController extends Controller {
 
 	public function store(){
 		Major::create(request()->validate([
-			'name'          => ['string', 'max:255', 'unique:majors,name'],
+			'name'          => ['string', 'max:255', 'unique:majors,name', 'required'],
 			'department_id' => ['numeric', 'required', 'exists:departments,id']
 		]));
 		return redirect()->route('majors.index')->with([
@@ -37,9 +37,11 @@ class MajorController extends Controller {
 	}
 
 	public function update(Major $major){
-		$major->update(request()->validate([
-			'name' => ['string', 'max:255', 'unique:majors,name']
-		]));
+		if(request()->has('name') && request('name') != $major->name){
+			$major->update(request()->validate([
+				'name' => ['string', 'max:255', 'unique:majors,name', 'required']
+			]));
+		}
 		return redirect()->route('majors.index')->with([
 			'success' => 'The major was updated successfully.'
 		]);

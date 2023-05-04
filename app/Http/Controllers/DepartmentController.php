@@ -34,9 +34,11 @@ class DepartmentController extends Controller {
 	}
 
 	public function update(Department $department){
-		$department->update(request()->validate([
-			'name' => ['string', 'max:255', 'unique:departments,name', 'required']
-		]));
+		if(request()->has('name') && request('name') != $department->name){
+			$department->update(request()->validate([
+				'name' => ['string', 'max:255', 'unique:departments,name', 'required']
+			]));
+		}
 		return redirect()->route('departments.index')->with([
 			'success' => 'The department was updated successfully.'
 		]);
