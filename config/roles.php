@@ -19,7 +19,7 @@ return [
 	],
 	'Applicant' => [
 		'apply.to.offers',
-		'review.offers',
-		'delete.offers',
+		'review.requests',
+		'delete.requests',
 	],
 ];
