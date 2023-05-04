@@ -14,9 +14,9 @@ class ScholarshipOfferFactory extends Factory {
 			'title' => fake()->text(50),
 			'description' => fake()->realText(4000),
 			'requirements' => fake()->realText(4000),
-			'starts_at' => now()->subWeek(),
-			'ends_at' => now()->addWeek(),
-			'visible' => rand(0, 1)
+			'starts_at' => now()->subWeek()->setSecond(0),
+			'ends_at' => now()->addWeek()->setSecond(0),
+			'public' => rand(0, 1)
 		];
 	}
 

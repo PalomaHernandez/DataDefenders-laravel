@@ -19,7 +19,7 @@ class ScholarshipOffer extends Model implements Offer {
 		'requirements',
 		'starts_at',
 		'ends_at',
-		'visible',
+		'public',
 	];
 
 	protected $casts = [

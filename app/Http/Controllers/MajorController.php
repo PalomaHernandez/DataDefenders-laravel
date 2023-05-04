@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exceptions\MajorHasAtLeastOneOfferException;
 use App\Models\Department;
 use App\Models\Major;
+use Illuminate\Validation\ValidationException;
 use Throwable;
 
 class MajorController extends Controller {
@@ -52,7 +53,9 @@ class MajorController extends Controller {
 			}
 			return view('admin.majors.delete', compact('major'));
 		} catch(MajorHasAtLeastOneOfferException $exception){
-			abort(403, $exception->getMessage());
+			throw ValidationException::withMessages([
+				$exception->getMessage()
+			]);
 		}
 	}
 
@@ -64,7 +67,9 @@ class MajorController extends Controller {
 			$major->delete();
 			return redirect()->route('majors.index');
 		} catch(MajorHasAtLeastOneOfferException $exception){
-			abort(403, $exception->getMessage());
+			throw ValidationException::withMessages([
+				$exception->getMessage()
+			]);
 		}
 	}
 

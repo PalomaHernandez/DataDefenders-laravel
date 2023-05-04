@@ -16,11 +16,11 @@ class JobOfferFactory extends Factory {
 			'description' => fake()->realText(4000),
 			'requirements' => fake()->realText(10000),
 			'benefits' => fake()->realText(10000),
-			'interview_at' => now()->addWeeks(3),
+			'interview_at' => now()->addWeeks(3)->setSecond(0),
 			'department_id' => Department::inRandomOrder()->first('id')->id,
-			'starts_at' => now()->subWeek(),
-			'ends_at' => now()->addWeek(),
-			'visible' => rand(0, 1)
+			'starts_at' => now()->subWeek()->setSecond(0),
+			'ends_at' => now()->addWeek()->setSecond(0),
+			'public' => rand(0, 1)
 		];
 	}
 

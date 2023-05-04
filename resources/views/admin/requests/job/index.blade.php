@@ -12,10 +12,12 @@
 	</x-header>
 	@include('layouts.messages')
 	<div class="flex-grow overflow-y-auto flex flex-col">
+		@include('layouts.pagination', ['paginated' => $requests])
 		<div class="items">
 			@foreach($requests as $request)
 				@include('admin.requests.item')
 			@endforeach
 		</div>
+		@include('layouts.pagination', ['paginated' => $requests])
 	</div>
 @endsection

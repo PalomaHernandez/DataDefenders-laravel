@@ -17,7 +17,7 @@ return new class extends Migration {
 			$table->text('requirements');
 			$table->timestamp('starts_at');
 			$table->timestamp('ends_at');
-			$table->tinyInteger('visible')->default(0);
+			$table->tinyInteger('public')->default(0);
 			$table->timestamps();
 		});
 	}

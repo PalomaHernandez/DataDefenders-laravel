@@ -22,7 +22,7 @@ class JobOffer extends Model implements Offer {
 		'department_id',
 		'starts_at',
 		'ends_at',
-		'visible',
+		'public',
 	];
 
 	protected $casts = [
