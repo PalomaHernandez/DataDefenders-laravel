@@ -47,7 +47,7 @@ Route::middleware('auth')->group(function (){
 
 	Route::prefix('admin')->group(function (){
 		Route::prefix('departments')->group(function (){
-			Route::get('', [DepartmentController::class, 'index'])->name('departments.index')->can('*.departments');
+			Route::get('', [DepartmentController::class, 'index'])->name('departments.index')->can('list.departments');
 			Route::get('create', [DepartmentController::class, 'create'])->name('departments.create')->can('create.departments');
 			Route::post('store', [DepartmentController::class, 'store'])->name('departments.store')->can('create.departments');
 			Route::get('{department}/edit', [DepartmentController::class, 'edit'])->name('departments.edit')->can('edit.departments');
@@ -59,7 +59,7 @@ Route::middleware('auth')->group(function (){
 		});
 
 		Route::prefix('majors')->group(function (){
-			Route::get('', [MajorController::class, 'index'])->name('majors.index')->can('*.majors');
+			Route::get('', [MajorController::class, 'index'])->name('majors.index')->can('list.majors');
 			Route::post('store', [MajorController::class, 'store'])->name('majors.store')->can('create.majors');
 			Route::get('{major}/edit', [MajorController::class, 'edit'])->name('majors.edit')->can('edit.majors');
 			Route::patch('{major}/update', [MajorController::class, 'update'])->name('majors.update')->can('edit.majors');
@@ -68,7 +68,7 @@ Route::middleware('auth')->group(function (){
 		});
 
 		Route::prefix('requests')->group(function (){
-			Route::get('', [RequestController::class, 'index'])->name('requests.index')->can('*.requests');
+			Route::get('', [RequestController::class, 'index'])->name('requests.index')->can('list.requests');
 			Route::get('{request}/edit', [RequestController::class, 'edit'])->name('requests.edit')->can('edit.requests');
 			Route::get('{request}/document', [RequestController::class, 'document_confirm'])->name('requests.document_confirm')->can('require.request.documentation');
 			Route::patch('{request}/document', [RequestController::class, 'document'])->name('requests.document')->can('require.request.documentation');
@@ -77,14 +77,14 @@ Route::middleware('auth')->group(function (){
 			Route::get('{request}/reject', [RequestController::class, 'reject_confirm'])->name('requests.reject_confirm')->can('reject.requests');
 			Route::patch('{request}/reject', [RequestController::class, 'reject'])->name('requests.reject')->can('reject.requests');
 
-			Route::get('job', [JobRequestController::class, 'index'])->name('requests.job.index')->can('*.requests');
+			Route::get('job', [JobRequestController::class, 'index'])->name('requests.job.index')->can('list.requests');
 
-			Route::get('scholarship', [ScholarshipRequestController::class, 'index'])->name('requests.scholarship.index')->can('*.requests');
+			Route::get('scholarship', [ScholarshipRequestController::class, 'index'])->name('requests.scholarship.index')->can('list.requests');
 		});
 
 		Route::prefix('offers')->group(function (){
 			Route::prefix('job')->group(function (){
-				Route::get('', [JobOfferController::class, 'index'])->name('offers.job.index')->can('*.offers');
+				Route::get('', [JobOfferController::class, 'index'])->name('offers.job.index')->can('list.offers');
 				Route::get('create', [JobOfferController::class, 'create'])->name('offers.job.create')->can('create.offers');
 				Route::post('store', [JobOfferController::class, 'store'])->name('offers.job.store')->can('create.offers');
 				Route::get('{offer}/edit', [JobOfferController::class, 'edit'])->name('offers.job.edit')->can('edit.offers');
@@ -94,7 +94,7 @@ Route::middleware('auth')->group(function (){
 			});
 
 			Route::prefix('scholarship')->group(function (){
-				Route::get('', [ScholarshipOfferController::class, 'index'])->name('offers.scholarship.index')->can('*.offers');
+				Route::get('', [ScholarshipOfferController::class, 'index'])->name('offers.scholarship.index')->can('list.offers');
 				Route::get('create', [ScholarshipOfferController::class, 'create'])->name('offers.scholarship.create')->can('create.offers');
 				Route::post('store', [ScholarshipOfferController::class, 'store'])->name('offers.scholarship.store')->can('create.offers');
 				Route::get('{offer}/edit', [ScholarshipOfferController::class, 'edit'])->name('offers.scholarship.edit')->can('edit.offers');
