@@ -12,9 +12,12 @@
 			<form action="{{ route('majors.delete', $major) }}" method="post">
 				@csrf
 				@method('delete')
-				<button type="submit" class="btn bg-red-700 text-white">
-					<i class="fa-solid fa-trash"></i> Delete permanently
-				</button>
+				@can('delete.majors')
+					<button type="submit" class="btn bg-red-700 text-white">
+						<i class="fa-solid fa-trash"></i>
+						Delete permanently
+					</button>
+				@endcan
 			</form>
 		</x-slot:buttons>
 	</x-header>

@@ -9,8 +9,12 @@
 		<x-slot:title>Job Offers</x-slot:title>
 		<x-slot:description>Manage the job offers that people may apply to.</x-slot:description>
 		<x-slot:buttons>
-			<a href="{{ route('offers.job.create') }}" class="btn btn-primary">
-				<i class="fa-solid fa-plus"></i> Add new </a>
+			@can('create.offers')
+				<a href="{{ route('offers.job.create') }}" class="btn btn-primary">
+					<i class="fa-solid fa-plus"></i>
+					Add new
+				</a>
+			@endcan
 		</x-slot:buttons>
 	</x-header>
 	@include('layouts.messages')

@@ -23,14 +23,18 @@
 			</x-slot:description>
 			<x-slot:buttons>
 				<div class="flex items-center gap-3">
-					<a href="{{ route('departments.delete_confirm', $department) }}" class="btn-outline border-gray-300 text-gray-600 hover:bg-red-50 hover:border-red-200 hover:text-red-400">
-						<i class="fa-solid fa-trash"></i>
-						Delete
-					</a>
-					<button type="submit" class="btn btn-primary">
-						<i class="fa-solid fa-check"></i>
-						Save changes
-					</button>
+					@can('delete.departments')
+						<a href="{{ route('departments.delete_confirm', $department) }}" class="btn-outline border-gray-300 text-gray-600 hover:bg-red-50 hover:border-red-200 hover:text-red-400">
+							<i class="fa-solid fa-trash"></i>
+							Delete
+						</a>
+					@endcan
+					@can('edit.departments')
+						<button type="submit" class="btn btn-primary">
+							<i class="fa-solid fa-check"></i>
+							Save changes
+						</button>
+					@endcan
 				</div>
 			</x-slot:buttons>
 		</x-header>

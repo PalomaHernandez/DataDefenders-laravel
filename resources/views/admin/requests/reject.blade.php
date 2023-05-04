@@ -17,10 +17,12 @@
 			</x-slot:title>
 			<x-slot:description>Reject the {{ $request->offer->displayName }} application.</x-slot:description>
 			<x-slot:buttons>
-				<button type="submit" class="btn bg-red-700 text-white">
-					<i class="fa-solid fa-times"></i>
-					Reject
-				</button>
+				@can('reject.requests')
+					<button type="submit" class="btn bg-red-700 text-white">
+						<i class="fa-solid fa-times"></i>
+						Reject
+					</button>
+				@endcan
 			</x-slot:buttons>
 		</x-header>
 		<x-body>

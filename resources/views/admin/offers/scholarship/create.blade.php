@@ -26,10 +26,12 @@
 						<input type="checkbox" id="visible" name="visible" value="1" class="leading-none">
 						<label for="visible" class="select-none">Visible</label>
 					</div>
-					<button type="submit" class="btn btn-primary">
-						<i class="fa-solid fa-plus"></i>
-						Add new
-					</button>
+					@can('create.offers')
+						<button type="submit" class="btn btn-primary">
+							<i class="fa-solid fa-plus"></i>
+							Add new
+						</button>
+					@endcan
 				</div>
 			</x-slot:buttons>
 		</x-header>

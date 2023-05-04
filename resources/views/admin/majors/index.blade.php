@@ -18,10 +18,12 @@
 					<i class="fa-solid fa-university"></i>
 					{{ $department->name }}
 				</p>
-				<a href="{{ route('majors.create', $department) }}" class="btn btn-primary">
-					<i class="fa-solid fa-plus"></i>
-					Add new major
-				</a>
+				@can('create.majors')
+					<a href="{{ route('majors.create', $department) }}" class="btn btn-primary">
+						<i class="fa-solid fa-plus"></i>
+						Add new major
+					</a>
+				@endcan
 			</div>
 			<div class="items">
 				@foreach($department->majors as $major)

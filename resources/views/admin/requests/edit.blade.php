@@ -16,18 +16,24 @@
 		</x-slot:description>
 		<x-slot:buttons>
 			<div class="flex items-center gap-3">
-				<a href="{{ route('requests.reject_confirm', $request) }}" class="btn bg-red-700 text-white">
-					<i class="fa-solid fa-times"></i>
-					Reject
-				</a>
-				<a href="{{ route('requests.document_confirm', $request) }}" class="btn bg-purple-700 text-white">
-					<i class="fa-solid fa-file-lines"></i>
-					Request documentation
-				</a>
-				<a href="{{ route('requests.accept_confirm', $request) }}" class="btn bg-green-700 text-white">
-					<i class="fa-solid fa-check"></i>
-					Accept
-				</a>
+				@can('reject.requests')
+					<a href="{{ route('requests.reject_confirm', $request) }}" class="btn bg-red-700 text-white">
+						<i class="fa-solid fa-times"></i>
+						Reject
+					</a>
+				@endcan
+				@can('require.request.documentation')
+					<a href="{{ route('requests.document_confirm', $request) }}" class="btn bg-purple-700 text-white">
+						<i class="fa-solid fa-file-lines"></i>
+						Request documentation
+					</a>
+				@endcan
+				@can('accept.requests')
+					<a href="{{ route('requests.accept_confirm', $request) }}" class="btn bg-green-700 text-white">
+						<i class="fa-solid fa-check"></i>
+						Accept
+					</a>
+				@endcan
 			</div>
 		</x-slot:buttons>
 	</x-header>

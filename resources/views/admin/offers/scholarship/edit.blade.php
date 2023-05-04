@@ -27,14 +27,18 @@
                         <input type="checkbox" id="visible" name="visible" value="1" class="leading-none"{{ $offer->visible ? ' checked' : '' }}>
                         <label for="visible" class="select-none">Visible</label>
                     </div>
-                    <a href="{{ route('offers.scholarship.delete_confirm', $offer) }}" class="btn-outline border-gray-300 text-gray-600 hover:bg-red-50 hover:border-red-200 hover:text-red-400">
-                        <i class="fa-solid fa-trash"></i>
-                        Delete
-                    </a>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fa-solid fa-check"></i>
-                        Save changes
-                    </button>
+                    @can('delete.offers')
+                        <a href="{{ route('offers.scholarship.delete_confirm', $offer) }}" class="btn-outline border-gray-300 text-gray-600 hover:bg-red-50 hover:border-red-200 hover:text-red-400">
+                            <i class="fa-solid fa-trash"></i>
+                            Delete
+                        </a>
+                    @endcan
+                    @can('edit.offers')
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa-solid fa-check"></i>
+                            Save changes
+                        </button>
+                    @endcan
                 </div>
             </x-slot:buttons>
         </x-header>
