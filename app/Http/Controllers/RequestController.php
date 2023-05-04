@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Actions\ChangeRequestStatus;
 use App\Actions\UploadDocumentation;
 use App\Contracts\RequestRepository;
+use App\Exceptions\RequestCannotBeUpdatedException;
 use App\Exceptions\TransitionNotAllowedException;
 use App\Models\JobOffer;
 use App\Models\Request;
@@ -27,62 +28,119 @@ class RequestController extends Controller {
 	}
 
 	public function document_confirm(Request $request){
-		return view('admin.requests.document', compact('request'));
+		try {
+			if($request->cannot_update){
+				throw new RequestCannotBeUpdatedException();
+			}
+			return view('admin.requests.document', compact('request'));
+		} catch(RequestCannotBeUpdatedException $exception){
+			throw ValidationException::withMessages([
+				'general' => $exception->getMessage()
+			]);
+		}
 	}
 
 	public function document(int $requestId){
 		try {
 			$request = $this->repository->findById($requestId);
-			$this->commentAndTransition($request, RequestStatus::Documentation);
+			if($request->cannot_update){
+				throw new RequestCannotBeUpdatedException();
+			}
+			$this->requireCommentAndTransition($request, RequestStatus::Documentation);
 			return $this->returnToIndex($request);
 		} catch(InvalidArgumentException|TransitionNotAllowedException $exception){
-			return back()->withErrors($exception->getMessage());
+			throw ValidationException::withMessages([
+				'comments' => $exception->getMessage()
+			]);
+		} catch(RequestCannotBeUpdatedException $exception){
+			throw ValidationException::withMessages([
+				'general' => $exception->getMessage()
+			]);
 		}
 	}
 
 	public function accept_confirm(Request $request){
-		return view('admin.requests.accept', compact('request'));
+		try {
+			if($request->cannot_update){
+				throw new RequestCannotBeUpdatedException();
+			}
+			return view('admin.requests.accept', compact('request'));
+		} catch(RequestCannotBeUpdatedException $exception){
+			throw ValidationException::withMessages([
+				'general' => $exception->getMessage()
+			]);
+		}
 	}
 
 	public function accept(int $requestId){
 		try {
 			$request = $this->repository->findById($requestId);
+			if($request->cannot_update){
+				throw new RequestCannotBeUpdatedException();
+			}
 			$this->commentAndTransition($request, RequestStatus::Accepted);
 			return $this->returnToIndex($request);
 		} catch(InvalidArgumentException|TransitionNotAllowedException $exception){
-			return back()->withErrors($exception->getMessage());
+			throw ValidationException::withMessages([
+				'comments' => $exception->getMessage()
+			]);
+		} catch(RequestCannotBeUpdatedException $exception){
+			throw ValidationException::withMessages([
+				'general' => $exception->getMessage()
+			]);
 		}
 	}
 
 	public function reject_confirm(Request $request){
-		return view('admin.requests.reject', compact('request'));
+		try {
+			if($request->cannot_update){
+				throw new RequestCannotBeUpdatedException();
+			}
+			return view('admin.requests.reject', compact('request'));
+		} catch(RequestCannotBeUpdatedException $exception){
+			throw ValidationException::withMessages([
+				'general' => $exception->getMessage()
+			]);
+		}
 	}
 
 	public function reject(int $requestId){
 		try {
 			$request = $this->repository->findById($requestId);
-			$this->commentAndTransition($request, RequestStatus::Rejected);
+			if($request->cannot_update){
+				throw new RequestCannotBeUpdatedException();
+			}
+			$this->requireCommentAndTransition($request, RequestStatus::Rejected);
 			return $this->returnToIndex($request);
 		} catch(InvalidArgumentException|TransitionNotAllowedException $exception){
-			return back()->withErrors($exception->getMessage());
+			throw ValidationException::withMessages([
+				'comments' => $exception->getMessage()
+			]);
+		} catch(RequestCannotBeUpdatedException $exception){
+			throw ValidationException::withMessages([
+				'general' => $exception->getMessage()
+			]);
 		}
 	}
 
 	public function review(int $requestId){
 		try {
+			$request = $this->repository->findById($requestId);
+			if($request->cannot_update){
+				throw new RequestCannotBeUpdatedException();
+			}
 			request()->validate([
 				'files' => ['array', 'required'],
 				'files.*' => ['mimes:pdf', 'max:8000'],
 			]);
-			$request = $this->repository->findById($requestId);
 			$this->commentAndTransition($request, RequestStatus::Pending);
 			$this->uploadDocumentation($request);
 			return response()->json([
 				'message' => 'Your documentation has been submitted for review successfully.'
 			]);
-		} catch(InvalidArgumentException|TransitionNotAllowedException $exception){
+		} catch(InvalidArgumentException|TransitionNotAllowedException|RequestCannotBeUpdatedException $exception){
 			throw ValidationException::withMessages([
-				'comments' => $exception->getMessage()
+				'general' => $exception->getMessage()
 			]);
 		}
 	}
@@ -91,16 +149,30 @@ class RequestController extends Controller {
 	 * @throws InvalidArgumentException|TransitionNotAllowedException
 	 */
 	private function commentAndTransition(Request $request, RequestStatus $status){
-		ChangeRequestStatus::execute($request, $status);
 		if(request()->has('comments') && !empty(request('comments'))){
 			$validated = request()->validate([
 				'comments' => ['string', 'required']
 			]);
 			$request->comments()->create([
 				'user_id' => auth()->id(),
-				'comments' => $validated['comments']
+				'text' => $validated['comments']
 			]);
 		}
+		ChangeRequestStatus::execute($request, $status);
+	}
+
+	/**
+	 * @throws InvalidArgumentException|TransitionNotAllowedException
+	 */
+	private function requireCommentAndTransition(Request $request, RequestStatus $status){
+		$validated = request()->validate([
+			'comments' => ['string', 'required']
+		]);
+		$request->comments()->create([
+			'user_id' => auth()->id(),
+			'text' => $validated['comments']
+		]);
+		ChangeRequestStatus::execute($request, $status);
 	}
 
 	private function uploadDocumentation(Request $request){

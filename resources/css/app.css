@@ -129,3 +129,23 @@ select {
 .dropdown-link {
 	@apply px-3 py-2 whitespace-nowrap flex justify-between items-center gap-3 hover:bg-gray-100 first:rounded-t-lg last:rounded-b-lg
 }
+
+.badge {
+	@apply px-3 py-1 rounded-full text-sm
+}
+
+.badge-success {
+	@apply text-green-700 bg-green-200
+}
+
+.badge-warning {
+	@apply text-amber-700 bg-amber-200
+}
+
+.badge-danger {
+	@apply text-red-700 bg-red-200
+}
+
+.badge-purple {
+	@apply text-purple-700 bg-purple-200
+}
