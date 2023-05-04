@@ -15,6 +15,10 @@ class AllRequestRepository implements RequestRepository {
 		return Request::whereId($id)->firstOrFail();
 	}
 
+	public function getAll():array|Collection{
+		return Request::all();
+	}
+
 	public function getAllPending():array|Collection{
 		return Request::whereStatus(RequestStatus::Pending)->get();
 	}
@@ -29,6 +33,10 @@ class AllRequestRepository implements RequestRepository {
 
 	public function getAllRejected():array|Collection{
 		return Request::whereStatus(RequestStatus::Rejected)->get();
+	}
+
+	public function getAllPaginated():array|LengthAwarePaginator|Collection{
+		return Request::paginate();
 	}
 
 	public function getAllPendingPaginated():array|LengthAwarePaginator|Collection{

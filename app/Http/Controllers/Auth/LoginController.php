@@ -19,8 +19,7 @@ class LoginController extends Controller {
 
 		return back()->withErrors([
 			'email' => 'Wrong login details.',
-			'password' => 'Wrong login details.'
-		], 'login');
+		]);
 	}
 
 	protected function validateLogin(){

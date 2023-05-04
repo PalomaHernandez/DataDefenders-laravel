@@ -12,16 +12,18 @@
 			<form action="{{ route('offers.scholarship.delete', $offer) }}" method="post">
 				@csrf
 				@method('delete')
-				<button type="submit" class="btn bg-red-700 text-white">
-					<i class="fa-solid fa-trash"></i>
-					Delete permanently
-				</button>
+				@can('delete.offers')
+					<button type="submit" class="btn bg-red-700 text-white">
+						<i class="fa-solid fa-trash"></i>
+						Delete permanently
+					</button>
+				@endcan
 			</form>
 		</x-slot:buttons>
 	</x-header>
 	<x-body>
 		<x-slot:content>
-			<p class="font-bold">Are you sure? This will delete "{{ $offer->name }}" permanently.</p>
+			<p class="font-bold">Are you sure? This will delete "{{ $offer->title }}" permanently.</p>
 		</x-slot:content>
 	</x-body>
 @endsection

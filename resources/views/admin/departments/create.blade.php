@@ -21,10 +21,12 @@
 				</span>
 			</x-slot:description>
 			<x-slot:buttons>
-				<button type="submit" class="btn btn-primary">
-					<i class="fa-solid fa-plus"></i>
-					Add new
-				</button>
+				@can('create.departments')
+					<button type="submit" class="btn btn-primary">
+						<i class="fa-solid fa-plus"></i>
+						Add new
+					</button>
+				@endcan
 			</x-slot:buttons>
 		</x-header>
 		<x-form-body>

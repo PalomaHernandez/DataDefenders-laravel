@@ -20,36 +20,44 @@
 						Home
 					</a>
 					@auth
-						<a href="{{ route('departments.index') }}" class="nav-item @if(Route::currentRouteNamed('departments.*')) nav-item-active @endif">
-							<i class="fa-solid fa-university"></i>
-							Departments
-						</a>
-						<a href="{{ route('majors.index') }}" class="nav-item @if(Route::currentRouteNamed('majors.*')) nav-item-active @endif">
-							<i class="fa-solid fa-scroll"></i>
-							Majors
-						</a>
-						<p class="nav-p">Offers</p>
-						<a href="{{ route('offers.job.index') }}" class="nav-item @if(Route::currentRouteNamed('offers.job.*')) nav-item-active @endif">
-							<i class="fa-solid fa-briefcase"></i>
-							Jobs
-						</a>
-						<a href="{{ route('offers.scholarship.index') }}" class="nav-item @if(Route::currentRouteNamed('offers.scholarship.*')) nav-item-active @endif">
-							<i class="fa-solid fa-graduation-cap"></i>
-							Scholarships
-						</a>
-						<p class="nav-p">Applications</p>
-						<a href="{{ route('requests.index') }}" class="nav-item @if(Route::currentRouteNamed('requests.index')) nav-item-active @endif">
-							<i class="fa-solid fa-file-circle-question"></i>
-							All
-						</a>
-						<a href="{{ route('requests.job.index') }}" class="nav-item @if(Route::currentRouteNamed('requests.job.*')) nav-item-active @endif">
-							<i class="fa-solid fa-file-contract"></i>
-							Job Applications
-						</a>
-						<a href="{{ route('requests.scholarship.index') }}" class="nav-item @if(Route::currentRouteNamed('requests.scholarship.*')) nav-item-active @endif">
-							<i class="fa-solid fa-file-signature"></i>
-							Scholarship Applications
-						</a>
+						@can('*.departments')
+							<a href="{{ route('departments.index') }}" class="nav-item @if(Route::currentRouteNamed('departments.*')) nav-item-active @endif">
+								<i class="fa-solid fa-university"></i>
+								Departments
+							</a>
+						@endcan
+						@can('*.majors')
+							<a href="{{ route('majors.index') }}" class="nav-item @if(Route::currentRouteNamed('majors.*')) nav-item-active @endif">
+								<i class="fa-solid fa-scroll"></i>
+								Majors
+							</a>
+						@endcan
+						@can('*.offers')
+							<p class="nav-p">Offers</p>
+							<a href="{{ route('offers.job.index') }}" class="nav-item @if(Route::currentRouteNamed('offers.job.*')) nav-item-active @endif">
+								<i class="fa-solid fa-briefcase"></i>
+								Jobs
+							</a>
+							<a href="{{ route('offers.scholarship.index') }}" class="nav-item @if(Route::currentRouteNamed('offers.scholarship.*')) nav-item-active @endif">
+								<i class="fa-solid fa-graduation-cap"></i>
+								Scholarships
+							</a>
+						@endcan
+						@canany(['*.requests', 'require.request.documentation'])
+							<p class="nav-p">Applications</p>
+							<a href="{{ route('requests.index') }}" class="nav-item @if(Route::currentRouteNamed('requests.index')) nav-item-active @endif">
+								<i class="fa-solid fa-file-circle-question"></i>
+								All
+							</a>
+							<a href="{{ route('requests.job.index') }}" class="nav-item @if(Route::currentRouteNamed('requests.job.*')) nav-item-active @endif">
+								<i class="fa-solid fa-file-contract"></i>
+								Job Applications
+							</a>
+							<a href="{{ route('requests.scholarship.index') }}" class="nav-item @if(Route::currentRouteNamed('requests.scholarship.*')) nav-item-active @endif">
+								<i class="fa-solid fa-file-signature"></i>
+								Scholarship Applications
+							</a>
+						@endcanany
 					@endauth
 				</nav>
 			</aside>

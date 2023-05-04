@@ -9,10 +9,12 @@
 		<x-slot:title>Scholarship Offers</x-slot:title>
 		<x-slot:description>Manage the scholarship offers that people may apply to.</x-slot:description>
 		<x-slot:buttons>
-			<a href="{{ route('offers.scholarship.create') }}" class="btn btn-primary">
-				<i class="fa-solid fa-plus"></i>
-				Add new
-			</a>
+			@can('create.offers')
+				<a href="{{ route('offers.scholarship.create') }}" class="btn btn-primary">
+					<i class="fa-solid fa-plus"></i>
+					Add new
+				</a>
+			@endcan
 		</x-slot:buttons>
 	</x-header>
 	@include('layouts.messages')

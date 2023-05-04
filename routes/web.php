@@ -47,62 +47,60 @@ Route::middleware('auth')->group(function (){
 
 	Route::prefix('admin')->group(function (){
 		Route::prefix('departments')->group(function (){
-			Route::get('', [DepartmentController::class, 'index'])->name('departments.index');
-			Route::get('create', [DepartmentController::class, 'create'])->name('departments.create');
-			Route::post('store', [DepartmentController::class, 'store'])->name('departments.store');
-			Route::get('{department}/edit', [DepartmentController::class, 'edit'])->name('departments.edit');
-			Route::patch('{department}/update', [DepartmentController::class, 'update'])->name('departments.update');
-			Route::get('{department}/delete', [DepartmentController::class, 'delete_confirm'])->name('departments.delete_confirm');
-			Route::delete('{department}/delete', [DepartmentController::class, 'delete'])->name('departments.delete');
+			Route::get('', [DepartmentController::class, 'index'])->name('departments.index')->can('*.departments');
+			Route::get('create', [DepartmentController::class, 'create'])->name('departments.create')->can('create.departments');
+			Route::post('store', [DepartmentController::class, 'store'])->name('departments.store')->can('create.departments');
+			Route::get('{department}/edit', [DepartmentController::class, 'edit'])->name('departments.edit')->can('edit.departments');
+			Route::patch('{department}/update', [DepartmentController::class, 'update'])->name('departments.update')->can('edit.departments');
+			Route::get('{department}/delete', [DepartmentController::class, 'delete_confirm'])->name('departments.delete_confirm')->can('delete.departments');
+			Route::delete('{department}/delete', [DepartmentController::class, 'delete'])->name('departments.delete')->can('delete.departments');
 
-			Route::get('{department}/majors/create', [MajorController::class, 'create'])->name('majors.create');
+			Route::get('{department}/majors/create', [MajorController::class, 'create'])->name('majors.create')->can('create.majors');
 		});
 
 		Route::prefix('majors')->group(function (){
-			Route::get('', [MajorController::class, 'index'])->name('majors.index');
-			Route::post('store', [MajorController::class, 'store'])->name('majors.store');
-			Route::get('{major}/edit', [MajorController::class, 'edit'])->name('majors.edit');
-			Route::patch('{major}/update', [MajorController::class, 'update'])->name('majors.update');
-			Route::get('{major}/delete', [MajorController::class, 'delete_confirm'])->name('majors.delete_confirm');
-			Route::delete('{major}/delete', [MajorController::class, 'delete'])->name('majors.delete');
+			Route::get('', [MajorController::class, 'index'])->name('majors.index')->can('*.majors');
+			Route::post('store', [MajorController::class, 'store'])->name('majors.store')->can('create.majors');
+			Route::get('{major}/edit', [MajorController::class, 'edit'])->name('majors.edit')->can('edit.majors');
+			Route::patch('{major}/update', [MajorController::class, 'update'])->name('majors.update')->can('edit.majors');
+			Route::get('{major}/delete', [MajorController::class, 'delete_confirm'])->name('majors.delete_confirm')->can('delete.majors');
+			Route::delete('{major}/delete', [MajorController::class, 'delete'])->name('majors.delete')->can('delete.majors');
 		});
 
 		Route::prefix('requests')->group(function (){
-			Route::get('', [RequestController::class, 'index'])->name('requests.index');
-			Route::get('{request}/edit', [RequestController::class, 'edit'])->name('requests.edit');
-			Route::get('{request}/document', [RequestController::class, 'document_confirm'])->name('requests.document_confirm');
-			Route::patch('{request}/document', [RequestController::class, 'document'])->name('requests.document');
-			Route::get('{request}/accept', [RequestController::class, 'accept_confirm'])->name('requests.accept_confirm');
-			Route::patch('{request}/accept', [RequestController::class, 'accept'])->name('requests.accept');
-			Route::get('{request}/reject', [RequestController::class, 'reject_confirm'])->name('requests.reject_confirm');
-			Route::patch('{request}/reject', [RequestController::class, 'reject'])->name('requests.reject');
+			Route::get('', [RequestController::class, 'index'])->name('requests.index')->can('*.requests');
+			Route::get('{request}/edit', [RequestController::class, 'edit'])->name('requests.edit')->can('edit.requests');
+			Route::get('{request}/document', [RequestController::class, 'document_confirm'])->name('requests.document_confirm')->can('require.request.documentation');
+			Route::patch('{request}/document', [RequestController::class, 'document'])->name('requests.document')->can('require.request.documentation');
+			Route::get('{request}/accept', [RequestController::class, 'accept_confirm'])->name('requests.accept_confirm')->can('accept.requests');
+			Route::patch('{request}/accept', [RequestController::class, 'accept'])->name('requests.accept')->can('accept.requests');
+			Route::get('{request}/reject', [RequestController::class, 'reject_confirm'])->name('requests.reject_confirm')->can('reject.requests');
+			Route::patch('{request}/reject', [RequestController::class, 'reject'])->name('requests.reject')->can('reject.requests');
 
-			Route::get('job', [JobRequestController::class, 'index'])->name('requests.job.index');
+			Route::get('job', [JobRequestController::class, 'index'])->name('requests.job.index')->can('*.requests');
 
-			Route::get('scholarship', [ScholarshipRequestController::class, 'index'])->name('requests.scholarship.index');
+			Route::get('scholarship', [ScholarshipRequestController::class, 'index'])->name('requests.scholarship.index')->can('*.requests');
 		});
 
 		Route::prefix('offers')->group(function (){
 			Route::prefix('job')->group(function (){
-				Route::get('', [JobOfferController::class, 'index'])->name('offers.job.index');
-				Route::get('create', [JobOfferController::class, 'create'])->name('offers.job.create');
-				Route::post('store', [JobOfferController::class, 'store'])->name('offers.job.store');
-				Route::get('{offer}/edit', [JobOfferController::class, 'edit'])->name('offers.job.edit');
-				Route::get('{offer}/toggle', [JobOfferController::class, 'toggle'])->name('offers.job.visible.toggle');
-				Route::patch('{offer}/update', [JobOfferController::class, 'update'])->name('offers.job.update');
-				Route::get('{offer}/delete', [JobOfferController::class, 'delete_confirm'])->name('offers.job.delete_confirm');
-				Route::delete('{offer}/delete', [JobOfferController::class, 'delete'])->name('offers.job.delete');
+				Route::get('', [JobOfferController::class, 'index'])->name('offers.job.index')->can('*.offers');
+				Route::get('create', [JobOfferController::class, 'create'])->name('offers.job.create')->can('create.offers');
+				Route::post('store', [JobOfferController::class, 'store'])->name('offers.job.store')->can('create.offers');
+				Route::get('{offer}/edit', [JobOfferController::class, 'edit'])->name('offers.job.edit')->can('edit.offers');
+				Route::patch('{offer}/update', [JobOfferController::class, 'update'])->name('offers.job.update')->can('edit.offers');
+				Route::get('{offer}/delete', [JobOfferController::class, 'delete_confirm'])->name('offers.job.delete_confirm')->can('delete.offers');
+				Route::delete('{offer}/delete', [JobOfferController::class, 'delete'])->name('offers.job.delete')->can('delete.offers');
 			});
 
 			Route::prefix('scholarship')->group(function (){
-				Route::get('', [ScholarshipOfferController::class, 'index'])->name('offers.scholarship.index');
-				Route::get('create', [ScholarshipOfferController::class, 'create'])->name('offers.scholarship.create');
-				Route::post('store', [ScholarshipOfferController::class, 'store'])->name('offers.scholarship.store');
-				Route::get('{offer}/edit', [ScholarshipOfferController::class, 'edit'])->name('offers.scholarship.edit');
-				Route::get('{offer}/toggle', [ScholarshipOfferController::class, 'toggle'])->name('offers.scholarship.visible.toggle');
-				Route::patch('{offer}/update', [ScholarshipOfferController::class, 'update'])->name('offers.scholarship.update');
-				Route::get('{offer}/delete', [ScholarshipOfferController::class, 'delete_confirm'])->name('offers.scholarship.delete_confirm');
-				Route::delete('{offer}/delete', [ScholarshipOfferController::class, 'delete'])->name('offers.scholarship.delete');
+				Route::get('', [ScholarshipOfferController::class, 'index'])->name('offers.scholarship.index')->can('*.offers');
+				Route::get('create', [ScholarshipOfferController::class, 'create'])->name('offers.scholarship.create')->can('create.offers');
+				Route::post('store', [ScholarshipOfferController::class, 'store'])->name('offers.scholarship.store')->can('create.offers');
+				Route::get('{offer}/edit', [ScholarshipOfferController::class, 'edit'])->name('offers.scholarship.edit')->can('edit.offers');
+				Route::patch('{offer}/update', [ScholarshipOfferController::class, 'update'])->name('offers.scholarship.update')->can('edit.offers');
+				Route::get('{offer}/delete', [ScholarshipOfferController::class, 'delete_confirm'])->name('offers.scholarship.delete_confirm')->can('delete.offers');
+				Route::delete('{offer}/delete', [ScholarshipOfferController::class, 'delete'])->name('offers.scholarship.delete')->can('delete.offers');
 			});
 		});
 	});

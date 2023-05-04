@@ -15,6 +15,10 @@ class ScholarshipRequestRepository implements RequestRepository {
 		return Request::whereOfferType(ScholarshipOffer::class)->whereId($id)->firstOrFail();
 	}
 
+	public function getAll():array|Collection{
+		return Request::whereOfferType(ScholarshipOffer::class)->get();
+	}
+
 	public function getAllPending():array|Collection{
 		return Request::whereOfferType(ScholarshipOffer::class)->whereStatus(RequestStatus::Pending)->get();
 	}
@@ -29,6 +33,10 @@ class ScholarshipRequestRepository implements RequestRepository {
 
 	public function getAllRejected():array|Collection{
 		return Request::whereOfferType(ScholarshipOffer::class)->whereStatus(RequestStatus::Rejected)->get();
+	}
+
+	public function getAllPaginated():array|Collection{
+		return Request::whereOfferType(ScholarshipOffer::class)->paginate();
 	}
 
 	public function getAllPendingPaginated():array|LengthAwarePaginator|Collection{

@@ -12,6 +12,8 @@ use App\Models\ScholarshipOffer;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use Silber\Bouncer\BouncerFacade;
 
 class DatabaseSeeder extends Seeder {
 
@@ -19,24 +21,20 @@ class DatabaseSeeder extends Seeder {
 	 * Seed the application's database.
 	 */
 	public function run():void{
+		foreach(config('roles') as $roleName => $abilities){
+			$role = BouncerFacade::role()->create([
+				'name' => Str::slug($roleName),
+				'title' => $roleName
+			]);
+			BouncerFacade::allow($role)->to($abilities);
+		}
 		User::factory(45)->create();
-		User::create(array(
-            'first_name'        => config('seeder.name'),
-			'middle_name'       => fake()->firstName(),
-			'last_name'         => fake()->lastName(),
-			'email'             => config('seeder.email'),
-			'email_verified_at' => now(),
-			'password'          => Hash::make(config('seeder.password')),
-			'remember_token'    => '1234567890',
-			'phone'             => fake()->phoneNumber(),
-			'address_line_1'    => fake()->streetAddress(),
-			'address_line_2'    => null,
-			'city'              => 'Charlotte',
-			'region'            => 'North Carolina',
-			'country'           => 'United States of America',
-			'postal_code'       => '28201',
-			'id_card'           => fake()->numerify('########'),
-        ));
+		$admin = User::factory()->create([
+			'first_name' => config('seeder.name'),
+			'email'      => config('seeder.email'),
+			'password'   => Hash::make(config('seeder.password')),
+		]);
+		$admin->assign('administrator');
 		Department::factory(5)->create();
 		JobOffer::factory(5)->create();
 		Major::factory(15)->create();
@@ -52,6 +50,7 @@ class DatabaseSeeder extends Seeder {
 			for($i = 0; $i <= rand(0, $fileCount); $i++){
 				Comment::factory()->create([
 					'request_id' => $request->id,
+					'user_id'    => User::inRandomOrder()->first('id')->id
 				]);
 			}
 			$majorCount = rand(1, 3);

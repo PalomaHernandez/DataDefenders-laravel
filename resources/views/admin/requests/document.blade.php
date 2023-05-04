@@ -17,10 +17,12 @@
 			</x-slot:title>
 			<x-slot:description>Require documentation for the {{ $request->offer->displayName }} application.</x-slot:description>
 			<x-slot:buttons>
-				<button type="submit" class="btn bg-purple-700 text-white">
-					<i class="fa-solid fa-file-lines"></i>
-					Require documentation
-				</button>
+				@can('require.request.documentation')
+					<button type="submit" class="btn bg-purple-700 text-white">
+						<i class="fa-solid fa-file-lines"></i>
+						Require documentation
+					</button>
+				@endcan
 			</x-slot:buttons>
 		</x-header>
 		<x-body>
