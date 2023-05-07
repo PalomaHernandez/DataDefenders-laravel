@@ -23,8 +23,13 @@
 		<div class="items">
 			@foreach($offers as $offer)
 				<a class="item flex items-center gap-2" href="{{ route('offers.job.edit', $offer) }}">
-					<i class="fa-solid fa-briefcase text-gray-400"></i>
-					<p class="flex-grow">{{ $offer->title }}</p>
+					<div class="flex-grow">
+						<p class="font-medium text-lg">{{ $offer->title }}</p>
+						<p class="text-sm text-gray-400 flex items-center gap-2">
+							<i class="fa-solid fa-briefcase text-gray-400"></i>
+							{{ $offer->department->name }}
+						</p>
+					</div>
 					@include('admin.offers.hidden')
 					@include('admin.offers.applicants')
 					<i class="fa-solid fa-chevron-right text-gray-400"></i>
