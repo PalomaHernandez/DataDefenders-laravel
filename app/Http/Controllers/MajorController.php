@@ -6,7 +6,6 @@ use App\Exceptions\MajorHasAtLeastOneOfferException;
 use App\Models\Department;
 use App\Models\Major;
 use Illuminate\Validation\ValidationException;
-use Throwable;
 
 class MajorController extends Controller {
 
