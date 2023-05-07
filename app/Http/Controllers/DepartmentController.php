@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\DepartmentHasAtLeastOneMajorException;
 use App\Models\Department;
 use App\Exceptions\DepartmentHasAtLeastOneOfferException;
 use Illuminate\Validation\ValidationException;
@@ -47,11 +48,14 @@ class DepartmentController extends Controller {
 
 	public function delete_confirm(Department $department){
 		try {
+			if($department->majors()->exists()){
+				throw new DepartmentHasAtLeastOneMajorException();
+			}
 			if($department->jobOffers()->exists()){
 				throw new DepartmentHasAtLeastOneOfferException();
 			}
 			return view('admin.departments.delete', compact('department'));
-		} catch(DepartmentHasAtLeastOneOfferException $exception){
+		} catch(DepartmentHasAtLeastOneMajorException|DepartmentHasAtLeastOneOfferException $exception){
 			throw ValidationException::withMessages([
 				$exception->getMessage()
 			]);
@@ -60,6 +64,9 @@ class DepartmentController extends Controller {
 
 	public function delete(Department $department){
 		try {
+			if($department->majors()->exists()){
+				throw new DepartmentHasAtLeastOneMajorException();
+			}
 			if($department->jobOffers()->exists()){
 				throw new DepartmentHasAtLeastOneOfferException();
 			}
@@ -67,7 +74,7 @@ class DepartmentController extends Controller {
 			return redirect()->route('departments.index')->with([
 				'success' => 'The department was deleted successfully.'
 			]);
-		} catch(DepartmentHasAtLeastOneOfferException $exception){
+		} catch(DepartmentHasAtLeastOneMajorException|DepartmentHasAtLeastOneOfferException $exception){
 			throw ValidationException::withMessages([
 				$exception->getMessage()
 			]);
