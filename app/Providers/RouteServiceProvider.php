@@ -40,7 +40,22 @@ class RouteServiceProvider extends ServiceProvider {
 				});
 			});
 
-			Route::middleware('web')->group(base_path('routes/web.php'));
+			Route::middleware('web')->group(function(){
+				Route::prefix('')->group(base_path('routes/web/account/login.php'));
+				Route::prefix('')->group(base_path('routes/web/account/recovery.php'));
+				Route::middleware('auth')->group(function (){
+					Route::prefix('')->group(base_path('routes/web/home.php'));
+					Route::prefix('')->group(base_path('routes/web/account/logout.php'));
+					Route::prefix('my-account')->group(base_path('routes/web/account/index.php'));
+					Route::prefix('admin/departments')->group(base_path('routes/web/admin/departments.php'));
+					Route::prefix('admin/majors')->group(base_path('routes/web/admin/majors.php'));
+					Route::prefix('admin/requests')->group(base_path('routes/web/admin/requests/index.php'));
+					Route::prefix('admin/requests/job')->group(base_path('routes/web/admin/requests/jobs/index.php'));
+					Route::prefix('admin/requests/scholarship')->group(base_path('routes/web/admin/requests/scholarships/index.php'));
+					Route::prefix('admin/offers/job')->group(base_path('routes/web/admin/offers/job.php'));
+					Route::prefix('admin/offers/scholarship')->group(base_path('routes/web/admin/offers/scholarship.php'));
+				});
+			});
 		});
 	}
 
