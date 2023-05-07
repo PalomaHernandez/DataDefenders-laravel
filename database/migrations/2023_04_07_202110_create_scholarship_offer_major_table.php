@@ -13,6 +13,7 @@ return new class extends Migration {
 		Schema::create('scholarship_offer_major', function (Blueprint $table){
 			$table->foreignId('scholarship_offer_id')->references('id')->on('scholarship_offers')->restrictOnDelete()->cascadeOnUpdate();
 			$table->foreignId('major_id')->references('id')->on('majors')->restrictOnDelete()->cascadeOnUpdate();
+			$table->unique(['scholarship_offer_id', 'major_id']);
 		});
 	}
 

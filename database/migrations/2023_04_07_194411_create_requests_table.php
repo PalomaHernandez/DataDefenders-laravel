@@ -17,6 +17,7 @@ return new class extends Migration {
 			$table->unsignedBigInteger('offer_id');
 			$table->string('offer_type');
 			$table->enum('status', ['pending', 'documentation', 'accepted', 'rejected']);
+			$table->foreignId('major_id')->nullable()->references('id')->on('majors')->restrictOnDelete()->cascadeOnUpdate();
 			$table->timestamps();
 		});
 	}
