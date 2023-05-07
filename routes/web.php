@@ -41,6 +41,7 @@ Route::middleware('auth')->group(function (){
 	Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 	Route::prefix('my-account')->group(function (){
+		Route::get('', [UserController::class, 'index'])->name('users.index');
 		Route::get('/edit', [UserController::class, 'edit'])->name('users.edit');
 		Route::patch('/update', [UserController::class, 'update'])->name('users.update');
 	});

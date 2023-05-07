@@ -62,7 +62,7 @@ textarea {
 	@apply px-2 py-1 rounded border border-gray-300 shadow shadow-gray-200 w-full bg-gray-100 text-gray-500
 }
 
-input[type=text], input[type=date], input[type=datetime-local], input[type=email], input[type=password],textarea, select {
+input[type=text], input[type=date], input[type=datetime-local], input[type=email], input[type=password], input[type=tel], textarea, select {
 	@apply px-2 py-1 rounded border border-gray-300 shadow shadow-gray-200 w-full bg-gray-50
 }
 
@@ -95,7 +95,7 @@ select {
 }
 
 .alert-success {
-	@apply bg-green-100 text-green-700
+	@apply bg-green-100 text-green-700 
 }
 
 .alert-success > .alert-header {
@@ -148,4 +148,8 @@ select {
 
 .badge-purple {
 	@apply text-purple-700 bg-purple-200
+}
+
+.required::after {
+	@apply px-1 content-['*'] text-gray-500
 }

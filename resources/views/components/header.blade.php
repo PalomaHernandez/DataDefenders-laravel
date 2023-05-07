@@ -12,7 +12,7 @@
 		</a>
 		<nav class="dropdown-menu">
 			@auth
-				<a href="{{ route('users.edit') }}" class="dropdown-link">My account</a>
+				<a href="{{ route('users.index') }}" class="dropdown-link">My account</a>
 				<a href="{{ route('logout') }}" class="dropdown-link text-red-500">
 					Logout
 					<i class="fa-solid fa-sign-out"></i>
