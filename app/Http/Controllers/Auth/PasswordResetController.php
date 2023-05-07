@@ -24,7 +24,7 @@ class PasswordResetController extends Controller {
 			'password_recovery_token'      => $token,
 			'password_recovery_expires_at' => now()->addMinute()
 		]);
-		$resetLink = route('reset.password', [
+		$resetLink = route('password.reset', [
 			'email' => $user->email,
 			'token' => $token
 		]);
