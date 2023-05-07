@@ -23,11 +23,6 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
-
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'attempt'])->name('login.attempt');
 
@@ -38,6 +33,10 @@ Route::get('/reset-password', [PasswordChangeController::class, 'index'])->name(
 Route::post('/reset-password', [PasswordChangeController::class, 'changePassword'])->name('password.change');
 
 Route::middleware('auth')->group(function (){
+	Route::get('/', function () {
+		return view('welcome');
+	})->name('home');
+
 	Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 	Route::prefix('my-account')->group(function (){
