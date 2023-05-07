@@ -16,6 +16,8 @@ return [
 		'delete.offers',
 		'list.departments',
 		'create.departments',
+		'edit.departments',
+		'delete.departments',
 		'list.majors',
 		'create.majors',
 		'edit.majors',
