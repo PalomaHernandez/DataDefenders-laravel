@@ -7,7 +7,6 @@
 @section('content')
 	<form action="{{ route('majors.store') }}" method="post" class="h-screen flex flex-col">
 		@csrf
-		@method('patch')
 		<x-header>
 			<x-slot:title>
 				<a class="text-lg text-gray-400" href="{{ route('majors.index') }}">

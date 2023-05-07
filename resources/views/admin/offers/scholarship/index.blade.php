@@ -23,8 +23,13 @@
 		<div class="items">
 			@foreach($offers as $offer)
 				<a class="item flex items-center gap-2" href="{{ route('offers.scholarship.edit', $offer) }}">
-					<i class="fa-solid fa-graduation-cap text-gray-400"></i>
-					<p class="flex-grow">{{ $offer->title }}</p>
+					<div class="flex-grow">
+						<p class="font-medium text-lg">{{ $offer->title }}</p>
+						<p class="text-sm text-gray-400 flex items-center gap-2">
+							<i class="fa-solid fa-graduation-cap text-gray-400"></i>
+							<span class="flex flex-col gap-1">{!! $offer->majors->pluck('name')->join('<br>') !!}</span>
+						</p>
+					</div>
 					@include('admin.offers.hidden')
 					@include('admin.offers.applicants')
 					<i class="fa-solid fa-chevron-right text-gray-400"></i>

@@ -10,16 +10,16 @@ use Illuminate\Validation\ValidationException;
 class JobOfferController extends Controller {
 
 	public function index(){
-		$offers = JobOffer::withCount('requests')->paginate();
+		$offers = JobOffer::withCount('requests')->latest()->paginate();
 		return view('admin.offers.job.index', compact('offers'));
 	}
 
 	public function all(){
-		return response()->json(JobOffer::all());
+		return response()->json(JobOffer::latest()->get());
 	}
 
 	public function allPaginated(){
-		return response()->json(JobOffer::paginate());
+		return response()->json(JobOffer::latest()->paginate());
 	}
 
 	public function find(int $offerId){
@@ -27,7 +27,7 @@ class JobOfferController extends Controller {
 	}
 
 	public function create(){
-		$departments = Department::all();
+		$departments = Department::orderBy('name')->latest()->get();
 		return view('admin.offers.job.create', compact('departments'));
 	}
 

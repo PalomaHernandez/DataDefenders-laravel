@@ -20,19 +20,19 @@
 						Home
 					</a>
 					@auth
-						@can('*.departments')
+						@can('list.departments')
 							<a href="{{ route('departments.index') }}" class="nav-item @if(Route::currentRouteNamed('departments.*')) nav-item-active @endif">
 								<i class="fa-solid fa-university"></i>
 								Departments
 							</a>
 						@endcan
-						@can('*.majors')
+						@can('list.majors')
 							<a href="{{ route('majors.index') }}" class="nav-item @if(Route::currentRouteNamed('majors.*')) nav-item-active @endif">
 								<i class="fa-solid fa-scroll"></i>
 								Majors
 							</a>
 						@endcan
-						@can('*.offers')
+						@can('list.offers')
 							<p class="nav-p">Offers</p>
 							<a href="{{ route('offers.job.index') }}" class="nav-item @if(Route::currentRouteNamed('offers.job.*')) nav-item-active @endif">
 								<i class="fa-solid fa-briefcase"></i>
@@ -43,7 +43,7 @@
 								Scholarships
 							</a>
 						@endcan
-						@canany(['*.requests', 'require.request.documentation'])
+						@canany(['list.requests', 'require.request.documentation'])
 							<p class="nav-p">Applications</p>
 							<a href="{{ route('requests.index') }}" class="nav-item @if(Route::currentRouteNamed('requests.index')) nav-item-active @endif">
 								<i class="fa-solid fa-file-circle-question"></i>

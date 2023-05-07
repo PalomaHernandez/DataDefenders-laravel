@@ -6,10 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class PasswordChangeController extends Controller {
 
-	function index(){
+	public function index(){
 		$this->validateTokenRequest();
 		if($this->checkTokenValidity()){
 			abort(403);
@@ -26,16 +27,16 @@ class PasswordChangeController extends Controller {
 
 	private function checkTokenValidity(){
 		$user = User::whereEmail(request('email'))->firstOrFail();
-		return $user->password_recovery_token != request('token') || $user->password_recovery_starts_at <= now();
+		return $user->password_recovery_token != request('token') || $user->password_recovery_expires_at <= now();
 	}
 
-	function changePassword(){
+	public function changePassword(){
 		$this->validateChangeRequest();
 		if($this->checkNewPassword()){
-			return back()->withErrors([
+			throw ValidationException::withMessages([
 				'password'              => 'The passwords must match.',
 				'password_confirmation' => 'The passwords must match.'
-			], 'password.reset');
+			]);
 		}
 		$user = User::whereEmail(request('email'))->firstOrFail();
 		$user->update([

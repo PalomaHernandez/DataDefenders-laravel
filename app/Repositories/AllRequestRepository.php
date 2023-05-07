@@ -16,43 +16,43 @@ class AllRequestRepository implements RequestRepository {
 	}
 
 	public function getAll():array|Collection{
-		return Request::all();
+		return Request::latest()->get();
 	}
 
 	public function getAllPending():array|Collection{
-		return Request::whereStatus(RequestStatus::Pending)->get();
+		return Request::whereStatus(RequestStatus::Pending)->latest()->get();
 	}
 
 	public function getAllDocumentation():array|Collection{
-		return Request::whereStatus(RequestStatus::Documentation)->get();
+		return Request::whereStatus(RequestStatus::Documentation)->latest()->get();
 	}
 
 	public function getAllAccepted():array|Collection{
-		return Request::whereStatus(RequestStatus::Accepted)->get();
+		return Request::whereStatus(RequestStatus::Accepted)->latest()->get();
 	}
 
 	public function getAllRejected():array|Collection{
-		return Request::whereStatus(RequestStatus::Rejected)->get();
+		return Request::whereStatus(RequestStatus::Rejected)->latest()->get();
 	}
 
 	public function getAllPaginated():array|LengthAwarePaginator|Collection{
-		return Request::paginate();
+		return Request::latest()->paginate();
 	}
 
 	public function getAllPendingPaginated():array|LengthAwarePaginator|Collection{
-		return Request::whereStatus(RequestStatus::Pending)->paginate();
+		return Request::whereStatus(RequestStatus::Pending)->latest()->paginate();
 	}
 
 	public function getAllDocumentationPaginated():array|LengthAwarePaginator|Collection{
-		return Request::whereStatus(RequestStatus::Documentation)->paginate();
+		return Request::whereStatus(RequestStatus::Documentation)->latest()->paginate();
 	}
 
 	public function getAllAcceptedPaginated():array|LengthAwarePaginator|Collection{
-		return Request::whereStatus(RequestStatus::Accepted)->paginate();
+		return Request::whereStatus(RequestStatus::Accepted)->latest()->paginate();
 	}
 
 	public function getAllRejectedPaginated():array|LengthAwarePaginator|Collection{
-		return Request::whereStatus(RequestStatus::Rejected)->paginate();
+		return Request::whereStatus(RequestStatus::Rejected)->latest()->paginate();
 	}
 
 }

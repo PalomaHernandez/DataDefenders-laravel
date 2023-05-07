@@ -10,7 +10,7 @@ use Illuminate\Validation\ValidationException;
 class MajorController extends Controller {
 
 	public function index(){
-		$departments = Department::paginate();
+		$departments = Department::latest()->paginate();
 		return view('admin.majors.index', compact('departments'));
 	}
 

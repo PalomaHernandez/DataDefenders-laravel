@@ -40,7 +40,10 @@ class DatabaseSeeder extends Seeder {
 		Department::factory(5)->create();
 		JobOffer::factory(5)->create();
 		Major::factory(15)->create();
-		ScholarshipOffer::factory(5)->create();
+		$scholarshipOffers = ScholarshipOffer::factory(5)->create();
+		foreach($scholarshipOffers as $offer){
+			$offer->majors()->sync(Major::distinct()->limit(rand(1, 3))->pluck('id'));
+		}
 		$requests = Request::factory(35)->create();
 		foreach($requests as $request){
 			$fileCount = rand(1, 5);
@@ -55,11 +58,10 @@ class DatabaseSeeder extends Seeder {
 					'user_id'    => User::inRandomOrder()->first('id')->id
 				]);
 			}
-			$majorCount = rand(1, 3);
 			if($request->offer_type == ScholarshipOffer::class){
-				for($i = 0; $i < $majorCount; $i++){
-					$request->offer->majors()->attach(Major::inRandomOrder()->first('id')->id);
-				}
+				$request->update([
+					'major_id' => $request->offer->majors->first()->id
+				]);
 			}
 		}
 	}

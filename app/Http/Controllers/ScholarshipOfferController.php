@@ -9,16 +9,16 @@ use Illuminate\Validation\ValidationException;
 class ScholarshipOfferController extends Controller {
 
 	public function index(){
-		$offers = ScholarshipOffer::withCount('requests')->paginate();
+		$offers = ScholarshipOffer::withCount('requests')->latest()->paginate();
 		return view('admin.offers.scholarship.index', compact('offers'));
 	}
 
 	public function all(){
-		return response()->json(ScholarshipOffer::all());
+		return response()->json(ScholarshipOffer::latest()->get());
 	}
 
 	public function allPaginated(){
-		return response()->json(ScholarshipOffer::paginate());
+		return response()->json(ScholarshipOffer::latest()->paginate());
 	}
 
 	public function find(int $offerId){
