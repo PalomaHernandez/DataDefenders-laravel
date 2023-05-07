@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <form action="{{ route('users.update',$user) }}" method="post" class="flex-grow h-screen flex flex-col">
+    <form action="{{ route('users.update', $user) }}" method="post" class="flex-grow h-screen flex flex-col">
 		@csrf
 		@method('patch')
 		<x-header>
