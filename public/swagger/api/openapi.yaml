@@ -1,8 +1,9 @@
 openapi: 3.0.0
 info:
-  description: Needs no description.
+  description: This documentation corresponds to the very first version of our API
+    for developers.
   title: UniManager API Documentation
-  version: 0.0.1
+  version: 0.0.3
 servers:
 - url: /
 paths:
@@ -280,6 +281,240 @@ paths:
       tags:
       - Departments
       x-accepts: application/json
+  /api/majors:
+    get:
+      operationId: majors.index
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MajorArray'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+      summary: List all majors.
+      tags:
+      - Majors
+      x-accepts: application/json
+  /api/majors/store:
+    post:
+      operationId: majors.store
+      requestBody:
+        $ref: '#/components/requestBodies/inline_object_1'
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  type: string
+              type: object
+        description: The new majors's name.
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_422'
+          description: Unprocessable Content
+      summary: Creates a new Major.
+      tags:
+      - Majors
+      x-contentType: application/json
+      x-accepts: application/json
+  /api/majors/{majorId}/find:
+    get:
+      operationId: majors.find
+      parameters:
+      - description: Numeric ID of the Major
+        explode: false
+        in: path
+        name: majorId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Major'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_404'
+          description: Not Found
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+      summary: Get a Major by ID
+      tags:
+      - Majors
+      x-accepts: application/json
+  /api/majors/{majorId}/update:
+    patch:
+      operationId: majors.update
+      parameters:
+      - description: Numeric ID of the Major
+        explode: false
+        in: path
+        name: majorId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_404'
+          description: Not Found
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_422'
+          description: Unprocessable Content
+      summary: Update the identified Majors.
+      tags:
+      - Majors
+      x-accepts: application/json
+  /api/majors/{majorId}/delete:
+    delete:
+      operationId: majors.delete
+      parameters:
+      - description: Numeric ID of the Major
+        explode: false
+        in: path
+        name: majorId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_404'
+          description: Not Found
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_422'
+          description: Unprocessable Content
+      summary: Delete the identified Major.
+      tags:
+      - Majors
+      x-accepts: application/json
+  /api/offers/job:
+    get:
+      operationId: offers.job.index
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobOfferArray'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+      summary: List all job offers.
+      tags:
+      - Job Offers
+      x-accepts: application/json
   /api/offers/job/paginated:
     get:
       operationId: offers.job.paginated
@@ -306,6 +541,1474 @@ paths:
       tags:
       - Job Offers
       x-accepts: application/json
+  /api/offers/job/{offerId}/find:
+    get:
+      operationId: offers.job.find
+      parameters:
+      - description: Numeric ID of the job offer
+        explode: false
+        in: path
+        name: offerId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobOffer'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_404'
+          description: Not Found
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+      summary: Get a job offer by ID
+      tags:
+      - Job Offers
+      x-accepts: application/json
+  /api/offers/job/{offerId}/store:
+    post:
+      operationId: offers.job.store
+      parameters:
+      - description: Numeric ID of the job offer
+        explode: false
+        in: path
+        name: offerId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/inline_object_2'
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  type: string
+              type: object
+        description: The new job offer's name.
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_422'
+          description: Unprocessable Content
+      summary: Creates a new job offer.
+      tags:
+      - Job Offers
+      x-contentType: application/json
+      x-accepts: application/json
+  /api/offers/job/{offerId}/update:
+    patch:
+      operationId: offers.job.update
+      parameters:
+      - description: Numeric ID of the job offer
+        explode: false
+        in: path
+        name: offerId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_404'
+          description: Not Found
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_422'
+          description: Unprocessable Content
+      summary: Update the identified job offer.
+      tags:
+      - Job Offers
+      x-accepts: application/json
+  /api/offers/job/{offerId}/delete:
+    delete:
+      operationId: offers.job.delete
+      parameters:
+      - description: Numeric ID of the job offer
+        explode: false
+        in: path
+        name: offerId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_404'
+          description: Not Found
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_422'
+          description: Unprocessable Content
+      summary: Delete the identified job offer.
+      tags:
+      - Job Offers
+      x-accepts: application/json
+  /api/offers/scholarship:
+    get:
+      operationId: offers.scholarship.index
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScholarshipOfferArray'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+      summary: List all scholarship offers.
+      tags:
+      - Scholarship Offers
+      x-accepts: application/json
+  /api/offers/scholarship/paginated:
+    get:
+      operationId: offers.scholarship.paginated
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_3'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+      summary: List all scholarship offers in a paginated manner.
+      tags:
+      - Scholarship Offers
+      x-accepts: application/json
+  /api/offers/scholarship/{offerId}/find:
+    get:
+      operationId: offers.scholarship.find
+      parameters:
+      - description: Numeric ID of the scholarship offer
+        explode: false
+        in: path
+        name: offerId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScholarshipOffer'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_404'
+          description: Not Found
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+      summary: Get a scholarship offer by ID
+      tags:
+      - Scholarship Offers
+      x-accepts: application/json
+  /api/offers/scholarship/{offerId}/store:
+    post:
+      operationId: offers.scholarship.store
+      parameters:
+      - description: Numeric ID of the scholarship offer
+        explode: false
+        in: path
+        name: offerId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/inline_object_3'
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  type: string
+              type: object
+        description: The new scholarship offer's name.
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_422'
+          description: Unprocessable Content
+      summary: Creates a new scholarship offer.
+      tags:
+      - Scholarship Offers
+      x-contentType: application/json
+      x-accepts: application/json
+  /api/offers/scholarship/{offerId}/update:
+    patch:
+      operationId: offers.scholarship.update
+      parameters:
+      - description: Numeric ID of the scholarship offer
+        explode: false
+        in: path
+        name: offerId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_404'
+          description: Not Found
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_422'
+          description: Unprocessable Content
+      summary: Update the identified scholarship offer.
+      tags:
+      - Scholarship Offers
+      x-accepts: application/json
+  /api/offers/scholarship/{offerId}/delete:
+    delete:
+      operationId: offers.scholarship.delete
+      parameters:
+      - description: Numeric ID of the scholarship offer
+        explode: false
+        in: path
+        name: offerId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_404'
+          description: Not Found
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_422'
+          description: Unprocessable Content
+      summary: Delete the identified scholarship offer.
+      tags:
+      - Scholarship Offers
+      x-accepts: application/json
+  /api/applications:
+    get:
+      operationId: applications.index
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationArray'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+      summary: List all applications.
+      tags:
+      - Applications
+      x-accepts: application/json
+  /api/applications/pending:
+    get:
+      operationId: applications.pending.index
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationArray'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+      summary: List all pending applications.
+      tags:
+      - Applications
+      x-accepts: application/json
+  /api/applications/documentation:
+    get:
+      operationId: applications.documentation.index
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationArray'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+      summary: List all applications in need of documentation.
+      tags:
+      - Applications
+      x-accepts: application/json
+  /api/applications/accepted:
+    get:
+      operationId: applications.accepted.index
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationArray'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+      summary: List all accepted applications.
+      tags:
+      - Applications
+      x-accepts: application/json
+  /api/applications/rejected:
+    get:
+      operationId: applications.rejected.index
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationArray'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+      summary: List all rejected applications.
+      tags:
+      - Applications
+      x-accepts: application/json
+  /api/applications/paginated:
+    get:
+      operationId: applications.paginated
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_4'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+      summary: List all applications in a paginated manner.
+      tags:
+      - Applications
+      x-accepts: application/json
+  /api/applications/pending/paginated:
+    get:
+      operationId: applications.pending.paginated
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_4'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+      summary: List all pending applications in a paginated manner.
+      tags:
+      - Applications
+      x-accepts: application/json
+  /api/applications/documentation/paginated:
+    get:
+      operationId: applications.documentation.paginated
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_4'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+      summary: List all applications in need of documentation in a paginated manner.
+      tags:
+      - Applications
+      x-accepts: application/json
+  /api/applications/accepted/paginated:
+    get:
+      operationId: applications.accepted.paginated
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_4'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+      summary: List all accepted applications in a paginated manner.
+      tags:
+      - Applications
+      x-accepts: application/json
+  /api/applications/rejected/paginated:
+    get:
+      operationId: applications.rejected.paginated
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_4'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+      summary: List all rejected applications in a paginated manner.
+      tags:
+      - Applications
+      x-accepts: application/json
+  /api/applications/{applicationId}/find:
+    get:
+      operationId: applications.find
+      parameters:
+      - description: Numeric ID of the application
+        explode: false
+        in: path
+        name: applicationId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_404'
+          description: Not Found
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+      summary: Get an application by ID.
+      tags:
+      - Applications
+      x-accepts: application/json
+  /api/applications/{applicationId}/review:
+    post:
+      operationId: applications.review
+      parameters:
+      - description: Numeric ID of the application
+        explode: false
+        in: path
+        name: applicationId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/inline_object_4'
+        content:
+          multipart/form-data:
+            encoding:
+              files:
+                contentType: application/pdf
+                style: form
+            schema:
+              properties:
+                comments:
+                  type: string
+                files:
+                  items:
+                    format: binary
+                    type: string
+                  type: array
+              required:
+              - comments
+              - files
+              type: object
+        description: Upload the new documentation, with comments if necessary.
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+      summary: Review an application.
+      tags:
+      - Applications
+      x-contentType: multipart/form-data
+      x-accepts: application/json
+  /api/applications/{applicationId}/document:
+    post:
+      operationId: applications.document
+      parameters:
+      - description: Numeric ID of the application
+        explode: false
+        in: path
+        name: applicationId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/inline_object_5'
+        content:
+          application/json:
+            schema:
+              properties:
+                comments:
+                  type: string
+              required:
+              - comments
+              type: object
+        description: Comments that explain the missing documentation and some other
+          relevant information.
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+      summary: Request documentation for an application.
+      tags:
+      - Applications
+      x-contentType: application/json
+      x-accepts: application/json
+  /api/applications/{applicationId}/accept:
+    post:
+      operationId: applications.accept
+      parameters:
+      - description: Numeric ID of the application
+        explode: false
+        in: path
+        name: applicationId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/inline_object_6'
+        content:
+          application/json:
+            schema:
+              properties:
+                comments:
+                  type: string
+              type: object
+        description: Comments to accompany the approval.
+        required: false
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+      summary: Accept an application.
+      tags:
+      - Applications
+      x-contentType: application/json
+      x-accepts: application/json
+  /api/applications/{applicationId}/reject:
+    post:
+      operationId: applications.reject
+      parameters:
+      - description: Numeric ID of the application
+        explode: false
+        in: path
+        name: applicationId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/inline_object_7'
+        content:
+          application/json:
+            schema:
+              properties:
+                comments:
+                  type: string
+              required:
+              - comments
+              type: object
+        description: The reason why the application is being rejected.
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+      summary: Reject an application.
+      tags:
+      - Applications
+      x-contentType: application/json
+      x-accepts: application/json
+  /api/applications/job:
+    get:
+      operationId: applications.job.index
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationArray'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+      summary: List all job applications.
+      tags:
+      - Job Applications
+      x-accepts: application/json
+  /api/applications/job/pending:
+    get:
+      operationId: applications.job.pending.index
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationArray'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+      summary: List all pending job applications.
+      tags:
+      - Job Applications
+      x-accepts: application/json
+  /api/applications/job/documentation:
+    get:
+      operationId: applications.job.documentation.index
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationArray'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+      summary: List all job applications in need of documentation.
+      tags:
+      - Job Applications
+      x-accepts: application/json
+  /api/applications/job/accepted:
+    get:
+      operationId: applications.job.accepted.index
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationArray'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+      summary: List all accepted job applications.
+      tags:
+      - Job Applications
+      x-accepts: application/json
+  /api/applications/job/rejected:
+    get:
+      operationId: applications.job.rejected.index
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationArray'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+      summary: List all rejected job applications.
+      tags:
+      - Job Applications
+      x-accepts: application/json
+  /api/applications/job/paginated:
+    get:
+      operationId: applications.job.paginated
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_4'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+      summary: List all job applications in a paginated manner.
+      tags:
+      - Job Applications
+      x-accepts: application/json
+  /api/applications/job/pending/paginated:
+    get:
+      operationId: applications.job.pending.paginated
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_4'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+      summary: List all pending job applications in a paginated manner.
+      tags:
+      - Job Applications
+      x-accepts: application/json
+  /api/applications/job/documentation/paginated:
+    get:
+      operationId: applications.job.documentation.paginated
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_4'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+      summary: List all job applications in need of documentation in a paginated manner.
+      tags:
+      - Job Applications
+      x-accepts: application/json
+  /api/applications/job/accepted/paginated:
+    get:
+      operationId: applications.job.accepted.paginated
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_4'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+      summary: List all accepted job applications in a paginated manner.
+      tags:
+      - Job Applications
+      x-accepts: application/json
+  /api/applications/job/rejected/paginated:
+    get:
+      operationId: applications.job.rejected.paginated
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_4'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+      summary: List all rejected job applications in a paginated manner.
+      tags:
+      - Job Applications
+      x-accepts: application/json
+  /api/applications/scholarship:
+    get:
+      operationId: applications.scholarship.index
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationArray'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+      summary: List all scholarship applications.
+      tags:
+      - Scholarship Applications
+      x-accepts: application/json
+  /api/applications/scholarship/pending:
+    get:
+      operationId: applications.scholarship.pending.index
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationArray'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+      summary: List all pending scholarship applications.
+      tags:
+      - Scholarship Applications
+      x-accepts: application/json
+  /api/applications/scholarship/documentation:
+    get:
+      operationId: applications.scholarship.documentation.index
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationArray'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+      summary: List all scholarship applications in need of documentation.
+      tags:
+      - Scholarship Applications
+      x-accepts: application/json
+  /api/applications/scholarship/accepted:
+    get:
+      operationId: applications.scholarship.accepted.index
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationArray'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+      summary: List all accepted scholarship applications.
+      tags:
+      - Scholarship Applications
+      x-accepts: application/json
+  /api/applications/scholarship/rejected:
+    get:
+      operationId: applications.scholarship.rejected.index
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationArray'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+      summary: List all rejected scholarship applications.
+      tags:
+      - Scholarship Applications
+      x-accepts: application/json
+  /api/applications/scholarship/paginated:
+    get:
+      operationId: applications.scholarship.paginated
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_4'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+      summary: List all scholarship applications in a paginated manner.
+      tags:
+      - Scholarship Applications
+      x-accepts: application/json
+  /api/applications/scholarship/pending/paginated:
+    get:
+      operationId: applications.scholarship.pending.paginated
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_4'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+      summary: List all pending scholarship applications in a paginated manner.
+      tags:
+      - Scholarship Applications
+      x-accepts: application/json
+  /api/applications/scholarship/documentation/paginated:
+    get:
+      operationId: applications.scholarship.documentation.paginated
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_4'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+      summary: List all scholarship applications in need of documentation in a paginated
+        manner.
+      tags:
+      - Scholarship Applications
+      x-accepts: application/json
+  /api/applications/scholarship/accepted/paginated:
+    get:
+      operationId: applications.scholarship.accepted.paginated
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_4'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+      summary: List all accepted scholarship applications in a paginated manner.
+      tags:
+      - Scholarship Applications
+      x-accepts: application/json
+  /api/applications/scholarship/rejected/paginated:
+    get:
+      operationId: applications.scholarship.rejected.paginated
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_4'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+          description: Forbidden
+        "419":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_419'
+          description: CSRF Mismatch
+      summary: List all rejected scholarship applications in a paginated manner.
+      tags:
+      - Scholarship Applications
+      x-accepts: application/json
 components:
   parameters:
     DepartmentId:
@@ -328,12 +2031,84 @@ components:
         format: int64
         type: integer
       style: simple
+    JobOfferId:
+      description: Numeric ID of the job offer
+      explode: false
+      in: path
+      name: offerId
+      required: true
+      schema:
+        format: int64
+        type: integer
+      style: simple
+    ScholarshipOfferId:
+      description: Numeric ID of the scholarship offer
+      explode: false
+      in: path
+      name: offerId
+      required: true
+      schema:
+        format: int64
+        type: integer
+      style: simple
+    ApplicationId:
+      description: Numeric ID of the application
+      explode: false
+      in: path
+      name: applicationId
+      required: true
+      schema:
+        format: int64
+        type: integer
+      style: simple
   requestBodies:
+    inline_object_1:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_1'
+      required: true
     inline_object:
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/inline_object'
+      required: true
+    inline_object_7:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_7'
+      required: true
+    inline_object_6:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_6'
+      required: false
+    inline_object_5:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_5'
+      required: true
+    inline_object_4:
+      content:
+        multipart/form-data:
+          schema:
+            $ref: '#/components/schemas/inline_object_4'
+      required: true
+    inline_object_3:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_3'
+      required: true
+    inline_object_2:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_2'
       required: true
   responses:
     OK:
@@ -378,6 +2153,30 @@ components:
           schema:
             $ref: '#/components/schemas/DepartmentArray'
       description: OK
+    MajorList:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MajorArray'
+      description: OK
+    JobOfferList:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/JobOfferArray'
+      description: OK
+    ScholarshipOfferList:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ScholarshipOfferArray'
+      description: OK
+    ApplicationList:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApplicationArray'
+      description: OK
     JobOfferPaginated:
       content:
         application/json:
@@ -388,32 +2187,13 @@ components:
       content:
         application/json:
           schema:
-            properties:
-              data:
-                $ref: '#/components/schemas/ScholarshipOfferArray'
-              links:
-                items:
-                  $ref: '#/components/schemas/PaginatedLink'
-                type: array
-              current_page:
-                example: 5
-                type: integer
-              per_page:
-                default: 15
-                example: 15
-                type: integer
-              from:
-                example: 1
-                nullable: true
-                type: integer
-              to:
-                example: 15
-                nullable: true
-                type: integer
-              total:
-                example: 64
-                type: integer
-            type: object
+            $ref: '#/components/schemas/inline_response_200_3'
+      description: OK
+    ApplicationPaginated:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_response_200_4'
       description: OK
   schemas:
     User:
@@ -547,6 +2327,10 @@ components:
         $ref: '#/components/schemas/Department'
       type: array
     Major:
+      example:
+        department_id: 6
+        name: Computer Science
+        id: 0
       properties:
         id:
           format: int64
@@ -611,6 +2395,21 @@ components:
         $ref: '#/components/schemas/JobOffer'
       type: array
     ScholarshipOffer:
+      example:
+        requirements: requirements
+        starts_at: 2000-01-23T04:56:07.000+00:00
+        majors:
+        - department_id: 6
+          name: Computer Science
+          id: 0
+        - department_id: 6
+          name: Computer Science
+          id: 0
+        public: true
+        description: description
+        id: 0
+        ends_at: 2000-01-23T04:56:07.000+00:00
+        title: title
       properties:
         id:
           format: int64
@@ -640,6 +2439,86 @@ components:
         $ref: '#/components/schemas/ScholarshipOffer'
       type: array
     Application:
+      example:
+        offer: '{}'
+        number: 6
+        comments:
+        - user_id: 2
+          id: 9
+          text: https://openapi-generator.tech
+          application_id: 3
+          user:
+            country: United States of America
+            city: Charlotte
+            id_card: id_card
+            last_name: Turner
+            email_verified_at: 2000-01-23T04:56:07.000+00:00
+            middle_name: Latoya
+            password: password
+            phone: phone
+            address_line_1: address_line_1
+            id: 0
+            address_line_2: address_line_2
+            remember_token: remember_token
+            region: North Carolina
+            postal_code: "28001"
+            first_name: Tina
+            email: tinaturner@example.com
+        - user_id: 2
+          id: 9
+          text: https://openapi-generator.tech
+          application_id: 3
+          user:
+            country: United States of America
+            city: Charlotte
+            id_card: id_card
+            last_name: Turner
+            email_verified_at: 2000-01-23T04:56:07.000+00:00
+            middle_name: Latoya
+            password: password
+            phone: phone
+            address_line_1: address_line_1
+            id: 0
+            address_line_2: address_line_2
+            remember_token: remember_token
+            region: North Carolina
+            postal_code: "28001"
+            first_name: Tina
+            email: tinaturner@example.com
+        major:
+          department_id: 6
+          name: Computer Science
+          id: 0
+        user_id: 1
+        id: 0
+        document_files:
+        - path: https://openapi-generator.tech
+          id: 2
+          application_id: 7
+        - path: https://openapi-generator.tech
+          id: 2
+          application_id: 7
+        user:
+          country: United States of America
+          city: Charlotte
+          id_card: id_card
+          last_name: Turner
+          email_verified_at: 2000-01-23T04:56:07.000+00:00
+          middle_name: Latoya
+          password: password
+          phone: phone
+          address_line_1: address_line_1
+          id: 0
+          address_line_2: address_line_2
+          remember_token: remember_token
+          region: North Carolina
+          postal_code: "28001"
+          first_name: Tina
+          email: tinaturner@example.com
+        offer_id: 5
+        offer_type: offer_type
+        major_id: 5
+        status: status
       properties:
         id:
           format: int64
@@ -686,6 +2565,10 @@ components:
         $ref: '#/components/schemas/Application'
       type: array
     DocumentationFile:
+      example:
+        path: https://openapi-generator.tech
+        id: 2
+        application_id: 7
       properties:
         id:
           format: int64
@@ -698,6 +2581,28 @@ components:
           type: integer
       type: object
     Comment:
+      example:
+        user_id: 2
+        id: 9
+        text: https://openapi-generator.tech
+        application_id: 3
+        user:
+          country: United States of America
+          city: Charlotte
+          id_card: id_card
+          last_name: Turner
+          email_verified_at: 2000-01-23T04:56:07.000+00:00
+          middle_name: Latoya
+          password: password
+          phone: phone
+          address_line_1: address_line_1
+          id: 0
+          address_line_2: address_line_2
+          remember_token: remember_token
+          region: North Carolina
+          postal_code: "28001"
+          first_name: Tina
+          email: tinaturner@example.com
       properties:
         id:
           format: int64
@@ -843,6 +2748,11 @@ components:
           example: The page was not found.
           type: string
       type: object
+    inline_object_1:
+      properties:
+        name:
+          type: string
+      type: object
     inline_response_200_2:
       example:
         per_page: 15
@@ -911,5 +2821,319 @@ components:
         total:
           example: 64
           type: integer
+      type: object
+    inline_object_2:
+      properties:
+        name:
+          type: string
+      type: object
+    inline_response_200_3:
+      example:
+        per_page: 15
+        total: 64
+        data:
+        - requirements: requirements
+          starts_at: 2000-01-23T04:56:07.000+00:00
+          majors:
+          - department_id: 6
+            name: Computer Science
+            id: 0
+          - department_id: 6
+            name: Computer Science
+            id: 0
+          public: true
+          description: description
+          id: 0
+          ends_at: 2000-01-23T04:56:07.000+00:00
+          title: title
+        - requirements: requirements
+          starts_at: 2000-01-23T04:56:07.000+00:00
+          majors:
+          - department_id: 6
+            name: Computer Science
+            id: 0
+          - department_id: 6
+            name: Computer Science
+            id: 0
+          public: true
+          description: description
+          id: 0
+          ends_at: 2000-01-23T04:56:07.000+00:00
+          title: title
+        links:
+        - active: true
+          label: "5"
+          url: https://unimanager.snowlinks.net/api/model?page=5
+        - active: true
+          label: "5"
+          url: https://unimanager.snowlinks.net/api/model?page=5
+        from: 1
+        to: 15
+        current_page: 5
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/ScholarshipOffer'
+          type: array
+        links:
+          items:
+            $ref: '#/components/schemas/PaginatedLink'
+          type: array
+        current_page:
+          example: 5
+          type: integer
+        per_page:
+          default: 15
+          example: 15
+          type: integer
+        from:
+          example: 1
+          nullable: true
+          type: integer
+        to:
+          example: 15
+          nullable: true
+          type: integer
+        total:
+          example: 64
+          type: integer
+      type: object
+    inline_object_3:
+      properties:
+        name:
+          type: string
+      type: object
+    inline_response_200_4:
+      example:
+        per_page: 15
+        total: 64
+        data:
+        - offer: '{}'
+          number: 6
+          comments:
+          - user_id: 2
+            id: 9
+            text: https://openapi-generator.tech
+            application_id: 3
+            user:
+              country: United States of America
+              city: Charlotte
+              id_card: id_card
+              last_name: Turner
+              email_verified_at: 2000-01-23T04:56:07.000+00:00
+              middle_name: Latoya
+              password: password
+              phone: phone
+              address_line_1: address_line_1
+              id: 0
+              address_line_2: address_line_2
+              remember_token: remember_token
+              region: North Carolina
+              postal_code: "28001"
+              first_name: Tina
+              email: tinaturner@example.com
+          - user_id: 2
+            id: 9
+            text: https://openapi-generator.tech
+            application_id: 3
+            user:
+              country: United States of America
+              city: Charlotte
+              id_card: id_card
+              last_name: Turner
+              email_verified_at: 2000-01-23T04:56:07.000+00:00
+              middle_name: Latoya
+              password: password
+              phone: phone
+              address_line_1: address_line_1
+              id: 0
+              address_line_2: address_line_2
+              remember_token: remember_token
+              region: North Carolina
+              postal_code: "28001"
+              first_name: Tina
+              email: tinaturner@example.com
+          major:
+            department_id: 6
+            name: Computer Science
+            id: 0
+          user_id: 1
+          id: 0
+          document_files:
+          - path: https://openapi-generator.tech
+            id: 2
+            application_id: 7
+          - path: https://openapi-generator.tech
+            id: 2
+            application_id: 7
+          user:
+            country: United States of America
+            city: Charlotte
+            id_card: id_card
+            last_name: Turner
+            email_verified_at: 2000-01-23T04:56:07.000+00:00
+            middle_name: Latoya
+            password: password
+            phone: phone
+            address_line_1: address_line_1
+            id: 0
+            address_line_2: address_line_2
+            remember_token: remember_token
+            region: North Carolina
+            postal_code: "28001"
+            first_name: Tina
+            email: tinaturner@example.com
+          offer_id: 5
+          offer_type: offer_type
+          major_id: 5
+          status: status
+        - offer: '{}'
+          number: 6
+          comments:
+          - user_id: 2
+            id: 9
+            text: https://openapi-generator.tech
+            application_id: 3
+            user:
+              country: United States of America
+              city: Charlotte
+              id_card: id_card
+              last_name: Turner
+              email_verified_at: 2000-01-23T04:56:07.000+00:00
+              middle_name: Latoya
+              password: password
+              phone: phone
+              address_line_1: address_line_1
+              id: 0
+              address_line_2: address_line_2
+              remember_token: remember_token
+              region: North Carolina
+              postal_code: "28001"
+              first_name: Tina
+              email: tinaturner@example.com
+          - user_id: 2
+            id: 9
+            text: https://openapi-generator.tech
+            application_id: 3
+            user:
+              country: United States of America
+              city: Charlotte
+              id_card: id_card
+              last_name: Turner
+              email_verified_at: 2000-01-23T04:56:07.000+00:00
+              middle_name: Latoya
+              password: password
+              phone: phone
+              address_line_1: address_line_1
+              id: 0
+              address_line_2: address_line_2
+              remember_token: remember_token
+              region: North Carolina
+              postal_code: "28001"
+              first_name: Tina
+              email: tinaturner@example.com
+          major:
+            department_id: 6
+            name: Computer Science
+            id: 0
+          user_id: 1
+          id: 0
+          document_files:
+          - path: https://openapi-generator.tech
+            id: 2
+            application_id: 7
+          - path: https://openapi-generator.tech
+            id: 2
+            application_id: 7
+          user:
+            country: United States of America
+            city: Charlotte
+            id_card: id_card
+            last_name: Turner
+            email_verified_at: 2000-01-23T04:56:07.000+00:00
+            middle_name: Latoya
+            password: password
+            phone: phone
+            address_line_1: address_line_1
+            id: 0
+            address_line_2: address_line_2
+            remember_token: remember_token
+            region: North Carolina
+            postal_code: "28001"
+            first_name: Tina
+            email: tinaturner@example.com
+          offer_id: 5
+          offer_type: offer_type
+          major_id: 5
+          status: status
+        links:
+        - active: true
+          label: "5"
+          url: https://unimanager.snowlinks.net/api/model?page=5
+        - active: true
+          label: "5"
+          url: https://unimanager.snowlinks.net/api/model?page=5
+        from: 1
+        to: 15
+        current_page: 5
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/Application'
+          type: array
+        links:
+          items:
+            $ref: '#/components/schemas/PaginatedLink'
+          type: array
+        current_page:
+          example: 5
+          type: integer
+        per_page:
+          default: 15
+          example: 15
+          type: integer
+        from:
+          example: 1
+          nullable: true
+          type: integer
+        to:
+          example: 15
+          nullable: true
+          type: integer
+        total:
+          example: 64
+          type: integer
+      type: object
+    inline_object_4:
+      properties:
+        comments:
+          type: string
+        files:
+          items:
+            format: binary
+            type: string
+          type: array
+      required:
+      - comments
+      - files
+      type: object
+    inline_object_5:
+      properties:
+        comments:
+          type: string
+      required:
+      - comments
+      type: object
+    inline_object_6:
+      properties:
+        comments:
+          type: string
+      type: object
+    inline_object_7:
+      properties:
+        comments:
+          type: string
+      required:
+      - comments
       type: object
 

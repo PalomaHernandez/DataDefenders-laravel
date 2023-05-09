@@ -1,8 +1,8 @@
 openapi: 3.0.0
 info:
   title: UniManager API Documentation
-  description: Needs no description.
-  version: 0.0.1
+  description: This documentation corresponds to the very first version of our API for developers.
+  version: 0.0.3
 components:
   schemas:
     User:
@@ -474,6 +474,37 @@ components:
               total:
                 type: integer
                 example: 64
+    ApplicationPaginated:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/components/schemas/ApplicationArray'
+              links:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PaginatedLink'
+              current_page:
+                type: integer
+                example: 5
+              per_page:
+                type: integer
+                example: 15
+                default: 15
+              from:
+                type: integer
+                example: 1
+                nullable: true
+              to:
+                type: integer
+                example: 15
+                nullable: true
+              total:
+                type: integer
+                example: 64
   parameters:
     DepartmentId:
       in: path
@@ -493,7 +524,7 @@ components:
       description: Numeric ID of the Major
     JobOfferId:
       in: path
-      name: jobOfferId
+      name: offerId
       schema:
         type: integer
         format: int64
@@ -501,7 +532,7 @@ components:
       description: Numeric ID of the job offer
     ScholarshipOfferId:
       in: path
-      name: scholarshipOfferId
+      name: offerId
       schema:
         type: integer
         format: int64
@@ -775,72 +806,74 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/offers/job/{jobOfferId}/find:
+  /api/offers/job/{offerId}/find:
     get:
-          tags:
-            - Job Offers
-          summary: Get a job offer by ID
-          operationId: offers.job.find
-          parameters:
-            - $ref: '#/components/parameters/JobOfferId'
-          responses:
-            '200':
-              description: OK
-              content:
-                application/json:
-                  schema:
-                    $ref: '#/components/schemas/JobOffer'
-            '403':
-              $ref: '#/components/responses/Forbidden'
-            '404':
-              $ref: '#/components/responses/NotFound'
-            '419':
-              $ref: '#/components/responses/CSRF'
-  /api/offers/job/{jobOfferId}/store:
-      post:
-        tags:
-          - Job Offers
-        summary: Creates a new job offer.
-        operationId: offers.job.store
-        requestBody:
-          description: The new job offer's name.
-          required: true
+      tags:
+        - Job Offers
+      summary: Get a job offer by ID
+      operationId: offers.job.find
+      parameters:
+        - $ref: '#/components/parameters/JobOfferId'
+      responses:
+        '200':
+          description: OK
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  name:
-                    type: string
-        responses:
-          '200':
-            $ref: '#/components/responses/OK'
-          '403':
-            $ref: '#/components/responses/Forbidden'
-          '419':
-            $ref: '#/components/responses/CSRF'
-          '422':
-            $ref: '#/components/responses/UnprocessableContent'
-  /api/offers/job/{jobOfferId}/update:
-      patch:
-        tags:
-          - Job Offers
-        summary: Update the identified job offer.
-        operationId: offers.job.update
-        parameters:
+                $ref: '#/components/schemas/JobOffer'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /api/offers/job/{offerId}/store:
+    post:
+      tags:
+        - Job Offers
+      summary: Creates a new job offer.
+      operationId: offers.job.store
+      parameters:
           - $ref: '#/components/parameters/JobOfferId'
-        responses:
-          '200':
-            $ref: '#/components/responses/OK'
-          '403':
-            $ref: '#/components/responses/Forbidden'
-          '404':
-            $ref: '#/components/responses/NotFound'
-          '419':
-            $ref: '#/components/responses/CSRF'
-          '422':
-            $ref: '#/components/responses/UnprocessableContent'
-  /api/offers/job/{jobOfferId}/delete:
+      requestBody:
+        description: The new job offer's name.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/OK'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+        '422':
+          $ref: '#/components/responses/UnprocessableContent'
+  /api/offers/job/{offerId}/update:
+    patch:
+      tags:
+        - Job Offers
+      summary: Update the identified job offer.
+      operationId: offers.job.update
+      parameters:
+        - $ref: '#/components/parameters/JobOfferId'
+      responses:
+        '200':
+          $ref: '#/components/responses/OK'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '419':
+          $ref: '#/components/responses/CSRF'
+        '422':
+          $ref: '#/components/responses/UnprocessableContent'
+  /api/offers/job/{offerId}/delete:
     delete:
       tags:
         - Job Offers
@@ -885,7 +918,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/offers/scholarship/{scholarshipOfferId}/find:
+  /api/offers/scholarship/{offerId}/find:
     get:
       tags:
         - Scholarship Offers
@@ -906,12 +939,14 @@ paths:
           $ref: '#/components/responses/NotFound'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/offers/scholarship/{scholarshipOfferId}/store:
+  /api/offers/scholarship/{offerId}/store:
     post:
       tags:
         - Scholarship Offers
       summary: Creates a new scholarship offer.
       operationId: offers.scholarship.store
+      parameters:
+        - $ref: '#/components/parameters/ScholarshipOfferId'
       requestBody:
         description: The new scholarship offer's name.
         required: true
@@ -931,7 +966,7 @@ paths:
           $ref: '#/components/responses/CSRF'
         '422':
           $ref: '#/components/responses/UnprocessableContent'
-  /api/offers/scholarship/{scholarshipOfferId}/update:
+  /api/offers/scholarship/{offerId}/update:
     patch:
       tags:
         - Scholarship Offers
@@ -950,7 +985,7 @@ paths:
           $ref: '#/components/responses/CSRF'
         '422':
           $ref: '#/components/responses/UnprocessableContent'
-  /api/offers/scholarship/{scholarshipOfferId}/delete:
+  /api/offers/scholarship/{offerId}/delete:
     delete:
       tags:
         - Scholarship Offers
@@ -1042,7 +1077,7 @@ paths:
       operationId: applications.paginated
       responses:
         '200':
-          $ref: '#/components/responses/ApplicationList'
+          $ref: '#/components/responses/ApplicationPaginated'
         '403':
           $ref: '#/components/responses/Forbidden'
         '419':
@@ -1055,7 +1090,7 @@ paths:
       operationId: applications.pending.paginated
       responses:
         '200':
-          $ref: '#/components/responses/ApplicationList'
+          $ref: '#/components/responses/ApplicationPaginated'
         '403':
           $ref: '#/components/responses/Forbidden'
         '419':
@@ -1068,7 +1103,7 @@ paths:
       operationId: applications.documentation.paginated
       responses:
         '200':
-          $ref: '#/components/responses/ApplicationList'
+          $ref: '#/components/responses/ApplicationPaginated'
         '403':
           $ref: '#/components/responses/Forbidden'
         '419':
@@ -1081,7 +1116,7 @@ paths:
       operationId: applications.accepted.paginated
       responses:
         '200':
-          $ref: '#/components/responses/ApplicationList'
+          $ref: '#/components/responses/ApplicationPaginated'
         '403':
           $ref: '#/components/responses/Forbidden'
         '419':
@@ -1094,7 +1129,7 @@ paths:
       operationId: applications.rejected.paginated
       responses:
         '200':
-          $ref: '#/components/responses/ApplicationList'
+          $ref: '#/components/responses/ApplicationPaginated'
         '403':
           $ref: '#/components/responses/Forbidden'
         '419':
@@ -1129,15 +1164,26 @@ paths:
       parameters:
           - $ref: '#/components/parameters/ApplicationId'
       requestBody:
-        description: Hola
+        description: Upload the new documentation, with comments if necessary.
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
               type: object
               properties:
-                name:
+                comments:
                   type: string
+                files:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+              required:
+                - comments
+                - files
+            encoding:
+              files:
+                contentType: application/pdf
       responses:
         '200':
           $ref: '#/components/responses/OK'
@@ -1152,17 +1198,19 @@ paths:
       summary: Request documentation for an application.
       operationId: applications.document
       parameters:
-          - $ref: '#/components/parameters/ApplicationId'
+        - $ref: '#/components/parameters/ApplicationId'
       requestBody:
-        description: Hola
+        description: Comments that explain the missing documentation and some other relevant information.
         required: true
         content:
           application/json:
             schema:
               type: object
               properties:
-                name:
+                comments:
                   type: string
+              required:
+                - comments
       responses:
         '200':
           $ref: '#/components/responses/OK'
@@ -1177,16 +1225,16 @@ paths:
       summary: Accept an application.
       operationId: applications.accept
       parameters:
-          - $ref: '#/components/parameters/ApplicationId'
+        - $ref: '#/components/parameters/ApplicationId'
       requestBody:
-        description: Hola
-        required: true
+        description: Comments to accompany the approval.
+        required: false
         content:
           application/json:
             schema:
               type: object
               properties:
-                name:
+                comments:
                   type: string
       responses:
         '200':
@@ -1202,17 +1250,19 @@ paths:
       summary: Reject an application.
       operationId: applications.reject
       parameters:
-          - $ref: '#/components/parameters/ApplicationId'
+        - $ref: '#/components/parameters/ApplicationId'
       requestBody:
-        description: Hola
+        description: The reason why the application is being rejected.
         required: true
         content:
           application/json:
             schema:
               type: object
               properties:
-                name:
+                comments:
                   type: string
+              required:
+                - comments
       responses:
         '200':
           $ref: '#/components/responses/OK'
@@ -1223,7 +1273,7 @@ paths:
   /api/applications/job:
     get:
       tags:
-        - Applications
+        - Job Applications
       summary: List all job applications.
       operationId: applications.job.index
       responses:
@@ -1236,7 +1286,7 @@ paths:
   /api/applications/job/pending:
     get:
       tags:
-        - Applications
+        - Job Applications
       summary: List all pending job applications.
       operationId: applications.job.pending.index
       responses:
@@ -1249,7 +1299,7 @@ paths:
   /api/applications/job/documentation:
     get:
       tags:
-        - Applications
+        - Job Applications
       summary: List all job applications in need of documentation.
       operationId: applications.job.documentation.index
       responses:
@@ -1262,7 +1312,7 @@ paths:
   /api/applications/job/accepted:
     get:
       tags:
-        - Applications
+        - Job Applications
       summary: List all accepted job applications.
       operationId: applications.job.accepted.index
       responses:
@@ -1275,7 +1325,7 @@ paths:
   /api/applications/job/rejected:
     get:
       tags:
-        - Applications
+        - Job Applications
       summary: List all rejected job applications.
       operationId: applications.job.rejected.index
       responses:
@@ -1288,12 +1338,12 @@ paths:
   /api/applications/job/paginated:
     get:
       tags:
-        - Applications
+        - Job Applications
       summary: List all job applications in a paginated manner.
       operationId: applications.job.paginated
       responses:
         '200':
-          $ref: '#/components/responses/ApplicationList'
+          $ref: '#/components/responses/ApplicationPaginated'
         '403':
           $ref: '#/components/responses/Forbidden'
         '419':
@@ -1301,12 +1351,12 @@ paths:
   /api/applications/job/pending/paginated:
     get:
       tags:
-        - Applications
+        - Job Applications
       summary: List all pending job applications in a paginated manner.
       operationId: applications.job.pending.paginated
       responses:
         '200':
-          $ref: '#/components/responses/ApplicationList'
+          $ref: '#/components/responses/ApplicationPaginated'
         '403':
           $ref: '#/components/responses/Forbidden'
         '419':
@@ -1314,12 +1364,12 @@ paths:
   /api/applications/job/documentation/paginated:
     get:
       tags:
-        - Applications
+        - Job Applications
       summary: List all job applications in need of documentation in a paginated manner.
       operationId: applications.job.documentation.paginated
       responses:
         '200':
-          $ref: '#/components/responses/ApplicationList'
+          $ref: '#/components/responses/ApplicationPaginated'
         '403':
           $ref: '#/components/responses/Forbidden'
         '419':
@@ -1327,12 +1377,12 @@ paths:
   /api/applications/job/accepted/paginated:
     get:
       tags:
-        - Applications
+        - Job Applications
       summary: List all accepted job applications in a paginated manner.
       operationId: applications.job.accepted.paginated
       responses:
         '200':
-          $ref: '#/components/responses/ApplicationList'
+          $ref: '#/components/responses/ApplicationPaginated'
         '403':
           $ref: '#/components/responses/Forbidden'
         '419':
@@ -1340,12 +1390,12 @@ paths:
   /api/applications/job/rejected/paginated:
     get:
       tags:
-        - Applications
+        - Job Applications
       summary: List all rejected job applications in a paginated manner.
       operationId: applications.job.rejected.paginated
       responses:
         '200':
-          $ref: '#/components/responses/ApplicationList'
+          $ref: '#/components/responses/ApplicationPaginated'
         '403':
           $ref: '#/components/responses/Forbidden'
         '419':
@@ -1353,7 +1403,7 @@ paths:
   /api/applications/scholarship:
     get:
       tags:
-        - Applications
+        - Scholarship Applications
       summary: List all scholarship applications.
       operationId: applications.scholarship.index
       responses:
@@ -1366,7 +1416,7 @@ paths:
   /api/applications/scholarship/pending:
     get:
       tags:
-        - Applications
+        - Scholarship Applications
       summary: List all pending scholarship applications.
       operationId: applications.scholarship.pending.index
       responses:
@@ -1379,9 +1429,9 @@ paths:
   /api/applications/scholarship/documentation:
     get:
       tags:
-        - Applications
+        - Scholarship Applications
       summary: List all scholarship applications in need of documentation.
-      operationId: applications.scholarship.pending.index
+      operationId: applications.scholarship.documentation.index
       responses:
         '200':
           $ref: '#/components/responses/ApplicationList'
@@ -1392,7 +1442,7 @@ paths:
   /api/applications/scholarship/accepted:
     get:
       tags:
-        - Applications
+        - Scholarship Applications
       summary: List all accepted scholarship applications.
       operationId: applications.scholarship.accepted.index
       responses:
@@ -1405,7 +1455,7 @@ paths:
   /api/applications/scholarship/rejected:
     get:
       tags:
-        - Applications
+        - Scholarship Applications
       summary: List all rejected scholarship applications.
       operationId: applications.scholarship.rejected.index
       responses:
@@ -1418,12 +1468,12 @@ paths:
   /api/applications/scholarship/paginated:
     get:
       tags:
-        - Applications
+        - Scholarship Applications
       summary: List all scholarship applications in a paginated manner.
       operationId: applications.scholarship.paginated
       responses:
         '200':
-          $ref: '#/components/responses/ApplicationList'
+          $ref: '#/components/responses/ApplicationPaginated'
         '403':
           $ref: '#/components/responses/Forbidden'
         '419':
@@ -1431,12 +1481,12 @@ paths:
   /api/applications/scholarship/pending/paginated:
     get:
       tags:
-        - Applications
+        - Scholarship Applications
       summary: List all pending scholarship applications in a paginated manner.
       operationId: applications.scholarship.pending.paginated
       responses:
         '200':
-          $ref: '#/components/responses/ApplicationList'
+          $ref: '#/components/responses/ApplicationPaginated'
         '403':
           $ref: '#/components/responses/Forbidden'
         '419':
@@ -1444,12 +1494,12 @@ paths:
   /api/applications/scholarship/documentation/paginated:
     get:
       tags:
-        - Applications
+        - Scholarship Applications
       summary: List all scholarship applications in need of documentation in a paginated manner.
       operationId: applications.scholarship.documentation.paginated
       responses:
         '200':
-          $ref: '#/components/responses/ApplicationList'
+          $ref: '#/components/responses/ApplicationPaginated'
         '403':
           $ref: '#/components/responses/Forbidden'
         '419':
@@ -1457,12 +1507,12 @@ paths:
   /api/applications/scholarship/accepted/paginated:
     get:
       tags:
-        - Applications
+        - Scholarship Applications
       summary: List all accepted scholarship applications in a paginated manner.
       operationId: applications.scholarship.accepted.paginated
       responses:
         '200':
-          $ref: '#/components/responses/ApplicationList'
+          $ref: '#/components/responses/ApplicationPaginated'
         '403':
           $ref: '#/components/responses/Forbidden'
         '419':
@@ -1470,12 +1520,12 @@ paths:
   /api/applications/scholarship/rejected/paginated:
     get:
       tags:
-        - Applications
+        - Scholarship Applications
       summary: List all rejected scholarship applications in a paginated manner.
       operationId: applications.scholarship.rejected.paginated
       responses:
         '200':
-          $ref: '#/components/responses/ApplicationList'
+          $ref: '#/components/responses/ApplicationPaginated'
         '403':
           $ref: '#/components/responses/Forbidden'
         '419':
