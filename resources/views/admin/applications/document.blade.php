@@ -17,7 +17,7 @@
 			</x-slot:title>
 			<x-slot:description>Require documentation for the {{ $application->offer->displayName }} application.</x-slot:description>
 			<x-slot:buttons>
-				@can('require.request.documentation')
+				@can('require.application.documentation')
 					<button type="submit" class="btn bg-purple-700 text-white">
 						<i class="fa-solid fa-file-lines"></i>
 						Require documentation

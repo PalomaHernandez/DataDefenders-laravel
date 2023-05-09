@@ -43,17 +43,17 @@
 								Scholarships
 							</a>
 						@endcan
-						@canany(['list.requests', 'require.request.documentation'])
+						@canany(['list.applications', 'require.application.documentation'])
 							<p class="nav-p">Applications</p>
 							<a href="{{ route('applications.index') }}" class="nav-item @if(Route::currentRouteNamed('applications.index')) nav-item-active @endif">
 								<i class="fa-solid fa-file-circle-question"></i>
 								All
 							</a>
-							<a href="{{ route('applications.job.index') }}" class="nav-item @if(Route::currentRouteNamed('requests.job.*')) nav-item-active @endif">
+							<a href="{{ route('applications.job.index') }}" class="nav-item @if(Route::currentRouteNamed('applications.job.*')) nav-item-active @endif">
 								<i class="fa-solid fa-file-contract"></i>
 								Job Applications
 							</a>
-							<a href="{{ route('applications.scholarship.index') }}" class="nav-item @if(Route::currentRouteNamed('requests.scholarship.*')) nav-item-active @endif">
+							<a href="{{ route('applications.scholarship.index') }}" class="nav-item @if(Route::currentRouteNamed('applications.scholarship.*')) nav-item-active @endif">
 								<i class="fa-solid fa-file-signature"></i>
 								Scholarship Applications
 							</a>

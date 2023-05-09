@@ -18,15 +18,15 @@
 		<x-slot:buttons>
 			@if($application->canUpdate)
 				<div class="flex items-center gap-3">
-					@can('reject.requests')
+					@can('reject.applications')
 						<a href="{{ route('applications.reject_confirm', $application) }}" class="btn bg-red-700 text-white">
 							<i class="fa-solid fa-times"></i> Reject </a>
 					@endcan
-					@can('require.request.documentation')
+					@can('require.application.documentation')
 						<a href="{{ route('applications.document_confirm', $application) }}" class="btn bg-purple-700 text-white">
 							<i class="fa-solid fa-file-lines"></i> Request documentation </a>
 					@endcan
-					@can('accept.requests')
+					@can('accept.applications')
 						<a href="{{ route('applications.accept_confirm', $application) }}" class="btn bg-green-700 text-white">
 							<i class="fa-solid fa-check"></i> Accept </a>
 					@endcan

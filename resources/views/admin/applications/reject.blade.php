@@ -17,7 +17,7 @@
 			</x-slot:title>
 			<x-slot:description>Reject the {{ $application->offer->displayName }} application.</x-slot:description>
 			<x-slot:buttons>
-				@can('reject.requests')
+				@can('reject.applications')
 					<button type="submit" class="btn bg-red-700 text-white">
 						<i class="fa-solid fa-times"></i>
 						Reject

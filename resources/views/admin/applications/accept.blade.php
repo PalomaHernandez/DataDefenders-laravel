@@ -17,7 +17,7 @@
 			</x-slot:title>
 			<x-slot:description>Accept the {{ $application->offer->displayName }} application.</x-slot:description>
 			<x-slot:buttons>
-				@can('accept.requests')
+				@can('accept.applications')
 					<button type="submit" class="btn bg-green-700 text-white">
 						<i class="fa-solid fa-check"></i>
 						Accept
