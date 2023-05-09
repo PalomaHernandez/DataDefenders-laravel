@@ -10,11 +10,14 @@ return new class extends Migration {
 	 * Run the migrations.
 	 */
 	public function up():void{
-		Schema::create('comments', function (Blueprint $table){
+		Schema::create('applications', function (Blueprint $table){
 			$table->id();
-			$table->mediumText('text');
-			$table->foreignId('application_id')->references('id')->on('applications')->restrictOnDelete()->cascadeOnUpdate();
+			$table->unsignedBigInteger('number')->unique();
 			$table->foreignId('user_id')->references('id')->on('users')->restrictOnDelete()->cascadeOnUpdate();
+			$table->unsignedBigInteger('offer_id');
+			$table->string('offer_type');
+			$table->enum('status', ['pending', 'documentation', 'accepted', 'rejected']);
+			$table->foreignId('major_id')->nullable()->references('id')->on('majors')->restrictOnDelete()->cascadeOnUpdate();
 			$table->timestamps();
 		});
 	}
@@ -23,7 +26,7 @@ return new class extends Migration {
 	 * Reverse the migrations.
 	 */
 	public function down():void{
-		Schema::dropIfExists('comments');
+		Schema::dropIfExists('applications');
 	}
 
 };

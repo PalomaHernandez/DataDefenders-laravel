@@ -15,8 +15,8 @@ class Comment extends Model {
 		'text'
 	];
 
-	public function request():BelongsTo{
-		return $this->belongsTo(Request::class);
+	public function application():BelongsTo{
+		return $this->belongsTo(Application::class);
 	}
 
 	public function user():BelongsTo{

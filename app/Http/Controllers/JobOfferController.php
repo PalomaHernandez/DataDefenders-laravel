@@ -10,7 +10,7 @@ use Illuminate\Validation\ValidationException;
 class JobOfferController extends Controller {
 
 	public function index(){
-		$offers = JobOffer::withCount('requests')->latest()->paginate();
+		$offers = JobOffer::withCount('applications')->latest()->paginate();
 		return view('admin.offers.job.index', compact('offers'));
 	}
 
@@ -72,7 +72,7 @@ class JobOfferController extends Controller {
 
 	public function delete_confirm(JobOffer $offer){
 		try {
-			if($offer->requests()->exists()){
+			if($offer->applications()->exists()){
 				throw new OfferHasAtLeastOneRequestException();
 			}
 			return view('admin.offers.job.delete', compact('offer'));
@@ -85,7 +85,7 @@ class JobOfferController extends Controller {
 
 	public function delete(JobOffer $offer){
 		try {
-			if($offer->requests()->exists()){
+			if($offer->applications()->exists()){
 				throw new OfferHasAtLeastOneRequestException();
 			}
 			$offer->delete();

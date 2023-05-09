@@ -13,7 +13,7 @@ return new class extends Migration {
 		Schema::create('documentation_files', function (Blueprint $table){
 			$table->id();
 			$table->mediumText('path');
-			$table->foreignId('request_id')->references('id')->on('requests')->restrictOnDelete()->cascadeOnUpdate();
+			$table->foreignId('application_id')->references('id')->on('applications')->restrictOnDelete()->cascadeOnUpdate();
 			$table->timestamps();
 		});
 	}
