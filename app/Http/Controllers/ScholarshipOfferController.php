@@ -9,7 +9,7 @@ use Illuminate\Validation\ValidationException;
 class ScholarshipOfferController extends Controller {
 
 	public function index(){
-		$offers = ScholarshipOffer::withCount('requests')->latest()->paginate();
+		$offers = ScholarshipOffer::withCount('applications')->latest()->paginate();
 		return view('admin.offers.scholarship.index', compact('offers'));
 	}
 
@@ -63,7 +63,7 @@ class ScholarshipOfferController extends Controller {
 
 	public function delete_confirm(ScholarshipOffer $offer){
 		try {
-			if($offer->requests()->exists()){
+			if($offer->applications()->exists()){
 				throw new OfferHasAtLeastOneRequestException();
 			}
 			return view('admin.offers.scholarship.delete', compact('offer'));
@@ -76,7 +76,7 @@ class ScholarshipOfferController extends Controller {
 
 	public function delete(ScholarshipOffer $offer){
 		try {
-			if($offer->requests()->exists()){
+			if($offer->applications()->exists()){
 				throw new OfferHasAtLeastOneRequestException();
 			}
 			$offer->delete();

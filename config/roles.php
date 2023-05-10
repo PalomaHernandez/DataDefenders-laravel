@@ -4,10 +4,10 @@ return [
 		'*'
 	],
 	'Executive' => [
-		'list.requests',
-		'require.request.documentation',
-		'accept.requests',
-		'reject.requests',
+		'list.applications',
+		'require.application.documentation',
+		'accept.applications',
+		'reject.applications',
 	],
 	'Offer Manager' => [
 		'list.offers',
@@ -25,8 +25,8 @@ return [
 	],
 	'Applicant' => [
 		'apply.to.offers',
-		'list.own.requests',
-		'review.own.requests',
-		'delete.own.requests',
+		'list.own.applications',
+		'review.own.applications',
+		'delete.own.applications',
 	],
 ];

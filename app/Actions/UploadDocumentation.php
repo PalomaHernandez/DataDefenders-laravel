@@ -2,12 +2,12 @@
 
 namespace App\Actions;
 
-use App\Models\Request;
+use App\Models\Application;
 use Illuminate\Support\Facades\Storage;
 
 class UploadDocumentation {
 
-	public static function execute(Request $request):void{
+	public static function execute(Application $request):void{
 		$files = request()->file('files');
 		foreach($files as $file){
 			$request->documentationFiles()->create([

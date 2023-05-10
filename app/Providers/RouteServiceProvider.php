@@ -32,9 +32,9 @@ class RouteServiceProvider extends ServiceProvider {
 					Route::prefix('departments')->group(base_path('routes/api/departments.php'));
 					Route::prefix('majors')->group(base_path('routes/api/majors.php'));
 					Route::prefix('reports')->group(base_path('routes/api/reports.php'));
-					Route::prefix('requests')->group(base_path('routes/api/requests/index.php'));
-					Route::prefix('requests/job')->group(base_path('routes/api/requests/job/index.php'));
-					Route::prefix('requests/scholarship')->group(base_path('routes/api/requests/scholarship/index.php'));
+					Route::prefix('applications')->group(base_path('routes/api/applications/index.php'));
+					Route::prefix('applications/job')->group(base_path('routes/api/applications/job/index.php'));
+					Route::prefix('applications/scholarship')->group(base_path('routes/api/applications/scholarship/index.php'));
 					Route::prefix('offers/job')->group(base_path('routes/api/offers/job.php'));
 					Route::prefix('offers/scholarship')->group(base_path('routes/api/offers/scholarship.php'));
 				});
@@ -49,9 +49,9 @@ class RouteServiceProvider extends ServiceProvider {
 					Route::prefix('my-account')->group(base_path('routes/web/account/index.php'));
 					Route::prefix('admin/departments')->group(base_path('routes/web/admin/departments.php'));
 					Route::prefix('admin/majors')->group(base_path('routes/web/admin/majors.php'));
-					Route::prefix('admin/requests')->group(base_path('routes/web/admin/requests/index.php'));
-					Route::prefix('admin/requests/job')->group(base_path('routes/web/admin/requests/jobs/index.php'));
-					Route::prefix('admin/requests/scholarship')->group(base_path('routes/web/admin/requests/scholarships/index.php'));
+					Route::prefix('admin/applications')->group(base_path('routes/web/admin/applications/index.php'));
+					Route::prefix('admin/applications/job')->group(base_path('routes/web/admin/applications/jobs/index.php'));
+					Route::prefix('admin/applications/scholarship')->group(base_path('routes/web/admin/applications/scholarships/index.php'));
 					Route::prefix('admin/offers/job')->group(base_path('routes/web/admin/offers/job.php'));
 					Route::prefix('admin/offers/scholarship')->group(base_path('routes/web/admin/offers/scholarship.php'));
 				});

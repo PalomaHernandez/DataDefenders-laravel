@@ -10,8 +10,8 @@ class DocumentationFile extends Model {
 
 	use HasFactory;
 
-	public function request():BelongsTo{
-		return $this->belongsTo(Request::class);
+	public function application():BelongsTo{
+		return $this->belongsTo(Application::class);
 	}
 
 }

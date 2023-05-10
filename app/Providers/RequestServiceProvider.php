@@ -2,13 +2,13 @@
 
 namespace App\Providers;
 
-use App\Contracts\RequestRepository;
-use App\Http\Controllers\JobRequestController;
-use App\Http\Controllers\RequestController;
-use App\Http\Controllers\ScholarshipRequestController;
-use App\Repositories\AllRequestRepository;
-use App\Repositories\JobRequestRepository;
-use App\Repositories\ScholarshipRequestRepository;
+use App\Contracts\ApplicationRepository;
+use App\Http\Controllers\JobApplicationController;
+use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\ScholarshipApplicationController;
+use App\Repositories\AllApplicationRepository;
+use App\Repositories\JobApplicationRepository;
+use App\Repositories\ScholarshipApplicationRepository;
 use Illuminate\Support\ServiceProvider;
 
 class RequestServiceProvider extends ServiceProvider {
@@ -17,17 +17,17 @@ class RequestServiceProvider extends ServiceProvider {
 	 * Register services.
 	 */
 	public function register():void{
-		$this->app->when(RequestController::class)
-			->needs(RequestRepository::class)
-			->give(AllRequestRepository::class);
+		$this->app->when(ApplicationController::class)
+			->needs(ApplicationRepository::class)
+			->give(AllApplicationRepository::class);
 
-		$this->app->when(JobRequestController::class)
-			->needs(RequestRepository::class)
-			->give(JobRequestRepository::class);
+		$this->app->when(JobApplicationController::class)
+			->needs(ApplicationRepository::class)
+			->give(JobApplicationRepository::class);
 
-		$this->app->when(ScholarshipRequestController::class)
-			->needs(RequestRepository::class)
-			->give(ScholarshipRequestRepository::class);
+		$this->app->when(ScholarshipApplicationController::class)
+			->needs(ApplicationRepository::class)
+			->give(ScholarshipApplicationRepository::class);
 	}
 
 	/**

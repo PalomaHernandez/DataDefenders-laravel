@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Contracts\Offer;
-use App\Traits\HasRequests;
+use App\Traits\HasApplications;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class JobOffer extends Model implements Offer {
 
-	use HasFactory, HasRequests;
+	use HasFactory, HasApplications;
 
 	protected $fillable = [
 		'title',
