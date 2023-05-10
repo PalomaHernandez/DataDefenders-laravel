@@ -3,7 +3,13 @@ info:
   title: UniManager API Documentation
   description: This documentation corresponds to the very first version of our API for developers.
   version: 0.0.3
+servers:
+  - url: https://unimanager.snowlinks.net/api
 components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
   schemas:
     User:
       type: object
@@ -280,6 +286,16 @@ components:
               message:
                 type: string
                 example: The action was performed successfully.
+    ServerError:
+      description: Server Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: The server could not handle your request.
     NotFound:
       description: Not Found
       content:
@@ -547,11 +563,43 @@ components:
       required: true
       description: Numeric ID of the application
 paths:
-  /api/account:
+  /login:
+    post:
+      tags:
+        - Accounts
+      summary: Log into the system.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager, applicant]
+      operationId: login
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '422':
+          $ref: '#/components/responses/UnprocessableContent'
+  /logout:
+    get:
+      tags:
+        - Accounts
+      summary: Log out of the system.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager, applicant]
+      operationId: logout
+      responses:
+        '200':
+          $ref: '#/components/responses/OK'
+        '500':
+          $ref: '#/components/responses/ServerError'
+  /account:
     get:
       tags:
         - Users
       summary: Show account information.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: account.index
       responses:
         '200':
@@ -564,11 +612,13 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/account/update:
+  /account/update:
     patch:
       tags:
         - Users
       summary: Update account information.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: account.update
       requestBody:
         description: The updated data to save.
@@ -586,11 +636,13 @@ paths:
           $ref: '#/components/responses/CSRF'
         '422':
           $ref: '#/components/responses/UnprocessableContent'
-  /api/departments:
+  /departments:
     get:
       tags:
         - Departments
       summary: List all departments.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: departments.index
       responses:
         '200':
@@ -599,11 +651,13 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/departments/store:
+  /departments/store:
     post:
       tags:
         - Departments
       summary: Creates a new Department.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: departments.store
       requestBody:
         description: The new department's name.
@@ -624,11 +678,13 @@ paths:
           $ref: '#/components/responses/CSRF'
         '422':
           $ref: '#/components/responses/UnprocessableContent'
-  /api/departments/{departmentId}/find:
+  /departments/{departmentId}/find:
     get:
       tags:
         - Departments
       summary: Get a Department by ID
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: departments.find
       parameters:
         - $ref: '#/components/parameters/DepartmentId'
@@ -645,11 +701,13 @@ paths:
           $ref: '#/components/responses/NotFound'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/departments/{departmentId}/update:
+  /departments/{departmentId}/update:
     patch:
       tags:
         - Departments
       summary: Update the identified Department.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: departments.update
       parameters:
         - $ref: '#/components/parameters/DepartmentId'
@@ -664,11 +722,13 @@ paths:
           $ref: '#/components/responses/CSRF'
         '422':
           $ref: '#/components/responses/UnprocessableContent'
-  /api/departments/{departmentId}/delete:
+  /departments/{departmentId}/delete:
     delete:
       tags:
         - Departments
       summary: Delete the identified Department.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: departments.delete
       parameters:
         - $ref: '#/components/parameters/DepartmentId'
@@ -683,24 +743,28 @@ paths:
           $ref: '#/components/responses/CSRF'
         '422':
           $ref: '#/components/responses/UnprocessableContent'
-  /api/majors:
-      get:
-        tags:
-          - Majors
-        summary: List all majors.
-        operationId: majors.index
-        responses:
-          '200':
-            $ref: '#/components/responses/MajorList'
-          '403':
-            $ref: '#/components/responses/Forbidden'
-          '419':
-            $ref: '#/components/responses/CSRF'
-  /api/majors/store:
+  /majors:
+    get:
+      tags:
+        - Majors
+      summary: List all majors.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: majors.index
+      responses:
+        '200':
+          $ref: '#/components/responses/MajorList'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /majors/store:
     post:
       tags:
         - Majors
       summary: Creates a new Major.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: majors.store
       requestBody:
         description: The new majors's name.
@@ -721,11 +785,13 @@ paths:
           $ref: '#/components/responses/CSRF'
         '422':
           $ref: '#/components/responses/UnprocessableContent'
-  /api/majors/{majorId}/find:
+  /majors/{majorId}/find:
     get:
       tags:
         - Majors
       summary: Get a Major by ID
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: majors.find
       parameters:
         - $ref: '#/components/parameters/MajorId'
@@ -742,11 +808,13 @@ paths:
           $ref: '#/components/responses/NotFound'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/majors/{majorId}/update:
+  /majors/{majorId}/update:
     patch:
       tags:
         - Majors
       summary: Update the identified Majors.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: majors.update
       parameters:
         - $ref: '#/components/parameters/MajorId'
@@ -761,11 +829,13 @@ paths:
           $ref: '#/components/responses/CSRF'
         '422':
           $ref: '#/components/responses/UnprocessableContent'
-  /api/majors/{majorId}/delete:
+  /majors/{majorId}/delete:
     delete:
       tags:
         - Majors
       summary: Delete the identified Major.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: majors.delete
       parameters:
         - $ref: '#/components/parameters/MajorId'
@@ -780,11 +850,13 @@ paths:
           $ref: '#/components/responses/CSRF'
         '422':
           $ref: '#/components/responses/UnprocessableContent'
-  /api/offers/job:
+  /offers/job:
     get:
       tags:
         - Job Offers
       summary: List all job offers.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: offers.job.index
       responses:
         '200':
@@ -793,11 +865,13 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/offers/job/paginated:
+  /offers/job/paginated:
     get:
       tags:
         - Job Offers
       summary: List all job offers in a paginated manner.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: offers.job.paginated
       responses:
         '200':
@@ -806,11 +880,13 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/offers/job/{offerId}/find:
+  /offers/job/{offerId}/find:
     get:
       tags:
         - Job Offers
       summary: Get a job offer by ID
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: offers.job.find
       parameters:
         - $ref: '#/components/parameters/JobOfferId'
@@ -827,11 +903,13 @@ paths:
           $ref: '#/components/responses/NotFound'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/offers/job/{offerId}/store:
+  /offers/job/{offerId}/store:
     post:
       tags:
         - Job Offers
       summary: Creates a new job offer.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: offers.job.store
       parameters:
           - $ref: '#/components/parameters/JobOfferId'
@@ -854,11 +932,13 @@ paths:
           $ref: '#/components/responses/CSRF'
         '422':
           $ref: '#/components/responses/UnprocessableContent'
-  /api/offers/job/{offerId}/update:
+  /offers/job/{offerId}/update:
     patch:
       tags:
         - Job Offers
       summary: Update the identified job offer.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: offers.job.update
       parameters:
         - $ref: '#/components/parameters/JobOfferId'
@@ -873,11 +953,13 @@ paths:
           $ref: '#/components/responses/CSRF'
         '422':
           $ref: '#/components/responses/UnprocessableContent'
-  /api/offers/job/{offerId}/delete:
+  /offers/job/{offerId}/delete:
     delete:
       tags:
         - Job Offers
       summary: Delete the identified job offer.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: offers.job.delete
       parameters:
         - $ref: '#/components/parameters/JobOfferId'
@@ -892,11 +974,13 @@ paths:
           $ref: '#/components/responses/CSRF'
         '422':
           $ref: '#/components/responses/UnprocessableContent'
-  /api/offers/scholarship:
+  /offers/scholarship:
     get:
       tags:
         - Scholarship Offers
       summary: List all scholarship offers.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: offers.scholarship.index
       responses:
         '200':
@@ -905,11 +989,13 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/offers/scholarship/paginated:
+  /offers/scholarship/paginated:
     get:
       tags:
         - Scholarship Offers
       summary: List all scholarship offers in a paginated manner.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: offers.scholarship.paginated
       responses:
         '200':
@@ -918,11 +1004,13 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/offers/scholarship/{offerId}/find:
+  /offers/scholarship/{offerId}/find:
     get:
       tags:
         - Scholarship Offers
       summary: Get a scholarship offer by ID
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: offers.scholarship.find
       parameters:
         - $ref: '#/components/parameters/ScholarshipOfferId'
@@ -939,11 +1027,13 @@ paths:
           $ref: '#/components/responses/NotFound'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/offers/scholarship/{offerId}/store:
+  /offers/scholarship/{offerId}/store:
     post:
       tags:
         - Scholarship Offers
       summary: Creates a new scholarship offer.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: offers.scholarship.store
       parameters:
         - $ref: '#/components/parameters/ScholarshipOfferId'
@@ -966,11 +1056,13 @@ paths:
           $ref: '#/components/responses/CSRF'
         '422':
           $ref: '#/components/responses/UnprocessableContent'
-  /api/offers/scholarship/{offerId}/update:
+  /offers/scholarship/{offerId}/update:
     patch:
       tags:
         - Scholarship Offers
       summary: Update the identified scholarship offer.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: offers.scholarship.update
       parameters:
         - $ref: '#/components/parameters/ScholarshipOfferId'
@@ -985,11 +1077,13 @@ paths:
           $ref: '#/components/responses/CSRF'
         '422':
           $ref: '#/components/responses/UnprocessableContent'
-  /api/offers/scholarship/{offerId}/delete:
+  /offers/scholarship/{offerId}/delete:
     delete:
       tags:
         - Scholarship Offers
       summary: Delete the identified scholarship offer.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: offers.scholarship.delete
       parameters:
         - $ref: '#/components/parameters/ScholarshipOfferId'
@@ -1004,11 +1098,13 @@ paths:
           $ref: '#/components/responses/CSRF'
         '422':
           $ref: '#/components/responses/UnprocessableContent'
-  /api/applications:
+  /applications:
     get:
       tags:
         - Applications
       summary: List all applications.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: applications.index
       responses:
         '200':
@@ -1017,11 +1113,13 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/applications/pending:
+  /applications/pending:
     get:
       tags:
         - Applications
       summary: List all pending applications.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: applications.pending.index
       responses:
         '200':
@@ -1030,11 +1128,13 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/applications/documentation:
+  /applications/documentation:
     get:
       tags:
         - Applications
       summary: List all applications in need of documentation.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: applications.documentation.index
       responses:
         '200':
@@ -1043,11 +1143,13 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/applications/accepted:
+  /applications/accepted:
     get:
       tags:
         - Applications
       summary: List all accepted applications.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: applications.accepted.index
       responses:
         '200':
@@ -1056,11 +1158,13 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/applications/rejected:
+  /applications/rejected:
     get:
       tags:
         - Applications
       summary: List all rejected applications.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: applications.rejected.index
       responses:
         '200':
@@ -1069,11 +1173,13 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/applications/paginated:
+  /applications/paginated:
     get:
       tags:
         - Applications
       summary: List all applications in a paginated manner.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: applications.paginated
       responses:
         '200':
@@ -1082,11 +1188,13 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/applications/pending/paginated:
+  /applications/pending/paginated:
     get:
       tags:
         - Applications
       summary: List all pending applications in a paginated manner.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: applications.pending.paginated
       responses:
         '200':
@@ -1095,11 +1203,13 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/applications/documentation/paginated:
+  /applications/documentation/paginated:
     get:
       tags:
         - Applications
       summary: List all applications in need of documentation in a paginated manner.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: applications.documentation.paginated
       responses:
         '200':
@@ -1108,11 +1218,13 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/applications/accepted/paginated:
+  /applications/accepted/paginated:
     get:
       tags:
         - Applications
       summary: List all accepted applications in a paginated manner.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: applications.accepted.paginated
       responses:
         '200':
@@ -1121,11 +1233,13 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/applications/rejected/paginated:
+  /applications/rejected/paginated:
     get:
       tags:
         - Applications
       summary: List all rejected applications in a paginated manner.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: applications.rejected.paginated
       responses:
         '200':
@@ -1134,11 +1248,13 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '419':
           $ref: '#/components/responses/CSRF'  
-  /api/applications/{applicationId}/find:
+  /applications/{applicationId}/find:
     get:
       tags:
         - Applications
       summary: Get an application by ID.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: applications.find
       parameters:
         - $ref: '#/components/parameters/ApplicationId'
@@ -1155,11 +1271,13 @@ paths:
           $ref: '#/components/responses/NotFound'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/applications/{applicationId}/review:
+  /applications/{applicationId}/review:
     post:
       tags:
         - Applications
       summary: Review an application.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: applications.review
       parameters:
           - $ref: '#/components/parameters/ApplicationId'
@@ -1191,11 +1309,13 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/applications/{applicationId}/document:
+  /applications/{applicationId}/document:
     post:
       tags:
         - Applications
       summary: Request documentation for an application.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: applications.document
       parameters:
         - $ref: '#/components/parameters/ApplicationId'
@@ -1218,11 +1338,13 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/applications/{applicationId}/accept:
+  /applications/{applicationId}/accept:
     post:
       tags:
         - Applications
       summary: Accept an application.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: applications.accept
       parameters:
         - $ref: '#/components/parameters/ApplicationId'
@@ -1243,11 +1365,13 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/applications/{applicationId}/reject:
+  /applications/{applicationId}/reject:
     post:
       tags:
         - Applications
       summary: Reject an application.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: applications.reject
       parameters:
         - $ref: '#/components/parameters/ApplicationId'
@@ -1270,11 +1394,13 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/applications/job:
+  /applications/job:
     get:
       tags:
         - Job Applications
       summary: List all job applications.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: applications.job.index
       responses:
         '200':
@@ -1283,11 +1409,13 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/applications/job/pending:
+  /applications/job/pending:
     get:
       tags:
         - Job Applications
       summary: List all pending job applications.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: applications.job.pending.index
       responses:
         '200':
@@ -1296,11 +1424,13 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/applications/job/documentation:
+  /applications/job/documentation:
     get:
       tags:
         - Job Applications
       summary: List all job applications in need of documentation.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: applications.job.documentation.index
       responses:
         '200':
@@ -1309,11 +1439,13 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/applications/job/accepted:
+  /applications/job/accepted:
     get:
       tags:
         - Job Applications
       summary: List all accepted job applications.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: applications.job.accepted.index
       responses:
         '200':
@@ -1322,11 +1454,13 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/applications/job/rejected:
+  /applications/job/rejected:
     get:
       tags:
         - Job Applications
       summary: List all rejected job applications.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: applications.job.rejected.index
       responses:
         '200':
@@ -1335,11 +1469,13 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/applications/job/paginated:
+  /applications/job/paginated:
     get:
       tags:
         - Job Applications
       summary: List all job applications in a paginated manner.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: applications.job.paginated
       responses:
         '200':
@@ -1348,11 +1484,13 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/applications/job/pending/paginated:
+  /applications/job/pending/paginated:
     get:
       tags:
         - Job Applications
       summary: List all pending job applications in a paginated manner.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: applications.job.pending.paginated
       responses:
         '200':
@@ -1361,11 +1499,13 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/applications/job/documentation/paginated:
+  /applications/job/documentation/paginated:
     get:
       tags:
         - Job Applications
       summary: List all job applications in need of documentation in a paginated manner.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: applications.job.documentation.paginated
       responses:
         '200':
@@ -1374,11 +1514,13 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/applications/job/accepted/paginated:
+  /applications/job/accepted/paginated:
     get:
       tags:
         - Job Applications
       summary: List all accepted job applications in a paginated manner.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: applications.job.accepted.paginated
       responses:
         '200':
@@ -1387,11 +1529,13 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/applications/job/rejected/paginated:
+  /applications/job/rejected/paginated:
     get:
       tags:
         - Job Applications
       summary: List all rejected job applications in a paginated manner.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: applications.job.rejected.paginated
       responses:
         '200':
@@ -1400,11 +1544,13 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/applications/scholarship:
+  /applications/scholarship:
     get:
       tags:
         - Scholarship Applications
       summary: List all scholarship applications.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: applications.scholarship.index
       responses:
         '200':
@@ -1413,11 +1559,13 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/applications/scholarship/pending:
+  /applications/scholarship/pending:
     get:
       tags:
         - Scholarship Applications
       summary: List all pending scholarship applications.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: applications.scholarship.pending.index
       responses:
         '200':
@@ -1426,11 +1574,13 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/applications/scholarship/documentation:
+  /applications/scholarship/documentation:
     get:
       tags:
         - Scholarship Applications
       summary: List all scholarship applications in need of documentation.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: applications.scholarship.documentation.index
       responses:
         '200':
@@ -1439,11 +1589,13 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/applications/scholarship/accepted:
+  /applications/scholarship/accepted:
     get:
       tags:
         - Scholarship Applications
       summary: List all accepted scholarship applications.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: applications.scholarship.accepted.index
       responses:
         '200':
@@ -1452,11 +1604,13 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/applications/scholarship/rejected:
+  /applications/scholarship/rejected:
     get:
       tags:
         - Scholarship Applications
       summary: List all rejected scholarship applications.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: applications.scholarship.rejected.index
       responses:
         '200':
@@ -1465,11 +1619,13 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/applications/scholarship/paginated:
+  /applications/scholarship/paginated:
     get:
       tags:
         - Scholarship Applications
       summary: List all scholarship applications in a paginated manner.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: applications.scholarship.paginated
       responses:
         '200':
@@ -1478,11 +1634,13 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/applications/scholarship/pending/paginated:
+  /applications/scholarship/pending/paginated:
     get:
       tags:
         - Scholarship Applications
       summary: List all pending scholarship applications in a paginated manner.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: applications.scholarship.pending.paginated
       responses:
         '200':
@@ -1491,11 +1649,13 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/applications/scholarship/documentation/paginated:
+  /applications/scholarship/documentation/paginated:
     get:
       tags:
         - Scholarship Applications
       summary: List all scholarship applications in need of documentation in a paginated manner.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: applications.scholarship.documentation.paginated
       responses:
         '200':
@@ -1504,11 +1664,13 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/applications/scholarship/accepted/paginated:
+  /applications/scholarship/accepted/paginated:
     get:
       tags:
         - Scholarship Applications
       summary: List all accepted scholarship applications in a paginated manner.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: applications.scholarship.accepted.paginated
       responses:
         '200':
@@ -1517,11 +1679,13 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '419':
           $ref: '#/components/responses/CSRF'
-  /api/applications/scholarship/rejected/paginated:
+  /applications/scholarship/rejected/paginated:
     get:
       tags:
         - Scholarship Applications
       summary: List all rejected scholarship applications in a paginated manner.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
       operationId: applications.scholarship.rejected.paginated
       responses:
         '200':
