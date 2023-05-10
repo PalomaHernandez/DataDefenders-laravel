@@ -5,9 +5,61 @@ info:
   title: UniManager API Documentation
   version: 0.0.3
 servers:
-- url: /
+- url: https://unimanager.snowlinks.net/api
 paths:
-  /api/account:
+  /login:
+    post:
+      operationId: login
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: OK
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_422'
+          description: Unprocessable Content
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
+        - applicant
+      summary: Log into the system.
+      tags:
+      - Accounts
+      x-accepts: application/json
+  /logout:
+    get:
+      operationId: logout
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+          description: OK
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_500'
+          description: Server Error
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
+        - applicant
+      summary: Log out of the system.
+      tags:
+      - Accounts
+      x-accepts: application/json
+  /account:
     get:
       operationId: account.index
       responses:
@@ -29,11 +81,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: Show account information.
       tags:
       - Users
       x-accepts: application/json
-  /api/account/update:
+  /account/update:
     patch:
       operationId: account.update
       requestBody:
@@ -48,7 +105,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200'
+                $ref: '#/components/schemas/inline_response_200_1'
           description: User Response
         "403":
           content:
@@ -68,12 +125,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_422'
           description: Unprocessable Content
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: Update account information.
       tags:
       - Users
       x-contentType: application/json
       x-accepts: application/json
-  /api/departments:
+  /departments:
     get:
       operationId: departments.index
       responses:
@@ -95,11 +157,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: List all departments.
       tags:
       - Departments
       x-accepts: application/json
-  /api/departments/store:
+  /departments/store:
     post:
       operationId: departments.store
       requestBody:
@@ -118,7 +185,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_1'
+                $ref: '#/components/schemas/inline_response_200'
           description: OK
         "403":
           content:
@@ -138,12 +205,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_422'
           description: Unprocessable Content
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: Creates a new Department.
       tags:
       - Departments
       x-contentType: application/json
       x-accepts: application/json
-  /api/departments/{departmentId}/find:
+  /departments/{departmentId}/find:
     get:
       operationId: departments.find
       parameters:
@@ -181,11 +253,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: Get a Department by ID
       tags:
       - Departments
       x-accepts: application/json
-  /api/departments/{departmentId}/update:
+  /departments/{departmentId}/update:
     patch:
       operationId: departments.update
       parameters:
@@ -203,7 +280,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_1'
+                $ref: '#/components/schemas/inline_response_200'
           description: OK
         "403":
           content:
@@ -229,11 +306,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_422'
           description: Unprocessable Content
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: Update the identified Department.
       tags:
       - Departments
       x-accepts: application/json
-  /api/departments/{departmentId}/delete:
+  /departments/{departmentId}/delete:
     delete:
       operationId: departments.delete
       parameters:
@@ -251,7 +333,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_1'
+                $ref: '#/components/schemas/inline_response_200'
           description: OK
         "403":
           content:
@@ -277,11 +359,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_422'
           description: Unprocessable Content
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: Delete the identified Department.
       tags:
       - Departments
       x-accepts: application/json
-  /api/majors:
+  /majors:
     get:
       operationId: majors.index
       responses:
@@ -303,11 +390,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: List all majors.
       tags:
       - Majors
       x-accepts: application/json
-  /api/majors/store:
+  /majors/store:
     post:
       operationId: majors.store
       requestBody:
@@ -326,7 +418,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_1'
+                $ref: '#/components/schemas/inline_response_200'
           description: OK
         "403":
           content:
@@ -346,12 +438,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_422'
           description: Unprocessable Content
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: Creates a new Major.
       tags:
       - Majors
       x-contentType: application/json
       x-accepts: application/json
-  /api/majors/{majorId}/find:
+  /majors/{majorId}/find:
     get:
       operationId: majors.find
       parameters:
@@ -389,11 +486,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: Get a Major by ID
       tags:
       - Majors
       x-accepts: application/json
-  /api/majors/{majorId}/update:
+  /majors/{majorId}/update:
     patch:
       operationId: majors.update
       parameters:
@@ -411,7 +513,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_1'
+                $ref: '#/components/schemas/inline_response_200'
           description: OK
         "403":
           content:
@@ -437,11 +539,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_422'
           description: Unprocessable Content
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: Update the identified Majors.
       tags:
       - Majors
       x-accepts: application/json
-  /api/majors/{majorId}/delete:
+  /majors/{majorId}/delete:
     delete:
       operationId: majors.delete
       parameters:
@@ -459,7 +566,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_1'
+                $ref: '#/components/schemas/inline_response_200'
           description: OK
         "403":
           content:
@@ -485,11 +592,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_422'
           description: Unprocessable Content
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: Delete the identified Major.
       tags:
       - Majors
       x-accepts: application/json
-  /api/offers/job:
+  /offers/job:
     get:
       operationId: offers.job.index
       responses:
@@ -511,11 +623,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: List all job offers.
       tags:
       - Job Offers
       x-accepts: application/json
-  /api/offers/job/paginated:
+  /offers/job/paginated:
     get:
       operationId: offers.job.paginated
       responses:
@@ -537,11 +654,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: List all job offers in a paginated manner.
       tags:
       - Job Offers
       x-accepts: application/json
-  /api/offers/job/{offerId}/find:
+  /offers/job/{offerId}/find:
     get:
       operationId: offers.job.find
       parameters:
@@ -579,11 +701,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: Get a job offer by ID
       tags:
       - Job Offers
       x-accepts: application/json
-  /api/offers/job/{offerId}/store:
+  /offers/job/{offerId}/store:
     post:
       operationId: offers.job.store
       parameters:
@@ -612,7 +739,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_1'
+                $ref: '#/components/schemas/inline_response_200'
           description: OK
         "403":
           content:
@@ -632,12 +759,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_422'
           description: Unprocessable Content
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: Creates a new job offer.
       tags:
       - Job Offers
       x-contentType: application/json
       x-accepts: application/json
-  /api/offers/job/{offerId}/update:
+  /offers/job/{offerId}/update:
     patch:
       operationId: offers.job.update
       parameters:
@@ -655,7 +787,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_1'
+                $ref: '#/components/schemas/inline_response_200'
           description: OK
         "403":
           content:
@@ -681,11 +813,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_422'
           description: Unprocessable Content
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: Update the identified job offer.
       tags:
       - Job Offers
       x-accepts: application/json
-  /api/offers/job/{offerId}/delete:
+  /offers/job/{offerId}/delete:
     delete:
       operationId: offers.job.delete
       parameters:
@@ -703,7 +840,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_1'
+                $ref: '#/components/schemas/inline_response_200'
           description: OK
         "403":
           content:
@@ -729,11 +866,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_422'
           description: Unprocessable Content
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: Delete the identified job offer.
       tags:
       - Job Offers
       x-accepts: application/json
-  /api/offers/scholarship:
+  /offers/scholarship:
     get:
       operationId: offers.scholarship.index
       responses:
@@ -755,11 +897,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: List all scholarship offers.
       tags:
       - Scholarship Offers
       x-accepts: application/json
-  /api/offers/scholarship/paginated:
+  /offers/scholarship/paginated:
     get:
       operationId: offers.scholarship.paginated
       responses:
@@ -781,11 +928,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: List all scholarship offers in a paginated manner.
       tags:
       - Scholarship Offers
       x-accepts: application/json
-  /api/offers/scholarship/{offerId}/find:
+  /offers/scholarship/{offerId}/find:
     get:
       operationId: offers.scholarship.find
       parameters:
@@ -823,11 +975,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: Get a scholarship offer by ID
       tags:
       - Scholarship Offers
       x-accepts: application/json
-  /api/offers/scholarship/{offerId}/store:
+  /offers/scholarship/{offerId}/store:
     post:
       operationId: offers.scholarship.store
       parameters:
@@ -856,7 +1013,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_1'
+                $ref: '#/components/schemas/inline_response_200'
           description: OK
         "403":
           content:
@@ -876,12 +1033,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_422'
           description: Unprocessable Content
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: Creates a new scholarship offer.
       tags:
       - Scholarship Offers
       x-contentType: application/json
       x-accepts: application/json
-  /api/offers/scholarship/{offerId}/update:
+  /offers/scholarship/{offerId}/update:
     patch:
       operationId: offers.scholarship.update
       parameters:
@@ -899,7 +1061,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_1'
+                $ref: '#/components/schemas/inline_response_200'
           description: OK
         "403":
           content:
@@ -925,11 +1087,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_422'
           description: Unprocessable Content
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: Update the identified scholarship offer.
       tags:
       - Scholarship Offers
       x-accepts: application/json
-  /api/offers/scholarship/{offerId}/delete:
+  /offers/scholarship/{offerId}/delete:
     delete:
       operationId: offers.scholarship.delete
       parameters:
@@ -947,7 +1114,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_1'
+                $ref: '#/components/schemas/inline_response_200'
           description: OK
         "403":
           content:
@@ -973,11 +1140,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_422'
           description: Unprocessable Content
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: Delete the identified scholarship offer.
       tags:
       - Scholarship Offers
       x-accepts: application/json
-  /api/applications:
+  /applications:
     get:
       operationId: applications.index
       responses:
@@ -999,11 +1171,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: List all applications.
       tags:
       - Applications
       x-accepts: application/json
-  /api/applications/pending:
+  /applications/pending:
     get:
       operationId: applications.pending.index
       responses:
@@ -1025,11 +1202,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: List all pending applications.
       tags:
       - Applications
       x-accepts: application/json
-  /api/applications/documentation:
+  /applications/documentation:
     get:
       operationId: applications.documentation.index
       responses:
@@ -1051,11 +1233,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: List all applications in need of documentation.
       tags:
       - Applications
       x-accepts: application/json
-  /api/applications/accepted:
+  /applications/accepted:
     get:
       operationId: applications.accepted.index
       responses:
@@ -1077,11 +1264,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: List all accepted applications.
       tags:
       - Applications
       x-accepts: application/json
-  /api/applications/rejected:
+  /applications/rejected:
     get:
       operationId: applications.rejected.index
       responses:
@@ -1103,11 +1295,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: List all rejected applications.
       tags:
       - Applications
       x-accepts: application/json
-  /api/applications/paginated:
+  /applications/paginated:
     get:
       operationId: applications.paginated
       responses:
@@ -1129,11 +1326,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: List all applications in a paginated manner.
       tags:
       - Applications
       x-accepts: application/json
-  /api/applications/pending/paginated:
+  /applications/pending/paginated:
     get:
       operationId: applications.pending.paginated
       responses:
@@ -1155,11 +1357,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: List all pending applications in a paginated manner.
       tags:
       - Applications
       x-accepts: application/json
-  /api/applications/documentation/paginated:
+  /applications/documentation/paginated:
     get:
       operationId: applications.documentation.paginated
       responses:
@@ -1181,11 +1388,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: List all applications in need of documentation in a paginated manner.
       tags:
       - Applications
       x-accepts: application/json
-  /api/applications/accepted/paginated:
+  /applications/accepted/paginated:
     get:
       operationId: applications.accepted.paginated
       responses:
@@ -1207,11 +1419,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: List all accepted applications in a paginated manner.
       tags:
       - Applications
       x-accepts: application/json
-  /api/applications/rejected/paginated:
+  /applications/rejected/paginated:
     get:
       operationId: applications.rejected.paginated
       responses:
@@ -1233,11 +1450,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: List all rejected applications in a paginated manner.
       tags:
       - Applications
       x-accepts: application/json
-  /api/applications/{applicationId}/find:
+  /applications/{applicationId}/find:
     get:
       operationId: applications.find
       parameters:
@@ -1275,11 +1497,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: Get an application by ID.
       tags:
       - Applications
       x-accepts: application/json
-  /api/applications/{applicationId}/review:
+  /applications/{applicationId}/review:
     post:
       operationId: applications.review
       parameters:
@@ -1320,7 +1547,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_1'
+                $ref: '#/components/schemas/inline_response_200'
           description: OK
         "403":
           content:
@@ -1334,12 +1561,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: Review an application.
       tags:
       - Applications
       x-contentType: multipart/form-data
       x-accepts: application/json
-  /api/applications/{applicationId}/document:
+  /applications/{applicationId}/document:
     post:
       operationId: applications.document
       parameters:
@@ -1371,7 +1603,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_1'
+                $ref: '#/components/schemas/inline_response_200'
           description: OK
         "403":
           content:
@@ -1385,12 +1617,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: Request documentation for an application.
       tags:
       - Applications
       x-contentType: application/json
       x-accepts: application/json
-  /api/applications/{applicationId}/accept:
+  /applications/{applicationId}/accept:
     post:
       operationId: applications.accept
       parameters:
@@ -1419,7 +1656,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_1'
+                $ref: '#/components/schemas/inline_response_200'
           description: OK
         "403":
           content:
@@ -1433,12 +1670,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: Accept an application.
       tags:
       - Applications
       x-contentType: application/json
       x-accepts: application/json
-  /api/applications/{applicationId}/reject:
+  /applications/{applicationId}/reject:
     post:
       operationId: applications.reject
       parameters:
@@ -1469,7 +1711,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_1'
+                $ref: '#/components/schemas/inline_response_200'
           description: OK
         "403":
           content:
@@ -1483,12 +1725,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: Reject an application.
       tags:
       - Applications
       x-contentType: application/json
       x-accepts: application/json
-  /api/applications/job:
+  /applications/job:
     get:
       operationId: applications.job.index
       responses:
@@ -1510,11 +1757,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: List all job applications.
       tags:
       - Job Applications
       x-accepts: application/json
-  /api/applications/job/pending:
+  /applications/job/pending:
     get:
       operationId: applications.job.pending.index
       responses:
@@ -1536,11 +1788,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: List all pending job applications.
       tags:
       - Job Applications
       x-accepts: application/json
-  /api/applications/job/documentation:
+  /applications/job/documentation:
     get:
       operationId: applications.job.documentation.index
       responses:
@@ -1562,11 +1819,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: List all job applications in need of documentation.
       tags:
       - Job Applications
       x-accepts: application/json
-  /api/applications/job/accepted:
+  /applications/job/accepted:
     get:
       operationId: applications.job.accepted.index
       responses:
@@ -1588,11 +1850,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: List all accepted job applications.
       tags:
       - Job Applications
       x-accepts: application/json
-  /api/applications/job/rejected:
+  /applications/job/rejected:
     get:
       operationId: applications.job.rejected.index
       responses:
@@ -1614,11 +1881,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: List all rejected job applications.
       tags:
       - Job Applications
       x-accepts: application/json
-  /api/applications/job/paginated:
+  /applications/job/paginated:
     get:
       operationId: applications.job.paginated
       responses:
@@ -1640,11 +1912,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: List all job applications in a paginated manner.
       tags:
       - Job Applications
       x-accepts: application/json
-  /api/applications/job/pending/paginated:
+  /applications/job/pending/paginated:
     get:
       operationId: applications.job.pending.paginated
       responses:
@@ -1666,11 +1943,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: List all pending job applications in a paginated manner.
       tags:
       - Job Applications
       x-accepts: application/json
-  /api/applications/job/documentation/paginated:
+  /applications/job/documentation/paginated:
     get:
       operationId: applications.job.documentation.paginated
       responses:
@@ -1692,11 +1974,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: List all job applications in need of documentation in a paginated manner.
       tags:
       - Job Applications
       x-accepts: application/json
-  /api/applications/job/accepted/paginated:
+  /applications/job/accepted/paginated:
     get:
       operationId: applications.job.accepted.paginated
       responses:
@@ -1718,11 +2005,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: List all accepted job applications in a paginated manner.
       tags:
       - Job Applications
       x-accepts: application/json
-  /api/applications/job/rejected/paginated:
+  /applications/job/rejected/paginated:
     get:
       operationId: applications.job.rejected.paginated
       responses:
@@ -1744,11 +2036,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: List all rejected job applications in a paginated manner.
       tags:
       - Job Applications
       x-accepts: application/json
-  /api/applications/scholarship:
+  /applications/scholarship:
     get:
       operationId: applications.scholarship.index
       responses:
@@ -1770,11 +2067,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: List all scholarship applications.
       tags:
       - Scholarship Applications
       x-accepts: application/json
-  /api/applications/scholarship/pending:
+  /applications/scholarship/pending:
     get:
       operationId: applications.scholarship.pending.index
       responses:
@@ -1796,11 +2098,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: List all pending scholarship applications.
       tags:
       - Scholarship Applications
       x-accepts: application/json
-  /api/applications/scholarship/documentation:
+  /applications/scholarship/documentation:
     get:
       operationId: applications.scholarship.documentation.index
       responses:
@@ -1822,11 +2129,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: List all scholarship applications in need of documentation.
       tags:
       - Scholarship Applications
       x-accepts: application/json
-  /api/applications/scholarship/accepted:
+  /applications/scholarship/accepted:
     get:
       operationId: applications.scholarship.accepted.index
       responses:
@@ -1848,11 +2160,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: List all accepted scholarship applications.
       tags:
       - Scholarship Applications
       x-accepts: application/json
-  /api/applications/scholarship/rejected:
+  /applications/scholarship/rejected:
     get:
       operationId: applications.scholarship.rejected.index
       responses:
@@ -1874,11 +2191,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: List all rejected scholarship applications.
       tags:
       - Scholarship Applications
       x-accepts: application/json
-  /api/applications/scholarship/paginated:
+  /applications/scholarship/paginated:
     get:
       operationId: applications.scholarship.paginated
       responses:
@@ -1900,11 +2222,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: List all scholarship applications in a paginated manner.
       tags:
       - Scholarship Applications
       x-accepts: application/json
-  /api/applications/scholarship/pending/paginated:
+  /applications/scholarship/pending/paginated:
     get:
       operationId: applications.scholarship.pending.paginated
       responses:
@@ -1926,11 +2253,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: List all pending scholarship applications in a paginated manner.
       tags:
       - Scholarship Applications
       x-accepts: application/json
-  /api/applications/scholarship/documentation/paginated:
+  /applications/scholarship/documentation/paginated:
     get:
       operationId: applications.scholarship.documentation.paginated
       responses:
@@ -1952,12 +2284,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: List all scholarship applications in need of documentation in a paginated
         manner.
       tags:
       - Scholarship Applications
       x-accepts: application/json
-  /api/applications/scholarship/accepted/paginated:
+  /applications/scholarship/accepted/paginated:
     get:
       operationId: applications.scholarship.accepted.paginated
       responses:
@@ -1979,11 +2316,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: List all accepted scholarship applications in a paginated manner.
       tags:
       - Scholarship Applications
       x-accepts: application/json
-  /api/applications/scholarship/rejected/paginated:
+  /applications/scholarship/rejected/paginated:
     get:
       operationId: applications.scholarship.rejected.paginated
       responses:
@@ -2005,6 +2347,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_419'
           description: CSRF Mismatch
+      security:
+      - BasicAuth:
+        - administrator
+        - executive
+        - offer-manager
       summary: List all rejected scholarship applications in a paginated manner.
       tags:
       - Scholarship Applications
@@ -2115,8 +2462,14 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/inline_response_200_1'
+            $ref: '#/components/schemas/inline_response_200'
       description: OK
+    ServerError:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_response_500'
+      description: Server Error
     NotFound:
       content:
         application/json:
@@ -2145,7 +2498,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/inline_response_200'
+            $ref: '#/components/schemas/inline_response_200_1'
       description: User Response
     DepartmentList:
       content:
@@ -2635,6 +2988,47 @@ components:
         active:
           type: boolean
       type: object
+    inline_response_422_response_data:
+      properties:
+        errors:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+          type: object
+        message:
+          example: The email field is required.
+          type: string
+      type: object
+    inline_response_422_response:
+      properties:
+        status:
+          example: 422
+          maximum: 422
+          minimum: 422
+          type: integer
+        data:
+          $ref: '#/components/schemas/inline_response_422_response_data'
+      type: object
+    inline_response_422:
+      properties:
+        response:
+          $ref: '#/components/schemas/inline_response_422_response'
+      type: object
+    inline_response_200:
+      example:
+        message: The action was performed successfully.
+      properties:
+        message:
+          example: The action was performed successfully.
+          type: string
+      type: object
+    inline_response_500:
+      properties:
+        message:
+          example: The server could not handle your request.
+          type: string
+      type: object
     inline_response_403:
       properties:
         message:
@@ -2647,7 +3041,7 @@ components:
           example: CSRF Mismatch
           type: string
       type: object
-    inline_response_200:
+    inline_response_200_1:
       example:
         country: United States of America
         city: Charlotte
@@ -2702,44 +3096,9 @@ components:
         id_card:
           type: string
       type: object
-    inline_response_422_response_data:
-      properties:
-        errors:
-          additionalProperties:
-            items:
-              type: string
-            type: array
-          type: object
-        message:
-          example: The email field is required.
-          type: string
-      type: object
-    inline_response_422_response:
-      properties:
-        status:
-          example: 422
-          maximum: 422
-          minimum: 422
-          type: integer
-        data:
-          $ref: '#/components/schemas/inline_response_422_response_data'
-      type: object
-    inline_response_422:
-      properties:
-        response:
-          $ref: '#/components/schemas/inline_response_422_response'
-      type: object
     inline_object:
       properties:
         name:
-          type: string
-      type: object
-    inline_response_200_1:
-      example:
-        message: The action was performed successfully.
-      properties:
-        message:
-          example: The action was performed successfully.
           type: string
       type: object
     inline_response_404:
@@ -3136,4 +3495,8 @@ components:
       required:
       - comments
       type: object
+  securitySchemes:
+    BasicAuth:
+      scheme: basic
+      type: http
 
