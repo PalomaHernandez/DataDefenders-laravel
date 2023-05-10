@@ -22,7 +22,7 @@ class PasswordResetController extends Controller {
 		$token = Str::random(32);
 		$user->update([
 			'password_recovery_token'      => $token,
-			'password_recovery_expires_at' => now()->addMinute()
+			'password_recovery_expires_at' => now()->addMinutes(15)
 		]);
 		$resetLink = route('password.reset', [
 			'email' => $user->email,
