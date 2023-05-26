@@ -1,0 +1,1696 @@
+openapi: 3.0.0
+info:
+  title: UniManager API Documentation
+  description: This documentation corresponds to the very first version of our API for developers.
+  version: 0.0.3
+servers:
+  - url: https://unimanager.snowlinks.net/api
+components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        first_name:
+          type: string
+          example: Tina
+        middle_name:
+          type: string
+          nullable: true
+          example: Latoya
+        last_name:
+          type: string
+          example: Turner
+        email:
+          type: string
+          format: email
+          example: tinaturner@example.com
+        email_verified_at:
+          type: string
+          format: date-time
+          nullable: true
+        remember_token:
+          type: string
+          nullable: true
+        password:
+          type: string
+          format: password
+        phone:
+          type: string
+        address_line_1:
+          type: string
+        address_line_2:
+          type: string
+          nullable: true
+        city:
+          type: string
+          example: Charlotte
+        region:
+          type: string
+          example: North Carolina
+        country:
+          type: string
+          example: United States of America
+        postal_code:
+          type: string
+          example: 28001
+        id_card:
+          type: string
+    UserRequestBody:
+      type: object
+      properties:
+        first_name:
+          type: string
+          example: Tina
+        middle_name:
+          type: string
+          nullable: true
+          example: Latoya
+        last_name:
+          type: string
+          example: Turner
+        phone:
+          type: string
+        address_line_1:
+          type: string
+        address_line_2:
+          type: string
+          nullable: true
+        city:
+          type: string
+          example: Charlotte
+        region:
+          type: string
+          example: North Carolina
+        country:
+          type: string
+          example: United States of America
+        postal_code:
+          type: string
+          example: 28001
+        id_card:
+          type: string
+    Department:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+          example: DCIC
+    DepartmentArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/Department'
+    Major:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+          example: Computer Science
+        department_id:
+          type: integer
+          format: int64
+    MajorArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/Major'
+    JobOffer:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+        description:
+          type: string
+        requirements:
+          type: string
+        benefits:
+          type: string
+        interview_at:
+          type: string
+          format: date-time
+        department_id:
+          type: integer
+          format: int64
+        starts_at:
+          type: string
+          format: date-time
+        ends_at:
+          type: string
+          format: date-time
+        public:
+          type: boolean
+        department:
+          $ref: '#/components/schemas/Department'
+    JobOfferArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/JobOffer'
+    ScholarshipOffer:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+        description:
+          type: string
+        requirements:
+          type: string
+        starts_at:
+          type: string
+          format: date-time
+        ends_at:
+          type: string
+          format: date-time
+        public:
+          type: boolean
+        majors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Major'
+          uniqueItems: true
+    ScholarshipOfferArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/ScholarshipOffer'
+    Application:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        number:
+          type: integer
+          format: int64
+        user_id:
+          type: integer
+          format: int64
+        user:
+          $ref: '#/components/schemas/User'
+        offer_id:
+          type: integer
+          format: int64
+        offer_type:
+          type: string
+        status:
+          type: string
+        offer:
+          type: object
+          oneOf:
+            - $ref: '#/components/schemas/JobOffer'
+            - $ref: '#/components/schemas/ScholarshipOffer'
+        major_id:
+          type: integer
+          format: int64
+          nullable: true
+        major:
+          $ref: '#/components/schemas/Major'
+        document_files:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentationFile'
+          uniqueItems: true
+        comments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comment'
+          uniqueItems: true
+    ApplicationArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/Application'
+    DocumentationFile:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        path:
+          type: string
+          format: uri
+        application_id:
+          type: integer
+          format: int64
+    Comment:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        text:
+          type: string
+          format: uri
+        application_id:
+          type: integer
+          format: int64
+        user_id:
+          type: integer
+          format: int64
+        user:
+          $ref: '#/components/schemas/User'
+    PaginatedLink:
+      type: object
+      properties:
+        url:
+          type: string
+          nullable: true
+          example: https://unimanager.snowlinks.net/api/model?page=5
+        label:
+          type: string
+          example: 5
+        active:
+          type: boolean
+  responses:
+    OK:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: The action was performed successfully.
+    ServerError:
+      description: Server Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: The server could not handle your request.
+    NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: The page was not found.
+    UnprocessableContent:
+      description: Unprocessable Content
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              response:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    minimum: 422
+                    maximum: 422
+                    example: 422
+                  data:
+                    type: object
+                    properties:
+                      errors:
+                        type: object
+                        additionalProperties:
+                          type: array
+                          items:
+                            type: string
+                      message:
+                        type: string
+                        example: The email field is required.
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: You do not have access rights to perform this action.
+    CSRF:
+      description: CSRF Mismatch
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: CSRF Mismatch
+    User:
+      description: User Response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                format: int64
+              first_name:
+                type: string
+                example: Tina
+              middle_name:
+                type: string
+                nullable: true
+                example: Latoya
+              last_name:
+                type: string
+                example: Turner
+              email:
+                type: string
+                format: email
+                example: tinaturner@example.com
+              phone:
+                type: string
+              address_line_1:
+                type: string
+              address_line_2:
+                type: string
+                nullable: true
+              city:
+                type: string
+                example: Charlotte
+              region:
+                type: string
+                example: North Carolina
+              country:
+                type: string
+                example: United States of America
+              postal_code:
+                type: string
+                example: 28001
+              id_card:
+                type: string
+    DepartmentList:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DepartmentArray'
+    MajorList:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MajorArray'
+    JobOfferList:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/JobOfferArray'
+    ScholarshipOfferList:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ScholarshipOfferArray'
+    ApplicationList:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApplicationArray'
+    JobOfferPaginated:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/components/schemas/JobOfferArray'
+              links:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PaginatedLink'
+              current_page:
+                type: integer
+                example: 5
+              per_page:
+                type: integer
+                example: 15
+                default: 15
+              from:
+                type: integer
+                example: 1
+                nullable: true
+              to:
+                type: integer
+                example: 15
+                nullable: true
+              total:
+                type: integer
+                example: 64
+    ScholarshipOfferPaginated:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/components/schemas/ScholarshipOfferArray'
+              links:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PaginatedLink'
+              current_page:
+                type: integer
+                example: 5
+              per_page:
+                type: integer
+                example: 15
+                default: 15
+              from:
+                type: integer
+                example: 1
+                nullable: true
+              to:
+                type: integer
+                example: 15
+                nullable: true
+              total:
+                type: integer
+                example: 64
+    ApplicationPaginated:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/components/schemas/ApplicationArray'
+              links:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PaginatedLink'
+              current_page:
+                type: integer
+                example: 5
+              per_page:
+                type: integer
+                example: 15
+                default: 15
+              from:
+                type: integer
+                example: 1
+                nullable: true
+              to:
+                type: integer
+                example: 15
+                nullable: true
+              total:
+                type: integer
+                example: 64
+  parameters:
+    DepartmentId:
+      in: path
+      name: departmentId
+      schema:
+        type: integer
+        format: int64
+      required: true
+      description: Numeric ID of the Department
+    MajorId:
+      in: path
+      name: majorId
+      schema:
+        type: integer
+        format: int64
+      required: true
+      description: Numeric ID of the Major
+    JobOfferId:
+      in: path
+      name: offerId
+      schema:
+        type: integer
+        format: int64
+      required: true
+      description: Numeric ID of the job offer
+    ScholarshipOfferId:
+      in: path
+      name: offerId
+      schema:
+        type: integer
+        format: int64
+      required: true
+      description: Numeric ID of the scholarship offer
+    ApplicationId:
+      in: path
+      name: applicationId
+      schema:
+        type: integer
+        format: int64
+      required: true
+      description: Numeric ID of the application
+paths:
+  /login:
+    post:
+      tags:
+        - Accounts
+      summary: Log into the system.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager, applicant]
+      operationId: login
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '422':
+          $ref: '#/components/responses/UnprocessableContent'
+  /logout:
+    get:
+      tags:
+        - Accounts
+      summary: Log out of the system.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager, applicant]
+      operationId: logout
+      responses:
+        '200':
+          $ref: '#/components/responses/OK'
+        '500':
+          $ref: '#/components/responses/ServerError'
+  /account:
+    get:
+      tags:
+        - Users
+      summary: Show account information.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: account.index
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /account/update:
+    patch:
+      tags:
+        - Users
+      summary: Update account information.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: account.update
+      requestBody:
+        description: The updated data to save.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequestBody'
+      responses:
+        '200':
+          $ref: '#/components/responses/User'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+        '422':
+          $ref: '#/components/responses/UnprocessableContent'
+  /departments:
+    get:
+      tags:
+        - Departments
+      summary: List all departments.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: departments.index
+      responses:
+        '200':
+          $ref: '#/components/responses/DepartmentList'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /departments/store:
+    post:
+      tags:
+        - Departments
+      summary: Creates a new Department.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: departments.store
+      requestBody:
+        description: The new department's name.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/OK'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+        '422':
+          $ref: '#/components/responses/UnprocessableContent'
+  /departments/{departmentId}/find:
+    get:
+      tags:
+        - Departments
+      summary: Get a Department by ID
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: departments.find
+      parameters:
+        - $ref: '#/components/parameters/DepartmentId'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Department'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /departments/{departmentId}/update:
+    patch:
+      tags:
+        - Departments
+      summary: Update the identified Department.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: departments.update
+      parameters:
+        - $ref: '#/components/parameters/DepartmentId'
+      responses:
+        '200':
+          $ref: '#/components/responses/OK'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '419':
+          $ref: '#/components/responses/CSRF'
+        '422':
+          $ref: '#/components/responses/UnprocessableContent'
+  /departments/{departmentId}/delete:
+    delete:
+      tags:
+        - Departments
+      summary: Delete the identified Department.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: departments.delete
+      parameters:
+        - $ref: '#/components/parameters/DepartmentId'
+      responses:
+        '200':
+          $ref: '#/components/responses/OK'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '419':
+          $ref: '#/components/responses/CSRF'
+        '422':
+          $ref: '#/components/responses/UnprocessableContent'
+  /majors:
+    get:
+      tags:
+        - Majors
+      summary: List all majors.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: majors.index
+      responses:
+        '200':
+          $ref: '#/components/responses/MajorList'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /majors/store:
+    post:
+      tags:
+        - Majors
+      summary: Creates a new Major.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: majors.store
+      requestBody:
+        description: The new majors's name.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/OK'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+        '422':
+          $ref: '#/components/responses/UnprocessableContent'
+  /majors/{majorId}/find:
+    get:
+      tags:
+        - Majors
+      summary: Get a Major by ID
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: majors.find
+      parameters:
+        - $ref: '#/components/parameters/MajorId'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Major'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /majors/{majorId}/update:
+    patch:
+      tags:
+        - Majors
+      summary: Update the identified Majors.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: majors.update
+      parameters:
+        - $ref: '#/components/parameters/MajorId'
+      responses:
+        '200':
+          $ref: '#/components/responses/OK'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '419':
+          $ref: '#/components/responses/CSRF'
+        '422':
+          $ref: '#/components/responses/UnprocessableContent'
+  /majors/{majorId}/delete:
+    delete:
+      tags:
+        - Majors
+      summary: Delete the identified Major.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: majors.delete
+      parameters:
+        - $ref: '#/components/parameters/MajorId'
+      responses:
+        '200':
+          $ref: '#/components/responses/OK'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '419':
+          $ref: '#/components/responses/CSRF'
+        '422':
+          $ref: '#/components/responses/UnprocessableContent'
+  /offers/job:
+    get:
+      tags:
+        - Job Offers
+      summary: List all job offers.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: offers.job.index
+      responses:
+        '200':
+          $ref: '#/components/responses/JobOfferList'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /offers/job/paginated:
+    get:
+      tags:
+        - Job Offers
+      summary: List all job offers in a paginated manner.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: offers.job.paginated
+      responses:
+        '200':
+          $ref: '#/components/responses/JobOfferPaginated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /offers/job/{offerId}/find:
+    get:
+      tags:
+        - Job Offers
+      summary: Get a job offer by ID
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: offers.job.find
+      parameters:
+        - $ref: '#/components/parameters/JobOfferId'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobOffer'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /offers/job/{offerId}/store:
+    post:
+      tags:
+        - Job Offers
+      summary: Creates a new job offer.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: offers.job.store
+      parameters:
+          - $ref: '#/components/parameters/JobOfferId'
+      requestBody:
+        description: The new job offer's name.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/OK'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+        '422':
+          $ref: '#/components/responses/UnprocessableContent'
+  /offers/job/{offerId}/update:
+    patch:
+      tags:
+        - Job Offers
+      summary: Update the identified job offer.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: offers.job.update
+      parameters:
+        - $ref: '#/components/parameters/JobOfferId'
+      responses:
+        '200':
+          $ref: '#/components/responses/OK'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '419':
+          $ref: '#/components/responses/CSRF'
+        '422':
+          $ref: '#/components/responses/UnprocessableContent'
+  /offers/job/{offerId}/delete:
+    delete:
+      tags:
+        - Job Offers
+      summary: Delete the identified job offer.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: offers.job.delete
+      parameters:
+        - $ref: '#/components/parameters/JobOfferId'
+      responses:
+        '200':
+          $ref: '#/components/responses/OK'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '419':
+          $ref: '#/components/responses/CSRF'
+        '422':
+          $ref: '#/components/responses/UnprocessableContent'
+  /offers/scholarship:
+    get:
+      tags:
+        - Scholarship Offers
+      summary: List all scholarship offers.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: offers.scholarship.index
+      responses:
+        '200':
+          $ref: '#/components/responses/ScholarshipOfferList'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /offers/scholarship/paginated:
+    get:
+      tags:
+        - Scholarship Offers
+      summary: List all scholarship offers in a paginated manner.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: offers.scholarship.paginated
+      responses:
+        '200':
+          $ref: '#/components/responses/ScholarshipOfferPaginated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /offers/scholarship/{offerId}/find:
+    get:
+      tags:
+        - Scholarship Offers
+      summary: Get a scholarship offer by ID
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: offers.scholarship.find
+      parameters:
+        - $ref: '#/components/parameters/ScholarshipOfferId'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScholarshipOffer'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /offers/scholarship/{offerId}/store:
+    post:
+      tags:
+        - Scholarship Offers
+      summary: Creates a new scholarship offer.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: offers.scholarship.store
+      parameters:
+        - $ref: '#/components/parameters/ScholarshipOfferId'
+      requestBody:
+        description: The new scholarship offer's name.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/OK'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+        '422':
+          $ref: '#/components/responses/UnprocessableContent'
+  /offers/scholarship/{offerId}/update:
+    patch:
+      tags:
+        - Scholarship Offers
+      summary: Update the identified scholarship offer.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: offers.scholarship.update
+      parameters:
+        - $ref: '#/components/parameters/ScholarshipOfferId'
+      responses:
+        '200':
+          $ref: '#/components/responses/OK'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '419':
+          $ref: '#/components/responses/CSRF'
+        '422':
+          $ref: '#/components/responses/UnprocessableContent'
+  /offers/scholarship/{offerId}/delete:
+    delete:
+      tags:
+        - Scholarship Offers
+      summary: Delete the identified scholarship offer.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: offers.scholarship.delete
+      parameters:
+        - $ref: '#/components/parameters/ScholarshipOfferId'
+      responses:
+        '200':
+          $ref: '#/components/responses/OK'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '419':
+          $ref: '#/components/responses/CSRF'
+        '422':
+          $ref: '#/components/responses/UnprocessableContent'
+  /applications:
+    get:
+      tags:
+        - Applications
+      summary: List all applications.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: applications.index
+      responses:
+        '200':
+          $ref: '#/components/responses/ApplicationList'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /applications/pending:
+    get:
+      tags:
+        - Applications
+      summary: List all pending applications.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: applications.pending.index
+      responses:
+        '200':
+          $ref: '#/components/responses/ApplicationList'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /applications/documentation:
+    get:
+      tags:
+        - Applications
+      summary: List all applications in need of documentation.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: applications.documentation.index
+      responses:
+        '200':
+          $ref: '#/components/responses/ApplicationList'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /applications/accepted:
+    get:
+      tags:
+        - Applications
+      summary: List all accepted applications.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: applications.accepted.index
+      responses:
+        '200':
+          $ref: '#/components/responses/ApplicationList'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /applications/rejected:
+    get:
+      tags:
+        - Applications
+      summary: List all rejected applications.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: applications.rejected.index
+      responses:
+        '200':
+          $ref: '#/components/responses/ApplicationList'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /applications/paginated:
+    get:
+      tags:
+        - Applications
+      summary: List all applications in a paginated manner.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: applications.paginated
+      responses:
+        '200':
+          $ref: '#/components/responses/ApplicationPaginated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /applications/pending/paginated:
+    get:
+      tags:
+        - Applications
+      summary: List all pending applications in a paginated manner.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: applications.pending.paginated
+      responses:
+        '200':
+          $ref: '#/components/responses/ApplicationPaginated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /applications/documentation/paginated:
+    get:
+      tags:
+        - Applications
+      summary: List all applications in need of documentation in a paginated manner.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: applications.documentation.paginated
+      responses:
+        '200':
+          $ref: '#/components/responses/ApplicationPaginated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /applications/accepted/paginated:
+    get:
+      tags:
+        - Applications
+      summary: List all accepted applications in a paginated manner.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: applications.accepted.paginated
+      responses:
+        '200':
+          $ref: '#/components/responses/ApplicationPaginated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /applications/rejected/paginated:
+    get:
+      tags:
+        - Applications
+      summary: List all rejected applications in a paginated manner.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: applications.rejected.paginated
+      responses:
+        '200':
+          $ref: '#/components/responses/ApplicationPaginated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'  
+  /applications/{applicationId}/find:
+    get:
+      tags:
+        - Applications
+      summary: Get an application by ID.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: applications.find
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /applications/{applicationId}/review:
+    post:
+      tags:
+        - Applications
+      summary: Review an application.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: applications.review
+      parameters:
+          - $ref: '#/components/parameters/ApplicationId'
+      requestBody:
+        description: Upload the new documentation, with comments if necessary.
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                comments:
+                  type: string
+                files:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+              required:
+                - comments
+                - files
+            encoding:
+              files:
+                contentType: application/pdf
+      responses:
+        '200':
+          $ref: '#/components/responses/OK'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /applications/{applicationId}/document:
+    post:
+      tags:
+        - Applications
+      summary: Request documentation for an application.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: applications.document
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      requestBody:
+        description: Comments that explain the missing documentation and some other relevant information.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                comments:
+                  type: string
+              required:
+                - comments
+      responses:
+        '200':
+          $ref: '#/components/responses/OK'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /applications/{applicationId}/accept:
+    post:
+      tags:
+        - Applications
+      summary: Accept an application.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: applications.accept
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      requestBody:
+        description: Comments to accompany the approval.
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                comments:
+                  type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/OK'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /applications/{applicationId}/reject:
+    post:
+      tags:
+        - Applications
+      summary: Reject an application.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: applications.reject
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      requestBody:
+        description: The reason why the application is being rejected.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                comments:
+                  type: string
+              required:
+                - comments
+      responses:
+        '200':
+          $ref: '#/components/responses/OK'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /applications/job:
+    get:
+      tags:
+        - Job Applications
+      summary: List all job applications.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: applications.job.index
+      responses:
+        '200':
+          $ref: '#/components/responses/ApplicationList'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /applications/job/pending:
+    get:
+      tags:
+        - Job Applications
+      summary: List all pending job applications.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: applications.job.pending.index
+      responses:
+        '200':
+          $ref: '#/components/responses/ApplicationList'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /applications/job/documentation:
+    get:
+      tags:
+        - Job Applications
+      summary: List all job applications in need of documentation.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: applications.job.documentation.index
+      responses:
+        '200':
+          $ref: '#/components/responses/ApplicationList'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /applications/job/accepted:
+    get:
+      tags:
+        - Job Applications
+      summary: List all accepted job applications.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: applications.job.accepted.index
+      responses:
+        '200':
+          $ref: '#/components/responses/ApplicationList'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /applications/job/rejected:
+    get:
+      tags:
+        - Job Applications
+      summary: List all rejected job applications.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: applications.job.rejected.index
+      responses:
+        '200':
+          $ref: '#/components/responses/ApplicationList'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /applications/job/paginated:
+    get:
+      tags:
+        - Job Applications
+      summary: List all job applications in a paginated manner.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: applications.job.paginated
+      responses:
+        '200':
+          $ref: '#/components/responses/ApplicationPaginated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /applications/job/pending/paginated:
+    get:
+      tags:
+        - Job Applications
+      summary: List all pending job applications in a paginated manner.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: applications.job.pending.paginated
+      responses:
+        '200':
+          $ref: '#/components/responses/ApplicationPaginated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /applications/job/documentation/paginated:
+    get:
+      tags:
+        - Job Applications
+      summary: List all job applications in need of documentation in a paginated manner.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: applications.job.documentation.paginated
+      responses:
+        '200':
+          $ref: '#/components/responses/ApplicationPaginated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /applications/job/accepted/paginated:
+    get:
+      tags:
+        - Job Applications
+      summary: List all accepted job applications in a paginated manner.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: applications.job.accepted.paginated
+      responses:
+        '200':
+          $ref: '#/components/responses/ApplicationPaginated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /applications/job/rejected/paginated:
+    get:
+      tags:
+        - Job Applications
+      summary: List all rejected job applications in a paginated manner.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: applications.job.rejected.paginated
+      responses:
+        '200':
+          $ref: '#/components/responses/ApplicationPaginated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /applications/scholarship:
+    get:
+      tags:
+        - Scholarship Applications
+      summary: List all scholarship applications.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: applications.scholarship.index
+      responses:
+        '200':
+          $ref: '#/components/responses/ApplicationList'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /applications/scholarship/pending:
+    get:
+      tags:
+        - Scholarship Applications
+      summary: List all pending scholarship applications.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: applications.scholarship.pending.index
+      responses:
+        '200':
+          $ref: '#/components/responses/ApplicationList'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /applications/scholarship/documentation:
+    get:
+      tags:
+        - Scholarship Applications
+      summary: List all scholarship applications in need of documentation.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: applications.scholarship.documentation.index
+      responses:
+        '200':
+          $ref: '#/components/responses/ApplicationList'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /applications/scholarship/accepted:
+    get:
+      tags:
+        - Scholarship Applications
+      summary: List all accepted scholarship applications.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: applications.scholarship.accepted.index
+      responses:
+        '200':
+          $ref: '#/components/responses/ApplicationList'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /applications/scholarship/rejected:
+    get:
+      tags:
+        - Scholarship Applications
+      summary: List all rejected scholarship applications.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: applications.scholarship.rejected.index
+      responses:
+        '200':
+          $ref: '#/components/responses/ApplicationList'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /applications/scholarship/paginated:
+    get:
+      tags:
+        - Scholarship Applications
+      summary: List all scholarship applications in a paginated manner.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: applications.scholarship.paginated
+      responses:
+        '200':
+          $ref: '#/components/responses/ApplicationPaginated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /applications/scholarship/pending/paginated:
+    get:
+      tags:
+        - Scholarship Applications
+      summary: List all pending scholarship applications in a paginated manner.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: applications.scholarship.pending.paginated
+      responses:
+        '200':
+          $ref: '#/components/responses/ApplicationPaginated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /applications/scholarship/documentation/paginated:
+    get:
+      tags:
+        - Scholarship Applications
+      summary: List all scholarship applications in need of documentation in a paginated manner.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: applications.scholarship.documentation.paginated
+      responses:
+        '200':
+          $ref: '#/components/responses/ApplicationPaginated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /applications/scholarship/accepted/paginated:
+    get:
+      tags:
+        - Scholarship Applications
+      summary: List all accepted scholarship applications in a paginated manner.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: applications.scholarship.accepted.paginated
+      responses:
+        '200':
+          $ref: '#/components/responses/ApplicationPaginated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'
+  /applications/scholarship/rejected/paginated:
+    get:
+      tags:
+        - Scholarship Applications
+      summary: List all rejected scholarship applications in a paginated manner.
+      security:
+        - BasicAuth: [administrator, executive, offer-manager]
+      operationId: applications.scholarship.rejected.paginated
+      responses:
+        '200':
+          $ref: '#/components/responses/ApplicationPaginated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '419':
+          $ref: '#/components/responses/CSRF'

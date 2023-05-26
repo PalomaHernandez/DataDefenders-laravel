@@ -2,23 +2,23 @@
 
 namespace App\Patterns\State\Request\Transitions;
 
-use App\Contracts\RequestTransition;
+use App\Contracts\ApplicationTransition;
 use App\Exceptions\TransitionNotAllowedException;
-use App\Models\Request;
-use App\Patterns\State\Request\RequestStatus;
+use App\Models\Application;
+use App\Patterns\State\Request\ApplicationStatus;
 
-class PendingToDocumentation implements RequestTransition {
+class PendingToDocumentation implements ApplicationTransition {
 
-	public function execute(Request $request):Request{
-		if($request->status !== RequestStatus::Pending){
+	public function execute(Application $application):Application{
+		if($application->status !== ApplicationStatus::Pending){
 			throw new TransitionNotAllowedException();
 		}
 
-		$request->update([
-			'status' => RequestStatus::Documentation
+		$application->update([
+			'status' => ApplicationStatus::Documentation
 		]);
 
-		return $request;
+		return $application;
 	}
 
 }

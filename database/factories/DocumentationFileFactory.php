@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\DocumentationFile;
-use App\Models\Request;
+use App\Models\Application;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class DocumentationFileFactory extends Factory {
@@ -13,7 +13,7 @@ class DocumentationFileFactory extends Factory {
 	public function definition():array{
 		return [
 			'path' => fake()->filePath(),
-			'request_id' => Request::inRandomOrder()->first('id')->id,
+			'application_id' => Application::inRandomOrder()->first('id')->id,
 		];
 	}
 

@@ -2,18 +2,23 @@
 
 namespace App\Contracts;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 interface Offer {
 
-	public function requests():MorphMany;
+	public function applications():MorphMany;
 
-	public function acceptedRequests():MorphMany;
+	public function acceptedApplications():MorphMany;
 
-	public function rejectedRequests():MorphMany;
+	public function rejectedApplications():MorphMany;
 
-	public function pendingRequests():MorphMany;
+	public function pendingApplications():MorphMany;
 
-	public function documentationRequests():MorphMany;
+	public function documentationApplications():MorphMany;
+
+	public function displayName():Attribute;
+
+	public function icon():Attribute;
 
 }

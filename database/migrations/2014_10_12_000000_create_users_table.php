@@ -28,6 +28,8 @@ return new class extends Migration {
 			$table->string('country');
 			$table->string('postal_code', 10);
 			$table->string('id_card', 20);
+			$table->string('password_recovery_token', 100)->nullable();
+			$table->timestamp('password_recovery_expires_at')->nullable();
 			$table->timestamps();
 		});
 	}
