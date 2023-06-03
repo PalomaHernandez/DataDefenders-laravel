@@ -7,8 +7,8 @@ use Illuminate\Support\Facades\Hash;
 
 class UserRepositoryImpl implements UserRepository {
 
-	public function authenticated():User{
-		return User::findOrFail(auth()->id());
+	public function authenticated():?User{
+		return request()->user();
 	}
 
 	public function findById(int $id):User{
@@ -23,7 +23,9 @@ class UserRepositoryImpl implements UserRepository {
 		]);
 		$validated['email'] = request('email');
 		$validated['password'] = Hash::make(request('password'));
-		return User::create($validated);
+		$user = User::create($validated);
+		$user->assign('applicant');
+		return $user;
 	}
 
 	private function validate():array{

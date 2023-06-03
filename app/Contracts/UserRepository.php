@@ -6,7 +6,7 @@ use App\Models\User;
 
 interface UserRepository {
 
-	public function authenticated():User;
+	public function authenticated():?User;
 
 	public function findById(int $id):User;
 

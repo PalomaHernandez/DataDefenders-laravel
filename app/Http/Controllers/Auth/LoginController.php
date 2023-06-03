@@ -28,18 +28,18 @@ class LoginController extends Controller {
 		]);
 	}
 
-	protected function validateLogin(){
+	protected function validateLogin():void{
 		request()->validate([
 			'email'    => 'required|email',
 			'password' => 'required',
 		]);
 	}
 
-	protected function attemptLogin(){
+	protected function attemptLogin():bool{
 		return auth()->attempt($this->credentials());
 	}
 
-	protected function credentials(){
+	protected function credentials():array{
 		return request()->only('email', 'password');
 	}
 
