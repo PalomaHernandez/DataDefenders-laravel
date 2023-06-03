@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\AccountController;
+use App\Http\Controllers\UserController;
 
-Route::get('/', [AccountController::class, 'index']);
-Route::patch('/update', [AccountController::class, 'update']);
+Route::get('/', [UserController::class, 'index']);
+Route::patch('/update', [UserController::class, 'update']);
