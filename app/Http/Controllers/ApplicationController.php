@@ -132,10 +132,6 @@ class ApplicationController extends Controller {
 			if($application->cannot_update){
 				throw new RequestCannotBeUpdatedException();
 			}
-			request()->validate([
-				'files' => ['array', 'required'],
-				'files.*' => ['required', 'mimetypes:application/pdf', 'max:8000'],
-			]);
 			$files = $this->uploadDocumentation($application);
 			$this->commentAndTransition($application, ApplicationStatus::Pending);
 			return response()->json([
@@ -188,6 +184,7 @@ class ApplicationController extends Controller {
 	}
 
 	private function uploadDocumentation(Application $application):Collection{
+		UploadDocumentation::validate();
 		return UploadDocumentation::execute($application);
 	}
 

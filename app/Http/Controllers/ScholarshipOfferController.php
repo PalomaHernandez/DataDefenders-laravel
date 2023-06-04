@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\UploadDocumentation;
 use App\Exceptions\OfferHasAtLeastOneRequestException;
+use App\Models\JobOffer;
 use App\Models\ScholarshipOffer;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
+use PHPUnit\Exception;
 
 class ScholarshipOfferController extends Controller {
 
@@ -70,6 +74,30 @@ class ScholarshipOfferController extends Controller {
 		} catch(OfferHasAtLeastOneRequestException $exception){
 			throw ValidationException::withMessages([
 				$exception->getMessage()
+			]);
+		}
+	}
+
+	public function apply(JobOffer $offer){
+		UploadDocumentation::validate();
+		request()->validate([
+			'major_id' => ['numeric', 'nullable', 'exists:majors,id']
+		]);
+		try {
+			$application = $offer->applications()->create([
+				'user_id' => request()->user()->id,
+				'major_id' => request('major_id')
+			]);
+			UploadDocumentation::execute($application);
+			return response()->json([
+				'res' => true,
+				'text' => 'Applied successfully.'
+			]);
+		} catch(Exception $exception){
+			Log::error($exception->getTraceAsString());
+			return response()->json([
+				'res' => false,
+				'text' => 'Could not apply.'
 			]);
 		}
 	}

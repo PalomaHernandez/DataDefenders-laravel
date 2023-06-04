@@ -8,6 +8,13 @@ use Illuminate\Support\Facades\Storage;
 
 class UploadDocumentation {
 
+	public static function validate():void{
+		request()->validate([
+			'files' => ['array', 'required'],
+			'files.*' => ['required', 'mimetypes:application/pdf', 'max:8000'],
+		]);
+	}
+
 	public static function execute(Application $request):Collection{
 		$files = request()->file('files');
 		$documentationFiles = collect();

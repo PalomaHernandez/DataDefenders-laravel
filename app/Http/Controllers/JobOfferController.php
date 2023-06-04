@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\UploadDocumentation;
 use App\Exceptions\OfferHasAtLeastOneRequestException;
 use App\Models\Department;
 use App\Models\JobOffer;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
+use PHPUnit\Exception;
 
 class JobOfferController extends Controller {
 
@@ -79,6 +82,26 @@ class JobOfferController extends Controller {
 		} catch(OfferHasAtLeastOneRequestException $exception){
 			throw ValidationException::withMessages([
 				$exception->getMessage()
+			]);
+		}
+	}
+
+	public function apply(JobOffer $offer){
+		UploadDocumentation::validate();
+		try {
+			$application = $offer->applications()->create([
+				'user_id' => request()->user()->id
+			]);
+			UploadDocumentation::execute($application);
+			return response()->json([
+				'res' => true,
+				'text' => 'Applied successfully.'
+			]);
+		} catch(Exception $exception){
+			Log::error($exception->getTraceAsString());
+			return response()->json([
+				'res' => false,
+				'text' => 'Could not apply.'
 			]);
 		}
 	}
