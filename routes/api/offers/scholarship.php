@@ -7,5 +7,5 @@ Route::get('/paginated', [ScholarshipOfferController::class, 'allPaginated']);
 Route::get('/{offer}/find', [ScholarshipOfferController::class, 'find']);
 Route::post('/{offer}/store', [ScholarshipOfferController::class, 'store']);
 Route::patch('/{offer}/update', [ScholarshipOfferController::class, 'update']);
-Route::patch('/{offer}/apply', [ScholarshipOfferController::class, 'apply']);
+Route::post('/{offer}/apply', [ScholarshipOfferController::class, 'apply']);
 Route::delete('/{offer}/delete', [ScholarshipOfferController::class, 'delete']);
