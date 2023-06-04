@@ -12,21 +12,27 @@ use PHPUnit\Exception;
 
 class JobOfferController extends Controller {
 
+	private array $with = [
+		'department' => [
+			'majors'
+		]
+	];
+
 	public function index(){
 		$offers = JobOffer::withCount('applications')->latest()->paginate();
 		return view('admin.offers.job.index', compact('offers'));
 	}
 
 	public function all(){
-		return response()->json(JobOffer::with(['department'=> ['majors']])->latest()->get());
+		return response()->json(JobOffer::with($this->with)->latest()->get());
 	}
 
 	public function allPaginated(){
-		return response()->json(JobOffer::latest()->paginate());
+		return response()->json(JobOffer::with($this->with)->latest()->paginate());
 	}
 
 	public function find(int $offerId){
-		return response()->json(JobOffer::findOrFail($offerId));
+		return response()->json(JobOffer::with($this->with)->findOrFail($offerId));
 	}
 
 	public function create(){

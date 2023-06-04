@@ -12,21 +12,27 @@ use PHPUnit\Exception;
 
 class ScholarshipOfferController extends Controller {
 
+	private array $with = [
+		'majors' => [
+			'department'
+		]
+	];
+
 	public function index(){
 		$offers = ScholarshipOffer::withCount('applications')->latest()->paginate();
 		return view('admin.offers.scholarship.index', compact('offers'));
 	}
 
 	public function all(){
-		return response()->json(ScholarshipOffer::with(['majors'=> ['department']])->latest()->get());
+		return response()->json(ScholarshipOffer::with($this->with)->latest()->get());
 	}
 
 	public function allPaginated(){
-		return response()->json(ScholarshipOffer::latest()->paginate());
+		return response()->json(ScholarshipOffer::with($this->with)->latest()->paginate());
 	}
 
 	public function find(int $offerId){
-		return response()->json(ScholarshipOffer::findOrFail($offerId));
+		return response()->json(ScholarshipOffer::with($this->with)->findOrFail($offerId));
 	}
 
 	public function create(){
