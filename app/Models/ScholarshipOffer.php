@@ -43,4 +43,16 @@ class ScholarshipOffer extends Model implements Offer {
 		});
 	}
 
+	public function isJobOffer():Attribute{
+		return Attribute::make(function (){
+			return false;
+		});
+	}
+
+	public function isScholarshipOffer():Attribute{
+		return Attribute::make(function (){
+			return true;
+		});
+	}
+
 }

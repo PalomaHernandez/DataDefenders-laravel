@@ -7,10 +7,13 @@ use App\Actions\UploadDocumentation;
 use App\Contracts\ApplicationRepository;
 use App\Exceptions\RequestCannotBeUpdatedException;
 use App\Exceptions\TransitionNotAllowedException;
+use App\Models\DocumentationFile;
 use App\Models\JobOffer;
 use App\Models\Application;
 use App\Models\ScholarshipOffer;
 use App\Patterns\State\Request\ApplicationStatus;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
 use InvalidArgumentException;
 use Illuminate\Validation\ValidationException;
 
@@ -131,18 +134,27 @@ class ApplicationController extends Controller {
 			}
 			request()->validate([
 				'files' => ['array', 'required'],
-				'files.*' => ['mimes:pdf', 'max:8000'],
+				'files.*' => ['required', 'mimetypes:application/pdf', 'max:8000'],
 			]);
+			$files = $this->uploadDocumentation($application);
 			$this->commentAndTransition($application, ApplicationStatus::Pending);
-			$this->uploadDocumentation($application);
 			return response()->json([
-				'message' => 'Your documentation has been submitted for review successfully.'
+				'res' => true,
+				'text' => 'Your documentation has been submitted for review successfully.',
+				'files' => $files,
 			]);
 		} catch(InvalidArgumentException|TransitionNotAllowedException|RequestCannotBeUpdatedException $exception){
 			throw ValidationException::withMessages([
 				'general' => $exception->getMessage()
 			]);
 		}
+	}
+
+	public function getFile(int $documentationFileId){
+		$documentationFile = DocumentationFile::findOrFail($documentationFileId);
+		return response(Storage::get($documentationFile->path), headers: [
+			'Content-Type' => 'application/pdf'
+		]);
 	}
 
 	/**
@@ -175,8 +187,8 @@ class ApplicationController extends Controller {
 		ChangeRequestStatus::execute($application, $status);
 	}
 
-	private function uploadDocumentation(Application $application){
-		UploadDocumentation::execute($application);
+	private function uploadDocumentation(Application $application):Collection{
+		return UploadDocumentation::execute($application);
 	}
 
 	private function returnToIndex(Application $application){
@@ -191,6 +203,10 @@ class ApplicationController extends Controller {
 
 	public function find(int $applicationId){
 		return response()->json($this->repository->findById($applicationId));
+	}
+
+	public function findFile(int $documentationFileId){
+		return response()->json(DocumentationFile::findOrFail($documentationFileId));
 	}
 
 	public function all(){

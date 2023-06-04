@@ -21,4 +21,8 @@ interface Offer {
 
 	public function icon():Attribute;
 
+	public function isJobOffer():Attribute;
+
+	public function isScholarshipOffer():Attribute;
+
 }

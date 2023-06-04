@@ -33,6 +33,7 @@ class RouteServiceProvider extends ServiceProvider {
 					Route::prefix('majors')->group(base_path('routes/api/majors.php'));
 					Route::prefix('reports')->group(base_path('routes/api/reports.php'));
 					Route::prefix('applications')->group(base_path('routes/api/applications/index.php'));
+					Route::prefix('applications/files')->group(base_path('routes/api/applications/files.php'));
 					Route::prefix('applications/job')->group(base_path('routes/api/applications/job/index.php'));
 					Route::prefix('applications/scholarship')->group(base_path('routes/api/applications/scholarship/index.php'));
 					Route::prefix('offers/job')->group(base_path('routes/api/offers/job.php'));
