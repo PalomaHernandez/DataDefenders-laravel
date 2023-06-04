@@ -18,7 +18,7 @@ class JobOfferController extends Controller {
 	}
 
 	public function all(){
-		return response()->json(JobOffer::latest()->get());
+		return response()->json(JobOffer::with(['department'=> ['majors']])->latest()->get());
 	}
 
 	public function allPaginated(){

@@ -49,6 +49,7 @@ class LoginController extends Controller {
 			return response()->json([
 				'res' => true,
 				'text' => 'You have logged in successfully',
+				'user' => request()->user(),
 			]);
 		}
 		return redirect()->route('home');

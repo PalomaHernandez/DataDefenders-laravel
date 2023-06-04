@@ -18,7 +18,7 @@ class ScholarshipOfferController extends Controller {
 	}
 
 	public function all(){
-		return response()->json(ScholarshipOffer::latest()->get());
+		return response()->json(ScholarshipOffer::with(['majors'=> ['department']])->latest()->get());
 	}
 
 	public function allPaginated(){
