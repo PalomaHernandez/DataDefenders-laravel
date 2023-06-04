@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\UploadDocumentation;
 use App\Exceptions\OfferHasAtLeastOneRequestException;
 use App\Models\Department;
 use App\Models\JobOffer;
+use App\Traits\ManagesApplications;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use PHPUnit\Exception;
 
 class JobOfferController extends Controller {
+
+	use ManagesApplications;
 
 	private array $with = [
 		'department' => [
@@ -93,12 +95,9 @@ class JobOfferController extends Controller {
 	}
 
 	public function apply(JobOffer $offer){
-		UploadDocumentation::validate();
+		$this->validateApplication();
 		try {
-			$application = $offer->applications()->create([
-				'user_id' => request()->user()->id
-			]);
-			UploadDocumentation::execute($application);
+			$this->attemptApplication($offer);
 			return response()->json([
 				'res' => true,
 				'text' => 'Applied successfully.'

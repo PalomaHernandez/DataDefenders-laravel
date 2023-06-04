@@ -159,7 +159,7 @@ class ApplicationController extends Controller {
 	private function commentAndTransition(Application $application, ApplicationStatus $status){
 		if(request()->has('comments') && !empty(request('comments'))){
 			$validated = request()->validate([
-				'comments' => ['string', 'required']
+				'comments' => ['string', 'required', 'max:65535']
 			]);
 			$application->comments()->create([
 				'user_id' => auth()->id(),
@@ -174,7 +174,7 @@ class ApplicationController extends Controller {
 	 */
 	private function requireCommentAndTransition(Application $application, ApplicationStatus $status){
 		$validated = request()->validate([
-			'comments' => ['string', 'required']
+			'comments' => ['string', 'required', 'max:65535']
 		]);
 		$application->comments()->create([
 			'user_id' => auth()->id(),

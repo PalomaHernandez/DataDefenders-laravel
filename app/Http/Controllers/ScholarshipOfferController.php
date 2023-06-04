@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\UploadDocumentation;
 use App\Exceptions\OfferHasAtLeastOneRequestException;
 use App\Models\JobOffer;
 use App\Models\ScholarshipOffer;
+use App\Traits\ManagesApplications;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use PHPUnit\Exception;
 
 class ScholarshipOfferController extends Controller {
+
+	use ManagesApplications;
 
 	private array $with = [
 		'majors' => [
@@ -85,16 +87,9 @@ class ScholarshipOfferController extends Controller {
 	}
 
 	public function apply(JobOffer $offer){
-		UploadDocumentation::validate();
-		request()->validate([
-			'major_id' => ['numeric', 'nullable', 'exists:majors,id']
-		]);
+		$this->validateApplication();
 		try {
-			$application = $offer->applications()->create([
-				'user_id' => request()->user()->id,
-				'major_id' => request('major_id')
-			]);
-			UploadDocumentation::execute($application);
+			$this->attemptApplication($offer);
 			return response()->json([
 				'res' => true,
 				'text' => 'Applied successfully.'
