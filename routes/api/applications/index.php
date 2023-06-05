@@ -14,8 +14,8 @@ Route::get('/documentation/paginated', [ApplicationController::class, 'documenta
 Route::get('/accepted/paginated', [ApplicationController::class, 'acceptedPaginated']);
 Route::get('/rejected/paginated', [ApplicationController::class, 'rejectedPaginated']);
 
-Route::get('/{requestId}/find', [ApplicationController::class, 'find']);
-Route::post('/{requestId}/review', [ApplicationController::class, 'review']);
-Route::post('/{requestId}/document', [ApplicationController::class, 'document']);
-Route::post('/{requestId}/accept', [ApplicationController::class, 'accept']);
-Route::post('/{requestId}/reject', [ApplicationController::class, 'reject']);
+Route::get('/{applicationId}/find', [ApplicationController::class, 'find']);
+Route::post('/{applicationId}/review', [ApplicationController::class, 'review']);
+Route::post('/{applicationId}/document', [ApplicationController::class, 'document']);
+Route::post('/{applicationId}/accept', [ApplicationController::class, 'accept']);
+Route::post('/{applicationId}/reject', [ApplicationController::class, 'reject']);

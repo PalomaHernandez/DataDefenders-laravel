@@ -10,6 +10,10 @@ class DocumentationFile extends Model {
 
 	use HasFactory;
 
+	protected $fillable = [
+		'path'
+	];
+
 	public function application():BelongsTo{
 		return $this->belongsTo(Application::class);
 	}

@@ -4,7 +4,8 @@ use App\Http\Controllers\JobOfferController;
 
 Route::get('/', [JobOfferController::class, 'all']);
 Route::get('/paginated', [JobOfferController::class, 'allPaginated']);
-Route::get('/{offerId}/find', [JobOfferController::class, 'find']);
-Route::post('/{offerId}/store', [JobOfferController::class, 'store']);
-Route::patch('/{offerId}/update', [JobOfferController::class, 'update']);
-Route::delete('/{offerId}/delete', [JobOfferController::class, 'delete']);
+Route::get('/{offer}/find', [JobOfferController::class, 'find']);
+Route::post('/{offer}/store', [JobOfferController::class, 'store']);
+Route::patch('/{offer}/update', [JobOfferController::class, 'update']);
+Route::post('/{offer}/apply', [JobOfferController::class, 'apply']);
+Route::delete('/{offer}/delete', [JobOfferController::class, 'delete']);

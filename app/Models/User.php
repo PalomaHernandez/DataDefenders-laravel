@@ -47,7 +47,7 @@ class User extends Authenticatable {
 		'full_name_reversed',
 	];
 
-	public function requests():HasMany{
+	public function applications():HasMany{
 		return $this->hasMany(Application::class);
 	}
 

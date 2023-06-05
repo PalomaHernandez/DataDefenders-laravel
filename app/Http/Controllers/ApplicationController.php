@@ -7,10 +7,13 @@ use App\Actions\UploadDocumentation;
 use App\Contracts\ApplicationRepository;
 use App\Exceptions\RequestCannotBeUpdatedException;
 use App\Exceptions\TransitionNotAllowedException;
+use App\Models\DocumentationFile;
 use App\Models\JobOffer;
 use App\Models\Application;
 use App\Models\ScholarshipOffer;
 use App\Patterns\State\Request\ApplicationStatus;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
 use InvalidArgumentException;
 use Illuminate\Validation\ValidationException;
 
@@ -129,14 +132,12 @@ class ApplicationController extends Controller {
 			if($application->cannot_update){
 				throw new RequestCannotBeUpdatedException();
 			}
-			request()->validate([
-				'files' => ['array', 'required'],
-				'files.*' => ['mimes:pdf', 'max:8000'],
-			]);
+			$files = $this->uploadDocumentation($application);
 			$this->commentAndTransition($application, ApplicationStatus::Pending);
-			$this->uploadDocumentation($application);
 			return response()->json([
-				'message' => 'Your documentation has been submitted for review successfully.'
+				'res' => true,
+				'text' => 'Your documentation has been submitted for review successfully.',
+				'files' => $files,
 			]);
 		} catch(InvalidArgumentException|TransitionNotAllowedException|RequestCannotBeUpdatedException $exception){
 			throw ValidationException::withMessages([
@@ -145,13 +146,20 @@ class ApplicationController extends Controller {
 		}
 	}
 
+	public function getFile(int $documentationFileId){
+		$documentationFile = DocumentationFile::findOrFail($documentationFileId);
+		return response(Storage::get($documentationFile->path), headers: [
+			'Content-Type' => 'application/pdf'
+		]);
+	}
+
 	/**
 	 * @throws InvalidArgumentException|TransitionNotAllowedException
 	 */
 	private function commentAndTransition(Application $application, ApplicationStatus $status){
 		if(request()->has('comments') && !empty(request('comments'))){
 			$validated = request()->validate([
-				'comments' => ['string', 'required']
+				'comments' => ['string', 'required', 'max:65535']
 			]);
 			$application->comments()->create([
 				'user_id' => auth()->id(),
@@ -166,7 +174,7 @@ class ApplicationController extends Controller {
 	 */
 	private function requireCommentAndTransition(Application $application, ApplicationStatus $status){
 		$validated = request()->validate([
-			'comments' => ['string', 'required']
+			'comments' => ['string', 'required', 'max:65535']
 		]);
 		$application->comments()->create([
 			'user_id' => auth()->id(),
@@ -175,8 +183,9 @@ class ApplicationController extends Controller {
 		ChangeRequestStatus::execute($application, $status);
 	}
 
-	private function uploadDocumentation(Application $application){
-		UploadDocumentation::execute($application);
+	private function uploadDocumentation(Application $application):Collection{
+		UploadDocumentation::validate();
+		return UploadDocumentation::execute($application);
 	}
 
 	private function returnToIndex(Application $application){
@@ -191,6 +200,10 @@ class ApplicationController extends Controller {
 
 	public function find(int $applicationId){
 		return response()->json($this->repository->findById($applicationId));
+	}
+
+	public function findFile(int $documentationFileId){
+		return response()->json(DocumentationFile::findOrFail($documentationFileId));
 	}
 
 	public function all(){
