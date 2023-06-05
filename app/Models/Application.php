@@ -19,7 +19,9 @@ class Application extends Model {
 	use HasFactory;
 
 	protected $fillable = [
-		'status'
+		'status',
+		'user_id',
+		'major_id',
 	];
 
 	protected $casts = [

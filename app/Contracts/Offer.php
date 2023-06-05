@@ -25,4 +25,6 @@ interface Offer {
 
 	public function isScholarshipOffer():Attribute;
 
+	public function hasApplied():Attribute;
+
 }

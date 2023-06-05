@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\OfferHasAtLeastOneRequestException;
-use App\Models\JobOffer;
 use App\Models\ScholarshipOffer;
 use App\Traits\ManagesApplications;
 use Illuminate\Support\Facades\Log;
@@ -86,7 +85,7 @@ class ScholarshipOfferController extends Controller {
 		}
 	}
 
-	public function apply(JobOffer $offer){
+	public function apply(ScholarshipOffer $offer){
 		$this->validateApplication();
 		try {
 			$this->attemptApplication($offer);

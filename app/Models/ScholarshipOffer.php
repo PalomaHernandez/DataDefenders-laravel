@@ -27,6 +27,12 @@ class ScholarshipOffer extends Model implements Offer {
 		'ends_at' => 'datetime',
 	];
 
+	protected $appends = [
+		'is_job_offer',
+		'is_scholarship_offer',
+		'has_applied',
+	];
+
 	public function majors():BelongsToMany{
 		return $this->belongsToMany(Major::class, 'scholarship_offer_major');
 	}
@@ -52,6 +58,15 @@ class ScholarshipOffer extends Model implements Offer {
 	public function isScholarshipOffer():Attribute{
 		return Attribute::make(function (){
 			return true;
+		});
+	}
+
+	public function hasApplied():Attribute{
+		return Attribute::make(function (){
+			if(auth()->check()){
+				return request()->user()->applications()->where('offer_id', '=', $this->id)->where('offer_type', '=', self::class)->exists();
+			}
+			return false;
 		});
 	}
 
