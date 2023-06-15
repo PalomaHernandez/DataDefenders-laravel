@@ -28,11 +28,12 @@ class RouteServiceProvider extends ServiceProvider {
 		$this->routes(function (){
 			Route::middleware(['api', 'auth:sanctum'])->group(function (){
 				Route::prefix('api')->group(function (){
-					Route::prefix('account')->group(base_path('routes/api/account.php'));
+					Route::prefix('account')->group(base_path('routes/api/account/index.php'));
 					Route::prefix('departments')->group(base_path('routes/api/departments.php'));
 					Route::prefix('majors')->group(base_path('routes/api/majors.php'));
 					Route::prefix('reports')->group(base_path('routes/api/reports.php'));
 					Route::prefix('applications')->group(base_path('routes/api/applications/index.php'));
+					Route::prefix('applications/files')->group(base_path('routes/api/applications/files.php'));
 					Route::prefix('applications/job')->group(base_path('routes/api/applications/job/index.php'));
 					Route::prefix('applications/scholarship')->group(base_path('routes/api/applications/scholarship/index.php'));
 					Route::prefix('offers/job')->group(base_path('routes/api/offers/job.php'));
@@ -41,7 +42,8 @@ class RouteServiceProvider extends ServiceProvider {
 			});
 
 			Route::middleware('web')->group(function(){
-				Route::middleware('guest')->prefix('')->group(base_path('routes/web/account/login.php'));
+				Route::prefix('api')->group(base_path('routes/api/account/auth.php'));
+				Route::middleware('guest')->group(base_path('routes/web/account/login.php'));
 				Route::prefix('')->group(base_path('routes/web/account/recovery.php'));
 				Route::middleware('auth')->group(function (){
 					Route::prefix('')->group(base_path('routes/web/home.php'));

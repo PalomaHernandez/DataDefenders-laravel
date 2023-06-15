@@ -17,28 +17,41 @@ class LoginController extends Controller {
 			return $this->sendLoginResponse();
 		}
 
+		if(request()->expectsJson()){
+			return response()->json([
+				'res' => false,
+				'text' => 'We could not log you in.',
+			]);
+		}
 		return back()->withErrors([
 			'email' => 'Wrong login details.',
 		]);
 	}
 
-	protected function validateLogin(){
+	protected function validateLogin():void{
 		request()->validate([
 			'email'    => 'required|email',
 			'password' => 'required',
 		]);
 	}
 
-	protected function attemptLogin(){
+	protected function attemptLogin():bool{
 		return auth()->attempt($this->credentials());
 	}
 
-	protected function credentials(){
+	protected function credentials():array{
 		return request()->only('email', 'password');
 	}
 
 	protected function sendLoginResponse(){
 		request()->session()->regenerate();
+		if(request()->expectsJson()){
+			return response()->json([
+				'res' => true,
+				'text' => 'You have logged in successfully',
+				'user' => request()->user(),
+			]);
+		}
 		return redirect()->route('home');
 	}
 
@@ -53,6 +66,12 @@ class LoginController extends Controller {
 	}
 
 	protected function loggedOut(){
+		if(request()->expectsJson()){
+			return response()->json([
+				'res' => true,
+				'text' => 'You have been logged out successfully',
+			]);
+		}
 		return redirect()->route('home');
 	}
 

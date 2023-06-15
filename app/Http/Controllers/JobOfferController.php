@@ -5,9 +5,20 @@ namespace App\Http\Controllers;
 use App\Exceptions\OfferHasAtLeastOneRequestException;
 use App\Models\Department;
 use App\Models\JobOffer;
+use App\Traits\ManagesApplications;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
+use PHPUnit\Exception;
 
 class JobOfferController extends Controller {
+
+	use ManagesApplications;
+
+	private array $with = [
+		'department' => [
+			'majors'
+		]
+	];
 
 	public function index(){
 		$offers = JobOffer::withCount('applications')->latest()->paginate();
@@ -15,15 +26,15 @@ class JobOfferController extends Controller {
 	}
 
 	public function all(){
-		return response()->json(JobOffer::latest()->get());
+		return response()->json(JobOffer::with($this->with)->latest()->get());
 	}
 
 	public function allPaginated(){
-		return response()->json(JobOffer::latest()->paginate());
+		return response()->json(JobOffer::with($this->with)->latest()->paginate());
 	}
 
 	public function find(int $offerId){
-		return response()->json(JobOffer::findOrFail($offerId));
+		return response()->json(JobOffer::with($this->with)->findOrFail($offerId));
 	}
 
 	public function create(){
@@ -79,6 +90,23 @@ class JobOfferController extends Controller {
 		} catch(OfferHasAtLeastOneRequestException $exception){
 			throw ValidationException::withMessages([
 				$exception->getMessage()
+			]);
+		}
+	}
+
+	public function apply(JobOffer $offer){
+		$this->validateApplication();
+		try {
+			$this->attemptApplication($offer);
+			return response()->json([
+				'res' => true,
+				'text' => 'Applied successfully.'
+			]);
+		} catch(Exception $exception){
+			Log::error($exception->getTraceAsString());
+			return response()->json([
+				'res' => false,
+				'text' => 'Could not apply.'
 			]);
 		}
 	}

@@ -11,7 +11,7 @@ use App\Repositories\JobApplicationRepository;
 use App\Repositories\ScholarshipApplicationRepository;
 use Illuminate\Support\ServiceProvider;
 
-class RequestServiceProvider extends ServiceProvider {
+class ApplicationServiceProvider extends ServiceProvider {
 
 	/**
 	 * Register services.

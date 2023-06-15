@@ -12,7 +12,7 @@ return new class extends Migration {
 	public function up():void{
 		Schema::create('comments', function (Blueprint $table){
 			$table->id();
-			$table->mediumText('text');
+			$table->text('text');
 			$table->foreignId('application_id')->references('id')->on('applications')->restrictOnDelete()->cascadeOnUpdate();
 			$table->foreignId('user_id')->references('id')->on('users')->restrictOnDelete()->cascadeOnUpdate();
 			$table->timestamps();

@@ -4,9 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\OfferHasAtLeastOneRequestException;
 use App\Models\ScholarshipOffer;
+use App\Traits\ManagesApplications;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
+use PHPUnit\Exception;
 
 class ScholarshipOfferController extends Controller {
+
+	use ManagesApplications;
+
+	private array $with = [
+		'majors' => [
+			'department'
+		]
+	];
 
 	public function index(){
 		$offers = ScholarshipOffer::withCount('applications')->latest()->paginate();
@@ -14,15 +25,15 @@ class ScholarshipOfferController extends Controller {
 	}
 
 	public function all(){
-		return response()->json(ScholarshipOffer::latest()->get());
+		return response()->json(ScholarshipOffer::with($this->with)->latest()->get());
 	}
 
 	public function allPaginated(){
-		return response()->json(ScholarshipOffer::latest()->paginate());
+		return response()->json(ScholarshipOffer::with($this->with)->latest()->paginate());
 	}
 
 	public function find(int $offerId){
-		return response()->json(ScholarshipOffer::findOrFail($offerId));
+		return response()->json(ScholarshipOffer::with($this->with)->findOrFail($offerId));
 	}
 
 	public function create(){
@@ -70,6 +81,23 @@ class ScholarshipOfferController extends Controller {
 		} catch(OfferHasAtLeastOneRequestException $exception){
 			throw ValidationException::withMessages([
 				$exception->getMessage()
+			]);
+		}
+	}
+
+	public function apply(ScholarshipOffer $offer){
+		$this->validateApplication();
+		try {
+			$this->attemptApplication($offer);
+			return response()->json([
+				'res' => true,
+				'text' => 'Applied successfully.'
+			]);
+		} catch(Exception $exception){
+			Log::error($exception->getTraceAsString());
+			return response()->json([
+				'res' => false,
+				'text' => 'Could not apply.'
 			]);
 		}
 	}
