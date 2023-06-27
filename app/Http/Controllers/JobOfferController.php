@@ -91,6 +91,7 @@ class JobOfferController extends Controller {
 			return response()->json([
 				'res' => true,
 				'text' => 'Applied successfully.',
+				'applicationId' => $application->id,
 				'paymentUrl' => $paymentUrl,
 			]);
 		} catch(Exception $exception){

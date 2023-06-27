@@ -34,6 +34,10 @@ class ApplicationServiceProvider extends ServiceProvider {
 			->needs(ApplicationRepository::class)
 			->give(ApplicationRepositoryImpl::class);
 
+		$this->app->when(MercadoPagoController::class)
+			->needs(ApplicationRepository::class)
+			->give(ApplicationRepositoryImpl::class);
+
 		$this->app->when(JobApplicationController::class)
 			->needs(ApplicationRepository::class)
 			->give(JobApplicationRepository::class);
