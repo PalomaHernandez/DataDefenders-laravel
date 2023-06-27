@@ -8,11 +8,14 @@ use App\Models\JobOffer;
 use App\Models\Application;
 use App\Models\User;
 use App\Patterns\State\Request\ApplicationStatus;
+use App\Traits\UpdatesPaymentUrl;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class JobApplicationRepository implements ApplicationRepository {
+
+	use UpdatesPaymentUrl;
 
 	private array $with = [
 		'documentationFiles',

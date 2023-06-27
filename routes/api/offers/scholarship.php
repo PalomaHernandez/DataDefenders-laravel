@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ScholarshipOfferController;
+use App\Http\Controllers\MercadoPagoController;
 
 Route::get('/', [ScholarshipOfferController::class, 'all']);
 Route::get('/paginated', [ScholarshipOfferController::class, 'allPaginated']);

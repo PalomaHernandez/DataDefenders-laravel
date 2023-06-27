@@ -10,6 +10,11 @@ class AllowedApplicationTransitions {
 
 	public const ALL = [
 		[
+			'current' => ApplicationStatus::Payment,
+			'next' => ApplicationStatus::Pending,
+			'transition' => PaymentToPending::class,
+		],
+		[
 			'current' => ApplicationStatus::Pending,
 			'next' => ApplicationStatus::Documentation,
 			'transition' => PendingToDocumentation::class,

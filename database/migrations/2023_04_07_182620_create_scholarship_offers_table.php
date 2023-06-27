@@ -18,6 +18,7 @@ return new class extends Migration {
 			$table->timestamp('starts_at');
 			$table->timestamp('ends_at');
 			$table->tinyInteger('public')->default(0);
+			$table->unsignedInteger('fee')->default(1000);
 			$table->timestamps();
 		});
 	}

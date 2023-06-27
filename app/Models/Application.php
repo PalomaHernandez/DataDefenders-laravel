@@ -22,6 +22,7 @@ class Application extends Model {
 		'status',
 		'user_id',
 		'major_id',
+		'payment_url',
 	];
 
 	protected $casts = [

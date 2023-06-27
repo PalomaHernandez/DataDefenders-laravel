@@ -30,4 +30,6 @@ interface ApplicationRepository {
 
 	public function getAllRejectedPaginated():Collection|array|LengthAwarePaginator;
 
+	public function updatePaymentUrl(Application $application, ?string $paymentUrl): void;
+
 }

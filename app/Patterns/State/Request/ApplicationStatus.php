@@ -4,6 +4,8 @@ namespace App\Patterns\State\Request;
 
 enum ApplicationStatus:string {
 
+	case Payment = 'payment';
+
 	case Pending = 'pending';
 
 	case Documentation = 'documentation';
@@ -14,7 +16,7 @@ enum ApplicationStatus:string {
 
 	public function canUpdate():bool{
 		return match ($this) {
-			self::Pending, self::Documentation => true,
+			self::Payment, self::Pending, self::Documentation => true,
 			self::Accepted, self::Rejected => false,
 		};
 	}

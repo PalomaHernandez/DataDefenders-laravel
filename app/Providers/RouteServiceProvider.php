@@ -48,6 +48,7 @@ class RouteServiceProvider extends ServiceProvider {
 				Route::middleware('auth')->group(function (){
 					Route::prefix('')->group(base_path('routes/web/home.php'));
 					Route::prefix('')->group(base_path('routes/web/account/logout.php'));
+					Route::prefix('applications')->group(base_path('routes/web/mp.php'));
 					Route::prefix('my-account')->group(base_path('routes/web/account/index.php'));
 					Route::prefix('admin/departments')->group(base_path('routes/web/admin/departments.php'));
 					Route::prefix('admin/majors')->group(base_path('routes/web/admin/majors.php'));

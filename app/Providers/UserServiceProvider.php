@@ -28,6 +28,9 @@ class UserServiceProvider extends ServiceProvider {
 		$this->app->when(ScholarshipApplicationRepository::class)
 			->needs(UserRepository::class)
 			->give(UserRepositoryImpl::class);
+			$this->app->when(MercadoPagoController::class)
+			->needs(UserRepository::class)
+			->give(UserRepositoryImpl::class);
 	}
 
 	public function boot():void{

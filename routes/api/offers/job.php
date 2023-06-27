@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\JobOfferController;
+use App\Http\Controllers\MercadoPagoController;
 
 Route::get('/', [JobOfferController::class, 'all']);
 Route::get('/paginated', [JobOfferController::class, 'allPaginated']);

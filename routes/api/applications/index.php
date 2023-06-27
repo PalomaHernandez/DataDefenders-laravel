@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\MercadoPagoController;
 
 Route::get('/', [ApplicationController::class, 'all']);
 Route::get('/pending', [ApplicationController::class, 'pending']);

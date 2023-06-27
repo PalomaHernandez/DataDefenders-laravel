@@ -12,6 +12,7 @@ class AppServiceProvider extends ServiceProvider {
 	public function register():void{
 		$this->app->register(ApplicationServiceProvider::class);
 		$this->app->register(UserServiceProvider::class);
+		$this->app->register(MercadoPagoServiceProvider::class);
 	}
 
 	/**

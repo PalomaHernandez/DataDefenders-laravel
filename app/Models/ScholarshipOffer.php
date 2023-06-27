@@ -32,7 +32,7 @@ class ScholarshipOffer extends Model implements Offer {
 		'is_scholarship_offer',
 		'has_applied',
 	];
-
+	
 	public function majors():BelongsToMany{
 		return $this->belongsToMany(Major::class, 'scholarship_offer_major');
 	}
@@ -40,6 +40,12 @@ class ScholarshipOffer extends Model implements Offer {
 	public function displayName():Attribute{
 		return Attribute::make(function (){
 			return 'Scholarship offer';
+		});
+	}
+
+	public function urlName():Attribute{
+		return Attribute::make(function (){
+			return 'scholarship';
 		});
 	}
 

@@ -48,6 +48,12 @@ class JobOffer extends Model implements Offer {
 		});
 	}
 
+	public function urlName():Attribute{
+		return Attribute::make(function (){
+			return 'job';
+		});
+	}
+
 	public function icon():Attribute{
 		return Attribute::make(function (){
 			return 'file-contract';

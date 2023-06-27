@@ -18,6 +18,7 @@ return new class extends Migration {
 			$table->timestamp('interview_at');
 			$table->foreignId('department_id')->references('id')->on('departments')->restrictOnDelete()->cascadeOnUpdate();
 			$table->text('benefits');
+			$table->unsignedInteger('fee')->default(1000);
 			$table->timestamp('starts_at');
 			$table->timestamp('ends_at');
 			$table->tinyInteger('public')->default(0);

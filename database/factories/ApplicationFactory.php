@@ -16,7 +16,6 @@ class ApplicationFactory extends Factory {
 	public function definition():array{
 		$rand = rand(0, 1);
 		return [
-			'number' => fake()->numberBetween(),
 			'user_id' => User::inRandomOrder()->first('id')->id,
 			'offer_id' => match($rand){
 				0 => JobOffer::inRandomOrder()->first('id')->id,

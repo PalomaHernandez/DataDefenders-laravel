@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\MercadoPagoRepository;
 use App\Exceptions\OfferHasAtLeastOneRequestException;
 use App\Models\ScholarshipOffer;
 use App\Traits\ManagesApplications;
@@ -18,6 +19,10 @@ class ScholarshipOfferController extends Controller {
 			'department'
 		]
 	];
+
+	public function __construct(
+		private readonly MercadoPagoRepository $mercadoPagoRepository,
+	){}
 
 	public function index(){
 		$offers = ScholarshipOffer::withCount('applications')->latest()->paginate();
@@ -88,10 +93,12 @@ class ScholarshipOfferController extends Controller {
 	public function apply(ScholarshipOffer $offer){
 		$this->validateApplication();
 		try {
-			$this->attemptApplication($offer);
+			$application = $this->attemptApplication($offer);
+			$paymentUrl = $this->mercadoPagoRepository->createPayment($application->id);
 			return response()->json([
 				'res' => true,
-				'text' => 'Applied successfully.'
+				'text' => 'Applied successfully.',
+				'paymentUrl' => $paymentUrl,
 			]);
 		} catch(Exception $exception){
 			Log::error($exception->getTraceAsString());

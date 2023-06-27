@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use App\Actions\UploadDocumentation;
 use App\Contracts\Offer;
+use App\Models\Application;
 use Illuminate\Support\Facades\DB;
 
 trait ManagesApplications {
@@ -16,8 +17,8 @@ trait ManagesApplications {
 		]);
 	}
 
-	private function attemptApplication(Offer $offer):void{
-		DB::transaction(function () use ($offer){
+	private function attemptApplication(Offer $offer):Application{
+		return DB::transaction(function () use ($offer){
 			$application = $offer->applications()->create([
 				'user_id'  => request()->user()->id,
 				'major_id' => request('major_id')
@@ -29,6 +30,7 @@ trait ManagesApplications {
 					'text'    => request('comments')
 				]);
 			}
+			return $application;
 		});
 	}
 

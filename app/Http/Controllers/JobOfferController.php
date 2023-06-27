@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\MercadoPagoRepository;
 use App\Exceptions\OfferHasAtLeastOneRequestException;
 use App\Models\Department;
 use App\Models\JobOffer;
@@ -13,6 +14,10 @@ use PHPUnit\Exception;
 class JobOfferController extends Controller {
 
 	use ManagesApplications;
+
+	public function __construct(
+		private readonly MercadoPagoRepository $mercadoPagoRepository,
+	){}
 
 	private array $with = [
 		'department' => [
@@ -97,10 +102,12 @@ class JobOfferController extends Controller {
 	public function apply(JobOffer $offer){
 		$this->validateApplication();
 		try {
-			$this->attemptApplication($offer);
+			$application = $this->attemptApplication($offer);
+			$paymentUrl = $this->mercadoPagoRepository->createPayment($application->id);
 			return response()->json([
 				'res' => true,
-				'text' => 'Applied successfully.'
+				'text' => 'Applied successfully.',
+				'paymentUrl' => $paymentUrl,
 			]);
 		} catch(Exception $exception){
 			Log::error($exception->getTraceAsString());

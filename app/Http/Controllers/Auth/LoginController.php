@@ -50,6 +50,7 @@ class LoginController extends Controller {
 				'res' => true,
 				'text' => 'You have logged in successfully',
 				'user' => request()->user(),
+				'accessToken'=> request()->bearerToken(),
 			]);
 		}
 		return redirect()->route('home');

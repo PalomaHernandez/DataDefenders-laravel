@@ -19,6 +19,8 @@ interface Offer {
 
 	public function displayName():Attribute;
 
+	public function urlName():Attribute;
+
 	public function icon():Attribute;
 
 	public function isJobOffer():Attribute;
