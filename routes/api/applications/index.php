@@ -4,12 +4,14 @@ use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\MercadoPagoController;
 
 Route::get('/', [ApplicationController::class, 'all']);
+Route::get('/payment', [ApplicationController::class, 'payment']);
 Route::get('/pending', [ApplicationController::class, 'pending']);
 Route::get('/documentation', [ApplicationController::class, 'documentation']);
 Route::get('/accepted', [ApplicationController::class, 'accepted']);
 Route::get('/rejected', [ApplicationController::class, 'rejected']);
 
 Route::get('/paginated', [ApplicationController::class, 'allPaginated']);
+Route::get('/payment/paginated', [ApplicationController::class, 'paymentPaginated']);
 Route::get('/pending/paginated', [ApplicationController::class, 'pendingPaginated']);
 Route::get('/documentation/paginated', [ApplicationController::class, 'documentationPaginated']);
 Route::get('/accepted/paginated', [ApplicationController::class, 'acceptedPaginated']);

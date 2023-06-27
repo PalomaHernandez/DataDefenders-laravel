@@ -210,6 +210,10 @@ class ApplicationController extends Controller {
 		return response()->json($this->repository->getAll());
 	}
 
+	public function payment(){
+		return response()->json($this->repository->getAllPayment());
+	}
+
 	public function pending(){
 		return response()->json($this->repository->getAllPending());
 	}
@@ -228,6 +232,10 @@ class ApplicationController extends Controller {
 
 	public function allPaginated(){
 		return response()->json($this->repository->getAllPaginated());
+	}
+
+	public function paymentPaginated(){
+		return response()->json($this->repository->getAllPaymentPaginated());
 	}
 
 	public function pendingPaginated(){
