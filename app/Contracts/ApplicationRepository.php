@@ -12,6 +12,8 @@ interface ApplicationRepository {
 
 	public function getAll():Collection|array;
 
+	public function getAllPayment():Collection|array;
+
 	public function getAllPending():Collection|array;
 
 	public function getAllDocumentation():Collection|array;
@@ -22,6 +24,8 @@ interface ApplicationRepository {
 
 	public function getAllPaginated():Collection|array|LengthAwarePaginator;
 
+	public function getAllPaymentPaginated():Collection|array|LengthAwarePaginator;
+
 	public function getAllPendingPaginated():Collection|array|LengthAwarePaginator;
 
 	public function getAllDocumentationPaginated():Collection|array|LengthAwarePaginator;
@@ -30,6 +34,10 @@ interface ApplicationRepository {
 
 	public function getAllRejectedPaginated():Collection|array|LengthAwarePaginator;
 
-	public function updatePaymentUrl(Application $application, ?string $paymentUrl): void;
+	public function validateApplication():void;
+
+	public function apply(Offer $offer):Application;
+
+	public function updatePaymentUrl(Application $application, ?string $paymentUrl):void;
 
 }

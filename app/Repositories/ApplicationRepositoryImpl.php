@@ -7,14 +7,14 @@ use App\Contracts\UserRepository;
 use App\Models\Application;
 use App\Models\User;
 use App\Patterns\State\Request\ApplicationStatus;
-use App\Traits\UpdatesPaymentUrl;
+use App\Traits\ManagesApplications;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class AllApplicationRepository implements ApplicationRepository {
+class ApplicationRepositoryImpl implements ApplicationRepository {
 
-	use UpdatesPaymentUrl;
+	use ManagesApplications;
 
 	private array $with = [
 		'documentationFiles',
@@ -52,6 +52,10 @@ class AllApplicationRepository implements ApplicationRepository {
 		return $this->getBaseRequest()->latest()->get();
 	}
 
+	public function getAllPayment():array|Collection{
+		return $this->getBaseRequest()->whereStatus(ApplicationStatus::Payment)->latest()->get();
+	}
+
 	public function getAllPending():array|Collection{
 		return $this->getBaseRequest()->whereStatus(ApplicationStatus::Pending)->latest()->get();
 	}
@@ -70,6 +74,10 @@ class AllApplicationRepository implements ApplicationRepository {
 
 	public function getAllPaginated():array|LengthAwarePaginator|Collection{
 		return $this->getBaseRequest()->latest()->paginate();
+	}
+
+	public function getAllPaymentPaginated():array|LengthAwarePaginator|Collection{
+		return $this->getBaseRequest()->whereStatus(ApplicationStatus::Payment)->latest()->paginate();
 	}
 
 	public function getAllPendingPaginated():array|LengthAwarePaginator|Collection{

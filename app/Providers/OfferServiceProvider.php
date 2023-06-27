@@ -2,25 +2,26 @@
 
 namespace App\Providers;
 
-use App\Contracts\MercadoPagoRepository;
+use App\Contracts\OfferRepository;
 use App\Http\Controllers\JobOfferController;
 use App\Http\Controllers\ScholarshipOfferController;
-use App\Repositories\MercadoPagoRepositoryImpl;
+use App\Repositories\JobOfferRepository;
+use App\Repositories\ScholarshipOfferRepository;
 use Illuminate\Support\ServiceProvider;
 
-class MercadoPagoServiceProvider extends ServiceProvider {
+class OfferServiceProvider extends ServiceProvider {
 
 	/**
 	 * Register services.
 	 */
 	public function register():void{
 		$this->app->when(JobOfferController::class)
-			->needs(MercadoPagoRepository::class)
-			->give(MercadoPagoRepositoryImpl::class);
+			->needs(OfferRepository::class)
+			->give(JobOfferRepository::class);
 
 		$this->app->when(ScholarshipOfferController::class)
-			->needs(MercadoPagoRepository::class)
-			->give(MercadoPagoRepositoryImpl::class);
+			->needs(OfferRepository::class)
+			->give(ScholarshipOfferRepository::class);
 	}
 
 	/**

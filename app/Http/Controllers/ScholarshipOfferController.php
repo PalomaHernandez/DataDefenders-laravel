@@ -2,43 +2,37 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\ApplicationRepository;
 use App\Contracts\MercadoPagoRepository;
+use App\Contracts\OfferRepository;
 use App\Exceptions\OfferHasAtLeastOneRequestException;
-use App\Models\ScholarshipOffer;
-use App\Traits\ManagesApplications;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use PHPUnit\Exception;
 
 class ScholarshipOfferController extends Controller {
 
-	use ManagesApplications;
-
-	private array $with = [
-		'majors' => [
-			'department'
-		]
-	];
-
 	public function __construct(
 		private readonly MercadoPagoRepository $mercadoPagoRepository,
+		private readonly ApplicationRepository $applicationRepository,
+		private readonly OfferRepository $offerRepository,
 	){}
 
 	public function index(){
-		$offers = ScholarshipOffer::withCount('applications')->latest()->paginate();
+		$offers = $this->offerRepository->paginatedWithApplicationCount();
 		return view('admin.offers.scholarship.index', compact('offers'));
 	}
 
 	public function all(){
-		return response()->json(ScholarshipOffer::with($this->with)->latest()->get());
+		return response()->json($this->offerRepository->all());
 	}
 
 	public function allPaginated(){
-		return response()->json(ScholarshipOffer::with($this->with)->latest()->paginate());
+		return response()->json($this->offerRepository->paginated());
 	}
 
 	public function find(int $offerId){
-		return response()->json(ScholarshipOffer::with($this->with)->findOrFail($offerId));
+		return response()->json($this->offerRepository->findById($offerId));
 	}
 
 	public function create(){
@@ -46,7 +40,7 @@ class ScholarshipOfferController extends Controller {
 	}
 
 	public function store(){
-		ScholarshipOffer::create(request()->validate([
+		$this->offerRepository->store(request()->validate([
 			'title'        => ['string', 'max:255', 'required'],
 			'description'  => ['string', 'required'],
 			'requirements' => ['string', 'required'],
@@ -59,12 +53,13 @@ class ScholarshipOfferController extends Controller {
 		]);
 	}
 
-	public function edit(ScholarshipOffer $offer){
+	public function edit(int $offerId){
+		$offer = $this->offerRepository->findById($offerId);
 		return view('admin.offers.scholarship.edit', compact('offer'));
 	}
 
-	public function update(ScholarshipOffer $offer){
-		$offer->update(request()->validate([
+	public function update(int $offerId){
+		$this->offerRepository->update($offerId, request()->validate([
 			'title'        => ['string', 'max:255'],
 			'description'  => ['string', 'required'],
 			'requirements' => ['string', 'required'],
@@ -77,24 +72,13 @@ class ScholarshipOfferController extends Controller {
 		]);
 	}
 
-	public function delete_confirm(ScholarshipOffer $offer){
+	public function apply(int $offerId){
+		$this->applicationRepository->validateApplication();
 		try {
-			if($offer->applications()->exists()){
-				throw new OfferHasAtLeastOneRequestException();
-			}
-			return view('admin.offers.scholarship.delete', compact('offer'));
-		} catch(OfferHasAtLeastOneRequestException $exception){
-			throw ValidationException::withMessages([
-				$exception->getMessage()
-			]);
-		}
-	}
-
-	public function apply(ScholarshipOffer $offer){
-		$this->validateApplication();
-		try {
-			$application = $this->attemptApplication($offer);
-			$paymentUrl = $this->mercadoPagoRepository->createPayment($application->id);
+			$offer = $this->offerRepository->findById($offerId);
+			$application = $this->applicationRepository->apply($offer);
+			$paymentUrl = $this->mercadoPagoRepository->getPaymentUrl($application->id);
+			$this->applicationRepository->updatePaymentUrl($application, $paymentUrl);
 			return response()->json([
 				'res' => true,
 				'text' => 'Applied successfully.',
@@ -109,12 +93,20 @@ class ScholarshipOfferController extends Controller {
 		}
 	}
 
-	public function delete(ScholarshipOffer $offer){
+	public function delete_confirm(int $offerId){
 		try {
-			if($offer->applications()->exists()){
-				throw new OfferHasAtLeastOneRequestException();
-			}
-			$offer->delete();
+			$offer = $this->offerRepository->deleteConfirm($offerId);
+			return view('admin.offers.scholarship.delete', compact('offer'));
+		} catch(OfferHasAtLeastOneRequestException $exception){
+			throw ValidationException::withMessages([
+				$exception->getMessage()
+			]);
+		}
+	}
+
+	public function delete(int $offerId){
+		try {
+			$this->offerRepository->delete($offerId);
 			return redirect()->route('offers.scholarship.index')->with([
 				'success' => 'The scholarship offer was deleted successfully.'
 			]);

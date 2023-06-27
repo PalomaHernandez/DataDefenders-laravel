@@ -11,6 +11,8 @@ interface Offer {
 
 	public function acceptedApplications():MorphMany;
 
+	public function paymentApplications():MorphMany;
+
 	public function rejectedApplications():MorphMany;
 
 	public function pendingApplications():MorphMany;

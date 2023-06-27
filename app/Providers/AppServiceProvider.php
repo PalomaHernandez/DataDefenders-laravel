@@ -13,6 +13,7 @@ class AppServiceProvider extends ServiceProvider {
 		$this->app->register(ApplicationServiceProvider::class);
 		$this->app->register(UserServiceProvider::class);
 		$this->app->register(MercadoPagoServiceProvider::class);
+		$this->app->register(OfferServiceProvider::class);
 	}
 
 	/**

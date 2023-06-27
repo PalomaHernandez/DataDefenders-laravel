@@ -2,8 +2,10 @@
 
 namespace App\Contracts;
 
+use App\Models\Application;
+
 interface MercadoPagoRepository {
 
-    public function createPayment(int $applicationId): string;
+    public function getPaymentUrl(Application $application): string;
 
 }

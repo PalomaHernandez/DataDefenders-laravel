@@ -16,6 +16,10 @@ trait HasApplications {
 		return $this->morphMany(Application::class, 'offer')->where('status', '=', ApplicationStatus::Accepted);
 	}
 
+	public function paymentApplications():MorphMany{
+		return $this->morphMany(Application::class, 'offer')->where('status', '=', ApplicationStatus::Payment);
+	}
+
 	public function rejectedApplications():MorphMany{
 		return $this->morphMany(Application::class, 'offer')->where('status', '=', ApplicationStatus::Rejected);
 	}

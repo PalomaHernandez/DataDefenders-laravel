@@ -2,45 +2,44 @@
 
 namespace App\Repositories;
 
-use App\Contracts\ApplicationRepository;
 use App\Contracts\MercadoPagoRepository;
+use App\Contracts\Offer;
+use App\Models\Application;
 use MercadoPago\Item;
 use MercadoPago\Preference;
 use MercadoPago\SDK;
 
 class MercadoPagoRepositoryImpl implements MercadoPagoRepository {
 
-    public function __construct(
-		private readonly ApplicationRepository $applicationRepository,
-	){}
+	public function __construct(){
+		SDK::setAccessToken(config('services.mercadopago.token'));
+	}
 
-    public function createPayment(int $applicationId): string{
-        SDK::setAccessToken(config('services.mercadopago.token'));
-      
-        $application = $this->applicationRepository->findById($applicationId);
-        $preference = new Preference();
-        $item = new Item();
+	public function getPaymentUrl(Application $application):string{
+		return $this->generatePaymentUrl($this->createPreference($application));
+	}
 
-        $offer = $application->offer;
-        $item->title = $offer->title;
-        $item->quantity = 1;
-        $item->unit_price = $offer->fee;
+	private function createPreference(Application $application):Preference{
+		$preference = new Preference();
+		$preference->items = $this->createItems($application->offer);
+		$preference->back_urls = [
+			'success' => route('application.payment', $application->id),
+		];
+		$preference->auto_return = "approved";
+		$preference->save();
+		return $preference;
+	}
 
-        $preference->items = [$item];
-        $preference->back_urls = [
-            'success' => route('application.payment', $applicationId),
-        ];
-        $preference->auto_return = "approved";
-        $preference->save();
+	private function createItems(Offer $offer):array{
+		$item = new Item();
+		$item->title = $offer->title;
+		$item->quantity = 1;
+		$item->unit_price = $offer->fee;
+		return [$item];
+	}
 
-        if(config('app.env') == 'production'){
-            $paymentUrl = $preference->init_point;
-        } else {
-            $paymentUrl = $preference->sandbox_init_point;
-        }
-      
-        $this->applicationRepository->updatePaymentUrl($application, $paymentUrl);
-        return $paymentUrl;
-    }
+	private function generatePaymentUrl(Preference $preference):string{
+		return config('app.env') == 'production' ? $preference->init_point : $preference->sandbox_init_point;
+	}
 
 }
