@@ -9,15 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 trait ManagesApplications {
 
-	public function validateApplication():void{
-		UploadDocumentation::validate();
-		request()->validate([
-			'major_id' => ['numeric', 'nullable', 'exists:majors,id'],
-			'comments' => ['string', 'nullable', 'max:65535']
-		]);
-	}
-
-	public function apply(Offer $offer):Application{
+	public function apply(Offer $offer):array{
 		return DB::transaction(function () use ($offer){
 			$application = $offer->applications()->create([
 				'user_id'  => request()->user()->id,
@@ -30,7 +22,9 @@ trait ManagesApplications {
 					'text'    => request('comments')
 				]);
 			}
-			return $application;
+			$paymentUrl = $this->mercadoPagoRepository->getPaymentUrl($application);
+			$this->updatePaymentUrl($application, $paymentUrl);
+			return [$application->id, $paymentUrl];
 		});
 	}
 

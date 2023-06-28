@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Contracts\ApplicationRepository;
+use App\Contracts\MercadoPagoRepository;
 use App\Contracts\UserRepository;
 use App\Models\Application;
 use App\Models\ScholarshipOffer;
@@ -33,7 +34,10 @@ class ScholarshipApplicationRepository implements ApplicationRepository {
 
 	private string $abilityOwn = 'list.own.applications';
 
-	public function __construct(private readonly UserRepository $userRepository){}
+	public function __construct(
+		private readonly MercadoPagoRepository $mercadoPagoRepository,
+		private readonly UserRepository $userRepository,
+	){}
 
 	public function findById(int $id):Application{
 		return $this->getBaseRequest()->whereId($id)->firstOrFail();

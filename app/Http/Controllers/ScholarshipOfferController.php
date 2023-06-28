@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\UploadDocumentation;
 use App\Contracts\ApplicationRepository;
-use App\Contracts\MercadoPagoRepository;
 use App\Contracts\OfferRepository;
 use App\Exceptions\OfferHasAtLeastOneRequestException;
-use Illuminate\Support\Facades\Log;
+use App\Traits\HandlesApplications;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
-use PHPUnit\Exception;
 
 class ScholarshipOfferController extends Controller {
 
+	use HandlesApplications;
+
 	public function __construct(
-		private readonly MercadoPagoRepository $mercadoPagoRepository,
 		private readonly ApplicationRepository $applicationRepository,
 		private readonly OfferRepository $offerRepository,
 	){}
@@ -72,26 +73,13 @@ class ScholarshipOfferController extends Controller {
 		]);
 	}
 
-	public function apply(int $offerId){
-		$this->applicationRepository->validateApplication();
-		try {
-			$offer = $this->offerRepository->findById($offerId);
-			$application = $this->applicationRepository->apply($offer);
-			$paymentUrl = $this->mercadoPagoRepository->getPaymentUrl($application->id);
-			$this->applicationRepository->updatePaymentUrl($application, $paymentUrl);
-			return response()->json([
-				'res' => true,
-				'text' => 'Applied successfully.',
-				'applicationId' => $application->id,
-				'paymentUrl' => $paymentUrl,
-			]);
-		} catch(Exception $exception){
-			Log::error($exception->getTraceAsString());
-			return response()->json([
-				'res' => false,
-				'text' => 'Could not apply.'
-			]);
-		}
+	public function apply(int $offerId):JsonResponse{
+		UploadDocumentation::validate();
+		request()->validate([
+			'major_id' => ['numeric', 'nullable', 'exists:majors,id'],
+			'comments' => ['string', 'nullable', 'max:65535']
+		]);
+		return $this->handleApplication($offerId);
 	}
 
 	public function delete_confirm(int $offerId){
