@@ -14,6 +14,16 @@ gestionar las ofertas, inscripciones y generar reportes.
 Las ofertas tendrán requisitos distintos para la inscripción, tales como un CV o certificado analítico de materias, que
 no son comunes entre las mismas.
 
+## Imágenes 
+![alt text](https://github.com/PalomaHernandez/DataDefenders-laravel/blob/main/img/unimanager.png?raw=true)
+#
+![alt text](https://github.com/PalomaHernandez/DataDefenders-laravel/blob/main/img/unimanager2.png?raw=true)
+#
+![alt text](https://github.com/PalomaHernandez/DataDefenders-laravel/blob/main/img/unimanager3.png?raw=true)
+#
+![alt text](https://github.com/PalomaHernandez/DataDefenders-laravel/blob/main/img/unimanager4.png?raw=true)
+
+
 ## Descripción completa
 
 `UniManager` permite a las universidades gestionar dos tipos de ofertas: laborales y becas.
